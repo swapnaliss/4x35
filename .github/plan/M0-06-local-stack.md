@@ -5,7 +5,7 @@ labels: ["infra"]
 blocked_by: ["M0-05"]
 estimate: "3h"
 resources: ["LOCK", "SCHEMA"]
-needs: []
+needs: ["P-02", "P-03"]
 ---
 
 ## Context

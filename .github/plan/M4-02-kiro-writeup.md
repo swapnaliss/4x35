@@ -5,7 +5,7 @@ labels: ["docs", "critical"]
 blocked_by: ["M3-GATE"]
 estimate: "3h"
 resources: []
-needs: []
+needs: ["P-03"]
 ---
 
 ## Context

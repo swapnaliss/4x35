@@ -5,7 +5,7 @@ labels: ["docs"]
 blocked_by: ["M4-01", "M4-02", "M4-03"]
 estimate: "2h"
 resources: []
-needs: []
+needs: ["P-03", "P-35"]
 ---
 
 ## Context

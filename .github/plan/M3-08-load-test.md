@@ -5,7 +5,7 @@ labels: ["infra", "eval"]
 blocked_by: ["M2-GATE"]
 estimate: "4h"
 resources: ["DEPLOY"]
-needs: []
+needs: ["P-02", "P-03", "P-11", "P-12", "P-18", "P-25", "P-26", "P-27"]
 ---
 
 ## Context

@@ -5,7 +5,7 @@ labels: ["owner", "docs", "critical"]
 blocked_by: ["M4-01"]
 estimate: "6h"
 resources: []
-needs: []
+needs: ["P-03", "P-10", "P-11", "P-12", "P-30", "P-31", "P-34"]
 ---
 
 ## Context

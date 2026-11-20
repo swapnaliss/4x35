@@ -5,7 +5,7 @@ labels: ["agent", "docs", "critical"]
 blocked_by: ["M0-02", "M0-05"]
 estimate: "3h"
 resources: []
-needs: []
+needs: ["P-03", "P-10", "P-11"]
 ---
 
 ## Context

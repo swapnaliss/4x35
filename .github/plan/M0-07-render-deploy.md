@@ -5,7 +5,7 @@ labels: ["infra", "critical", "blocker-risk"]
 blocked_by: ["M0-05"]
 estimate: "4h"
 resources: ["DEPLOY"]
-needs: []
+needs: ["P-01", "P-03", "P-04", "P-07", "P-18", "P-19", "P-20", "P-21", "P-23", "P-29"]
 ---
 
 ## Context
