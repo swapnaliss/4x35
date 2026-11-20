@@ -9,6 +9,10 @@ Each entry:
 
 `verify` runs in bash with the project's .env loaded into the environment (never read or printed
 by this script); its stdout and stderr are discarded, so a verify command can never leak a value.
+`.env` and `.dev-refs.md` are gitignored, so they exist only in the main checkout: from a git
+worktree the script loads the main checkout's `.env`. `$MAIN_ROOT` (the main checkout) is exported
+to every verify command, so an owner attestation for a console-only step is checked with
+`grep -qE '^- P-xx: done' "$MAIN_ROOT/.dev-refs.md"`.
 Only its exit code matters. Entries without `verify` (decisions, purchases) are checked against
 `"status": "done"` in the JSON instead.
 
@@ -23,6 +27,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import subprocess
 import sys
@@ -32,6 +37,11 @@ ROOT = Path(subprocess.run(["git", "rev-parse", "--show-toplevel"], capture_outp
                            text=True).stdout.strip() or ".")
 SOURCE = ROOT / ".github/plan/prereqs.json"
 DOC = ROOT / "docs/PREREQS.md"
+# The main checkout (differs from ROOT inside a git worktree); it holds the gitignored .env and
+# .dev-refs.md.
+_COMMON = subprocess.run(["git", "rev-parse", "--path-format=absolute", "--git-common-dir"],
+                         capture_output=True, text=True).stdout.strip()
+MAIN_ROOT = Path(_COMMON).parent if _COMMON else ROOT
 PLAN = ROOT / ".github/plan"
 
 
@@ -54,10 +64,14 @@ def check(entry: dict) -> bool:
     cmd = entry.get("verify")
     if not cmd:
         return entry.get("status") == "done"
-    env_file = ROOT / ".env"
+    env_file = ROOT / ".env" if (ROOT / ".env").exists() else MAIN_ROOT / ".env"
     loader = f"set -a; . '{env_file}'; set +a; " if env_file.exists() else ""
-    r = subprocess.run(["bash", "-c", f"{loader}{cmd}"], cwd=ROOT,
-                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=120)
+    env = {**os.environ, "MAIN_ROOT": str(MAIN_ROOT)}
+    try:
+        r = subprocess.run(["bash", "-c", f"{loader}{cmd}"], cwd=ROOT, env=env,
+                           stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=120)
+    except subprocess.TimeoutExpired:
+        return False
     return r.returncode == 0
 
 
