@@ -1,0 +1,12 @@
+{
+  "$comment": "Shared resources a git worktree cannot isolate. Tickets claim them in `resources:` frontmatter.",
+  "max_workers": 3,
+  "exclusive": {
+    "DEPLOY": "One Render service and one production Postgres: concurrent deploys, migrations or sandbox resets race each other.",
+    "LOCK": "package-lock.json and the root workspace config: two tickets adding dependencies at once produce conflicting lockfiles and a broken install. Claimed by tickets that add workspaces or many dependencies.",
+    "SCHEMA": "Drizzle schema and migration sequence: two concurrent migrations get conflicting numbers and a broken chain."
+  },
+  "budgeted": {
+    "LLM": "Anthropic API spend under the $10/month cap. Workers iterate on recorded responses and spend real tokens only to prove an AC (≤ $1 per ticket)."
+  }
+}

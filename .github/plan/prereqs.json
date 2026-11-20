@@ -1,0 +1,14 @@
+[
+  {"id": "P-01", "what": "GitHub CLI authenticated as the profile's github_owner with repo + workflow scopes", "kind": "credential",
+   "needed_by": ["M0-05"], "who": "owner", "how": "gh auth login; gh auth refresh -h github.com -s workflow",
+   "lands_in": "gh keyring", "verify": "gh auth status 2>&1 | grep -q workflow", "required": true},
+  {"id": "P-02", "what": "Docker daemon running", "kind": "tool",
+   "needed_by": [], "who": "owner", "how": "start Docker Desktop",
+   "lands_in": "-", "verify": "docker info >/dev/null", "required": true},
+  {"id": "P-03", "what": "Example secret present in .env (presence only, value never read)", "kind": "credential",
+   "needed_by": [], "who": "owner", "how": "add EXAMPLE_API_KEY=... to .env (get it from <provider console path>)",
+   "lands_in": ".env EXAMPLE_API_KEY", "verify": "[ -n \"${EXAMPLE_API_KEY:+set}\" ]", "required": false},
+  {"id": "P-04", "what": "Budget ceiling approved by the owner", "kind": "decision",
+   "needed_by": [], "who": "owner", "how": "approve docs/budget.md", "lands_in": "docs/budget.md",
+   "status": "pending", "required": true}
+]

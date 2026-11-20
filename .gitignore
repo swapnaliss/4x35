@@ -1,0 +1,36 @@
+# secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials*.json
+.dev-refs.md
+.sandbox-credentials.md
+# kickoff and workflow scratch
+.kickoff-state.md
+.prp/
+.claude/worktrees/
+.claude/settings.local.json
+# private from day one
+docs/research/
+docs/outreach/
+docs/recon/
+.review/
+# build output
+node_modules/
+dist/
+build/
+coverage/
+playwright-report/
+test-results/
+*.tsbuildinfo
+# large data and media
+data/raw/*
+!data/raw/.gitkeep
+schemas/xsd/*
+!schemas/xsd/.gitkeep
+media/*
+!media/.gitkeep
+*.mp4
+*.mov

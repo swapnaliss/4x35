@@ -1,0 +1,11 @@
+4x35
+Copyright 2026 swapnaliss
+
+Licensed under the Apache License, Version 2.0 (see LICENSE).
+
+This product uses the following third-party data (attribution is also shown in the app):
+- Address metadata from Google's chromium-i18n libaddressinput project, CC-BY 4.0.
+- Postal code data from GeoNames (https://www.geonames.org), CC-BY 4.0.
+- Romanised postal code data from Japan Post.
+The exact sources, versions and retrieval dates are recorded in docs/evidence/ (ticket M0-08).
+Bank names are used as text only to identify which public usage guide a rule pack encodes.

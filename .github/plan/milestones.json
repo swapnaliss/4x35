@@ -1,0 +1,7 @@
+[
+  {"title": "M0 · Recon & Bootstrap", "due": "2026-11-22", "description": "Prerequisites, Kiro/Crew/LLM/XSD/dataset recon with recorded fixtures, repo + CI, local stack, Render deploy of a hello build, load spike, .kiro steering and spec scaffold."},
+  {"title": "M1 · Walking Skeleton", "due": "2026-11-24", "description": "Domain core with provenance invariants, schema, identity, jobs, observability, design system, and a thin upload → health report → export slice deployed to production."},
+  {"title": "M2 · Core Loop", "due": "2026-11-29", "description": "All ingest formats, rule packs, structuring, LLM labeller, review queue, linking, pre-flight and export. The demo storyboard runs for real on production."},
+  {"title": "M3 · Developer Surfaces & Proof", "due": "2026-12-01", "description": "API tokens, MCP server, Kiro power, Crew app, Kiro hooks and agent, hand-labelled accuracy, load test, judge sandboxes, accessibility, live LLM eval, privacy."},
+  {"title": "M4 · Submission", "due": "2026-12-03", "description": "README, Kiro write-up, video, blog, Devpost text, public-tree cleanup, final gate from a clean clone, then submit (deadline 4 Dec 14:00 PT)."}
+]
