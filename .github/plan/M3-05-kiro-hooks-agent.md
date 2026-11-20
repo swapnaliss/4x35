@@ -5,7 +5,7 @@ labels: ["agent", "infra"]
 blocked_by: ["M2-GATE"]
 estimate: "4h"
 resources: []
-needs: []
+needs: ["P-03", "P-10", "P-11", "P-12"]
 ---
 
 ## Context

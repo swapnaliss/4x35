@@ -5,7 +5,7 @@ labels: ["backend", "security", "blocker-risk"]
 blocked_by: ["M1-GATE"]
 estimate: "8h"
 resources: ["LOCK"]
-needs: []
+needs: ["P-03", "P-11", "P-12"]
 ---
 
 ## Context

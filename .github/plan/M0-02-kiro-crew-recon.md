@@ -5,7 +5,7 @@ labels: ["recon", "agent", "blocker-risk", "critical"]
 blocked_by: ["M0-00"]
 estimate: "4h"
 resources: []
-needs: []
+needs: ["P-03", "P-06", "P-10", "P-11", "P-13", "P-29"]
 ---
 
 ## Context

@@ -5,7 +5,7 @@ labels: ["backend", "frontend"]
 blocked_by: ["M2-03", "M2-17"]
 estimate: "6h"
 resources: []
-needs: []
+needs: ["P-03", "P-11", "P-12", "P-30"]
 ---
 
 ## Context

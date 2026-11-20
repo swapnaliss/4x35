@@ -5,7 +5,7 @@ labels: ["agent", "backend", "blocker-risk"]
 blocked_by: ["M3-01"]
 estimate: "6h"
 resources: []
-needs: []
+needs: ["P-01", "P-03", "P-09", "P-11", "P-12", "P-13"]
 ---
 
 ## Context
