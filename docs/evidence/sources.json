@@ -257,7 +257,7 @@
     "title": "Mastering address management: what a global enterprise learned so you don't have to",
     "publisher": "Kyriba",
     "retrieved": "2026-11-24",
-    "sha256": null,
+    "sha256": "2135e35e6f05a4d343397de53afb9d7f96befa879cae57b59856b3dc750dd1f4",
     "local_file": "data/raw/evidence/kyriba-enterprise-lessons.html",
     "reproduction": "No licence to reproduce stated; cite and paraphrase only, never copy text.",
     "supports": [
@@ -266,9 +266,9 @@
       "pain:tools-for-banks"
     ],
     "capture": {
-      "status": "blocked",
-      "http_status": 403,
-      "note": "Bot wall (HTTP 403) to curl and to the site's RSS feed on 2026-11-24. Wording checked the same day through a fetch tool: \"the creditor side often had only the country field populated\"; \"No single owner.\"; \"in several Asian countries, Town Name refers to a district, not a city\"; \"This kind of regional variation is invisible until you test with the actual bank.\" sha256 needs a browser save by the owner (see the M0-04 blocked note)."
+      "status": "owner's browser, 2026-11-24",
+      "http_status": 200,
+      "note": "kyriba.com answers HTTP 403 to automated fetch; captured through the owner's browser on 2026-11-24 (same-origin fetch of the article URL, raw server HTML, equivalent to 'Webpage, HTML only'). Prerequisite P-40. Quotes verified against the file: \"the creditor side often had only the country field populated\"; \"No single owner.\"; \"in several Asian countries, Town Name refers to a district, not a city\"; \"This kind of regional variation is invisible until you test with the actual bank\"."
     }
   },
   {

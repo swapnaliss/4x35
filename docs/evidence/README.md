@@ -81,4 +81,4 @@ jq -r '[.[]|select(.sha256)|.supports[]]|unique[]' docs/evidence/sources.json
    source, compare the hash, and update `retrieved`/`sha256` (and the pack) if it changed.
 4. **Blocked sources.** swift.com and kyriba.com answer HTTP 403 to automated fetches. Do not work
    around a bot wall. An entry without a hash has a `capture` note; a browser save by the owner,
-   placed at `local_file`'s path and hashed, fills it in.
+   placed at `local_file`'s path and hashed, fills it in (done for Kyriba on 2026-11-24, P-40).
