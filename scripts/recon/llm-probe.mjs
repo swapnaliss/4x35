@@ -21,7 +21,11 @@ const FIX = join(ROOT, "fixtures", "llm");
 const OUT = join(FIX, "anthropic");
 const SPEND_LIMIT_USD = 1.0;
 // claude-haiku-5-5, Anthropic first-party API, prompts up to 100K tokens (USD per million tokens).
-const PRICE = { input: 0.1, output: 0.5, source: "Anthropic published pricing, read 2026-11-24" };
+const PRICE = {
+  input: 0.1,
+  output: 0.5,
+  source: "https://platform.claude.com/docs/en/about-claude/pricing, read 2026-11-24",
+};
 const PROMPT_VERSION = "probe-1";
 const TIMEOUT_MS = 20_000;
 const MAX_TOKENS = 1024;
@@ -136,7 +140,7 @@ async function run(scratchDir) {
 
   const require = createRequire(resolve(scratchDir, "package.json"));
   const Anthropic = require("@anthropic-ai/sdk").default;
-  const sdkVersion = require("@anthropic-ai/sdk/package.json").version;
+  const sdkVersion = require("@anthropic-ai/sdk/version").VERSION;
   const client = new Anthropic({ timeout: TIMEOUT_MS, maxRetries: 0 });
   mkdirSync(OUT, { recursive: true });
 
