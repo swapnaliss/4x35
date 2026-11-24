@@ -43,7 +43,7 @@ Domain facts the product depends on (sources in `docs/evidence/`, filled by M0-0
 |---|---|---|
 | Banks ignore or reject free-text addresses | bank notice: "The unstructured address field PstlAdr/AdrLine will be ignored… TwnNm and Ctry will become mandatory" (IFS Community, Jul 2026) | AP and payroll clerks |
 | ERP exports cannot produce structured addresses in time | "we haven't managed to get this format correct" (IFS Community) | ERP admins |
-| Master data is thin and inconsistent | creditor records that "often had only the country populated" (Kyriba case) | treasury |
+| Master data is thin and inconsistent | the creditor side "often had only the country field populated" (Kyriba case) | treasury |
 | Country quirks surface only in bank testing | Japan/Asia district vs town (Kyriba) | everyone paying into Asia |
 | Tools exist only for banks and large treasury systems | Volante, Trace, Kyriba, Addresstune; Swift's model is a single-address parser, "as is" | small and mid-size payers |
 
