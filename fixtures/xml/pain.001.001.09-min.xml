@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Synthetic test data (M0-04): every party, account and address below is invented. -->
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pain.001.001.09">
+  <CstmrCdtTrfInitn>
+    <GrpHdr>
+      <MsgId>4X35-FIXTURE-0001</MsgId>
+      <CreDtTm>2026-11-24T09:00:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <CtrlSum>125.50</CtrlSum>
+      <InitgPty>
+        <Nm>Synthetic Payer Ltd</Nm>
+      </InitgPty>
+    </GrpHdr>
+    <PmtInf>
+      <PmtInfId>4X35-PMTINF-0001</PmtInfId>
+      <PmtMtd>TRF</PmtMtd>
+      <NbOfTxs>1</NbOfTxs>
+      <CtrlSum>125.50</CtrlSum>
+      <ReqdExctnDt>
+        <Dt>2026-12-01</Dt>
+      </ReqdExctnDt>
+      <Dbtr>
+        <Nm>Synthetic Payer Ltd</Nm>
+        <PstlAdr>
+          <TwnNm>Exampleton</TwnNm>
+          <Ctry>DE</Ctry>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAcct>
+        <Id>
+          <IBAN>DE89370400440532013000</IBAN>
+        </Id>
+      </DbtrAcct>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTDEFFXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtTrfTxInf>
+        <PmtId>
+          <EndToEndId>4X35-E2E-0001</EndToEndId>
+        </PmtId>
+        <Amt>
+          <InstdAmt Ccy="EUR">125.50</InstdAmt>
+        </Amt>
+        <Cdtr>
+          <Nm>Fictional Supplier Oy</Nm>
+          <PstlAdr>
+            <StrtNm>Sample Street</StrtNm>
+            <BldgNb>12</BldgNb>
+            <PstCd>00100</PstCd>
+            <TwnNm>Testville</TwnNm>
+            <Ctry>FI</Ctry>
+          </PstlAdr>
+        </Cdtr>
+        <CdtrAcct>
+          <Id>
+            <IBAN>FI2112345600000785</IBAN>
+          </Id>
+        </CdtrAcct>
+      </CdtTrfTxInf>
+    </PmtInf>
+  </CstmrCdtTrfInitn>
+</Document>
