@@ -19,7 +19,7 @@ node scripts/spikes/m0-09/gen-rows.mjs --deps "$TMPDIR/m009-deps" --seed 42 --ro
 PORT_OFFSET=500 ./scripts/spikes/m0-09/run.sh --data "$TMPDIR/m009" > "$TMPDIR/m009-results.json"
 ```
 
-`run.sh` takes about 2 minutes on a 4 vCPU laptop. It prints one JSON document on stdout and its
+`run.sh` took 3 minutes on a 4 vCPU laptop (`docs/evidence/load-spike.md`). It prints one JSON document on stdout and its
 progress on stderr.
 
 ## Files
