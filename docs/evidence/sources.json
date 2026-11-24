@@ -9,9 +9,7 @@
     "sha256": "6bb5c6f24250ab807f31f6164142bafd6d43bad8d162a926e258ff4c11e128af",
     "local_file": "schemas/xsd/pain.001.001.03.xsd",
     "reproduction": "Licence unconfirmed (iso20022.org terms page blocked); fetched at build time, never committed. See docs/evidence/xsd-licence.md.",
-    "supports": [
-      "fact:pa6-gaps"
-    ]
+    "supports": ["fact:pa6-gaps"]
   },
   {
     "id": "iso-xsd-pain-001-001-09",
@@ -23,10 +21,7 @@
     "sha256": "de038b373e47b0077b1832ddd81f4b2f1eb25d35721f62da1e38b7f5a09fda24",
     "local_file": "schemas/xsd/pain.001.001.09.xsd",
     "reproduction": "Licence unconfirmed (iso20022.org terms page blocked); fetched at build time, never committed. See docs/evidence/xsd-licence.md.",
-    "supports": [
-      "fact:pa24-lengths",
-      "fact:pa6-gaps"
-    ]
+    "supports": ["fact:pa24-lengths", "fact:pa6-gaps"]
   },
   {
     "id": "iso-xsd-pain-001-001-12",
@@ -38,9 +33,7 @@
     "sha256": "9ac29c72844923bccacd079cc9a03ba4364a6c670d09579149fafae55aedf7d2",
     "local_file": "schemas/xsd/pain.001.001.12.xsd",
     "reproduction": "Licence unconfirmed (iso20022.org terms page blocked); fetched at build time, never committed. See docs/evidence/xsd-licence.md.",
-    "supports": [
-      "fact:pa27-lengths"
-    ]
+    "supports": ["fact:pa27-lengths"]
   },
   {
     "id": "swift-sr2026-deferral-news",
@@ -52,9 +45,7 @@
     "sha256": null,
     "local_file": "data/raw/evidence/swift-sr2026-deferral-news.html",
     "reproduction": "No licence to reproduce stated; cite and paraphrase only, never copy text.",
-    "supports": [
-      "fact:swift-deferral"
-    ],
+    "supports": ["fact:swift-deferral"],
     "capture": {
       "status": "blocked",
       "http_status": 403,
@@ -71,9 +62,7 @@
     "sha256": null,
     "local_file": "data/raw/evidence/swift-removal-unstructured-address.html",
     "reproduction": "No licence to reproduce stated; cite and paraphrase only, never copy text.",
-    "supports": [
-      "fact:swift-deferral"
-    ],
+    "supports": ["fact:swift-deferral"],
     "capture": {
       "status": "blocked",
       "http_status": 403,
@@ -90,9 +79,7 @@
     "sha256": "42eed9adbb5f4c9618cc340bcf9863db579b4201a18675d3f5e8dba734687d6e",
     "local_file": "data/raw/evidence/thepaypers-swift-extends-deadline.html",
     "reproduction": "No licence to reproduce stated; cite and paraphrase only, never copy text.",
-    "supports": [
-      "fact:swift-deferral"
-    ]
+    "supports": ["fact:swift-deferral"]
   },
   {
     "id": "redcompass-swift-delays-deadline",
@@ -104,9 +91,7 @@
     "sha256": "90dd680bce14402b366cd7b541e45028dcd954c1aa634338485837d8571d5b7a",
     "local_file": "data/raw/evidence/redcompass-swift-delays-deadline.html",
     "reproduction": "No licence to reproduce stated; cite and paraphrase only, never copy text.",
-    "supports": [
-      "fact:swift-deferral"
-    ]
+    "supports": ["fact:swift-deferral"]
   },
   {
     "id": "socgen-temporary-postponement",
@@ -118,9 +103,7 @@
     "sha256": "f0e1af49b8ccdfc09bc6dbd0ea52699923f4d8b09a39afd73977f3d63604e4c3",
     "local_file": "data/raw/evidence/socgen-temporary-postponement.html",
     "reproduction": "No licence to reproduce stated; cite and paraphrase only, never copy text.",
-    "supports": [
-      "fact:swift-deferral"
-    ]
+    "supports": ["fact:swift-deferral"]
   },
   {
     "id": "clearstream-sr2026-timeline",
@@ -132,9 +115,7 @@
     "sha256": "1e04b0038c559fdaaff8960e6edf684fb9f264c6e5ba4915bc9a13c31367aabd",
     "local_file": "data/raw/evidence/clearstream-sr2026-timeline.html",
     "reproduction": "No licence to reproduce stated; cite and paraphrase only, never copy text.",
-    "supports": [
-      "fact:swift-deferral"
-    ]
+    "supports": ["fact:swift-deferral"]
   },
   {
     "id": "thepaypers-epc-delays",
@@ -146,9 +127,7 @@
     "sha256": "291030e53472b50c2907509d45ce7ab03030120478e7c1d2a1fcd83f77883c3c",
     "local_file": "data/raw/evidence/thepaypers-epc-delays.html",
     "reproduction": "No licence to reproduce stated; cite and paraphrase only, never copy text.",
-    "supports": [
-      "fact:swift-deferral"
-    ]
+    "supports": ["fact:swift-deferral"]
   },
   {
     "id": "pmpg-hybrid-grace-period-guide",
@@ -166,13 +145,8 @@
       "pack:cbpr-generic",
       "pain:thin-master-data"
     ],
-    "message_versions": [
-      "CBPR+ (pacs/pain usage, not version-specific)"
-    ],
-    "forms": [
-      "structured",
-      "hybrid"
-    ],
+    "message_versions": ["CBPR+ (pacs/pain usage, not version-specific)"],
+    "forms": ["structured", "hybrid"],
     "effective_from": "not_set",
     "effective_from_stated": "Guide dated December 2025; describes the grace period before the CBPR+ removal date, which Swift deferred on 27 Aug 2026 (new date not set)."
   },
@@ -186,10 +160,7 @@
     "sha256": "bd3b89a5480c0b2f3c4986f5464bf2cc5153278431939c78f66c3508b06a7bd1",
     "local_file": "data/raw/evidence/ecb-ami-pay-pmpg-call-to-action.pdf",
     "reproduction": "No licence to reproduce stated; cite and paraphrase only, never copy text.",
-    "supports": [
-      "fact:hybrid-rule",
-      "pack:cbpr-generic"
-    ]
+    "supports": ["fact:hybrid-rule", "pack:cbpr-generic"]
   },
   {
     "id": "bny-hybrid-postal-address",
@@ -201,10 +172,7 @@
     "sha256": "5c93d644769009f7ea7d8a25dd849a4248cd4252ee6049fa3f9a8d00aa902238",
     "local_file": "data/raw/evidence/bny-hybrid-postal-address.pdf",
     "reproduction": "No licence to reproduce stated; cite and paraphrase only, never copy text.",
-    "supports": [
-      "fact:hybrid-rule",
-      "fact:stale-bank-dates"
-    ]
+    "supports": ["fact:hybrid-rule", "fact:stale-bank-dates"]
   },
   {
     "id": "betaalvereniging-structured-address",
@@ -216,9 +184,7 @@
     "sha256": "0b54b81d2c64153b279f95b751db2e2c033fa398d30f8b640c286448b29d2805",
     "local_file": "data/raw/evidence/betaalvereniging-structured-address.html",
     "reproduction": "No licence to reproduce stated; cite and paraphrase only, never copy text.",
-    "supports": [
-      "fact:hybrid-rule"
-    ]
+    "supports": ["fact:hybrid-rule"]
   },
   {
     "id": "epc153-22-v2-1-addresses",
@@ -230,10 +196,7 @@
     "sha256": "2eee3203fbf568a596a56c739e0c80ffc4d77f0d269ecc86451031061348f10a",
     "local_file": "data/raw/evidence/epc153-22-v2-1-addresses.pdf",
     "reproduction": "No licence to reproduce stated; cite and paraphrase only, never copy text.",
-    "supports": [
-      "fact:hybrid-rule",
-      "fact:stale-bank-dates"
-    ]
+    "supports": ["fact:hybrid-rule", "fact:stale-bank-dates"]
   },
   {
     "id": "ifs-community-employee-payments",
@@ -245,10 +208,7 @@
     "sha256": "bd87bab3e199d79c2edbabfb41ff7e43df07a56c78b5804131cf5ca2b25c1e8b",
     "local_file": "data/raw/evidence/ifs-community-employee-payments.html",
     "reproduction": "User-forum posts; quote short phrases with attribution only.",
-    "supports": [
-      "pain:banks-ignore-free-text",
-      "pain:erp-exports"
-    ]
+    "supports": ["pain:banks-ignore-free-text", "pain:erp-exports"]
   },
   {
     "id": "kyriba-enterprise-lessons",
@@ -260,11 +220,7 @@
     "sha256": "2135e35e6f05a4d343397de53afb9d7f96befa879cae57b59856b3dc750dd1f4",
     "local_file": "data/raw/evidence/kyriba-enterprise-lessons.html",
     "reproduction": "No licence to reproduce stated; cite and paraphrase only, never copy text.",
-    "supports": [
-      "pain:thin-master-data",
-      "pain:country-quirks",
-      "pain:tools-for-banks"
-    ],
+    "supports": ["pain:thin-master-data", "pain:country-quirks", "pain:tools-for-banks"],
     "capture": {
       "status": "owner's browser, 2026-11-24",
       "http_status": 200,
@@ -281,9 +237,7 @@
     "sha256": "446c1ed8f46860831ebe2056add5e4c80b52e3293dfe464a816c8926f337d07f",
     "local_file": "data/raw/evidence/volante-nov-2026-milestone.html",
     "reproduction": "No licence to reproduce stated; cite and paraphrase only, never copy text.",
-    "supports": [
-      "pain:tools-for-banks"
-    ]
+    "supports": ["pain:tools-for-banks"]
   },
   {
     "id": "tracefinancial-home",
@@ -295,9 +249,7 @@
     "sha256": "f52b04d0cc055418f0115c4f6c0ed156b122dbcc868faaa10b92b72be5d889f7",
     "local_file": "data/raw/evidence/tracefinancial-home.html",
     "reproduction": "No licence to reproduce stated; cite and paraphrase only, never copy text.",
-    "supports": [
-      "pain:tools-for-banks"
-    ]
+    "supports": ["pain:tools-for-banks"]
   },
   {
     "id": "nttdata-addresstune",
@@ -309,9 +261,7 @@
     "sha256": "7cf5e2fc6cedfe289c529fade854fceb391c294e0e0beb16dcd715d032e784cd",
     "local_file": "data/raw/evidence/nttdata-addresstune.html",
     "reproduction": "No licence to reproduce stated; cite and paraphrase only, never copy text.",
-    "supports": [
-      "pain:tools-for-banks"
-    ]
+    "supports": ["pain:tools-for-banks"]
   },
   {
     "id": "swift-address-structuring-readme",
@@ -323,9 +273,7 @@
     "sha256": "dda8b998e21a90d46ad30f43be11dcca7e9da0a3a7c417c8694e7ffd8f4590b3",
     "local_file": "data/raw/evidence/swift-address-structuring-readme.md",
     "reproduction": "Swift custom licence (not OSI); model excluded from 4x35 (CLAUDE.md). Cite only.",
-    "supports": [
-      "pain:tools-for-banks"
-    ]
+    "supports": ["pain:tools-for-banks"]
   },
   {
     "id": "swift-address-structuring-licence",
@@ -337,9 +285,7 @@
     "sha256": "f156be32ded4bc47891c77ca91afefb45ded5b39f9f4da3cea96ad564f688d58",
     "local_file": "data/raw/evidence/swift-address-structuring-licence.txt",
     "reproduction": "Licence text itself; supports the \"as is\" and no-support statements.",
-    "supports": [
-      "pain:tools-for-banks"
-    ]
+    "supports": ["pain:tools-for-banks"]
   },
   {
     "id": "nordea-mig-pain001-09",
@@ -351,16 +297,9 @@
     "sha256": "4013487b67751961569e1efcfe51bf2f4ec5fe5c85154ecac7e3419a2826246b",
     "local_file": "data/raw/evidence/nordea-mig-pain001-09.pdf",
     "reproduction": "No licence to reproduce stated; cite and paraphrase only, never copy text.",
-    "supports": [
-      "pack:nordea"
-    ],
-    "message_versions": [
-      "pain.001.001.09"
-    ],
-    "forms": [
-      "structured",
-      "hybrid"
-    ],
+    "supports": ["pack:nordea"],
+    "message_versions": ["pain.001.001.09"],
+    "forms": ["structured", "hybrid"],
     "effective_from": "not_set",
     "effective_from_stated": "MIG v1.4 dated 2026-09-16 gives no removal date for unstructured addresses."
   },
@@ -374,18 +313,9 @@
     "sha256": "301e95e5b6c9c297aa37e0a60504f0c68020d4e8e6c9652bd7a9b20acd94eec3",
     "local_file": "data/raw/evidence/nordea-mig-pain001-09-version-description.pdf",
     "reproduction": "No licence to reproduce stated; cite and paraphrase only, never copy text.",
-    "supports": [
-      "pack:nordea",
-      "fact:pa6-gaps",
-      "fact:hybrid-rule"
-    ],
-    "message_versions": [
-      "pain.001.001.09"
-    ],
-    "forms": [
-      "structured",
-      "hybrid"
-    ],
+    "supports": ["pack:nordea", "fact:pa6-gaps", "fact:hybrid-rule"],
+    "message_versions": ["pain.001.001.09"],
+    "forms": ["structured", "hybrid"],
     "effective_from": "2026-11",
     "effective_from_stated": "\"regulatory changes taking effect in November 2026\" (written 25 Apr 2025, before Swift's 27 Aug 2026 deferral; superseded, new date not set). Ultimate Debtor/Creditor: unstructured not allowed for cross-border."
   },
@@ -399,19 +329,9 @@
     "sha256": "47362cce291773c67f74bcf1dbc62e1449d04c48333231528bcbc94420756492",
     "local_file": "data/raw/evidence/danske-postal-address.html",
     "reproduction": "No licence to reproduce stated; cite and paraphrase only, never copy text.",
-    "supports": [
-      "pack:danske",
-      "fact:swift-deferral",
-      "fact:market-dates",
-      "fact:hybrid-rule"
-    ],
-    "message_versions": [
-      "pain.001 v2 / v3 (as named by Danske: ISO 20022 XML)"
-    ],
-    "forms": [
-      "structured",
-      "hybrid"
-    ],
+    "supports": ["pack:danske", "fact:swift-deferral", "fact:market-dates", "fact:hybrid-rule"],
+    "message_versions": ["pain.001 v2 / v3 (as named by Danske: ISO 20022 XML)"],
+    "forms": ["structured", "hybrid"],
     "effective_from": "not_set",
     "effective_from_stated": "Cross-border: not rejected from 15 Nov 2026 as previously communicated; revised timeline not confirmed. Market dates kept: Taiwan FISC 5 Oct 2026, Korea BOK-Wire+ and Philippines PhilPaSSplus 14 Nov 2026 (SR2026), Malaysia RENTAS Feb 2027. Danish domestic DKK batch expected Apr 2027; Norwegian NBO high value from Mar 2027; CNY/CNH to mainland China from 18 Nov 2026."
   },
@@ -425,18 +345,9 @@
     "sha256": "73b48649b09dc6330eb91f3cc75a4282aefa11c3bd01eaab364b917417823d0f",
     "local_file": "data/raw/evidence/handelsbanken-address-file-payments.pdf",
     "reproduction": "Information classification: Open. No licence to reproduce stated; cite and paraphrase only, never copy text.",
-    "supports": [
-      "pack:handelsbanken",
-      "fact:hybrid-rule"
-    ],
-    "message_versions": [
-      "pain.001 v3",
-      "pain.001 v9"
-    ],
-    "forms": [
-      "structured",
-      "hybrid"
-    ],
+    "supports": ["pack:handelsbanken", "fact:hybrid-rule"],
+    "message_versions": ["pain.001 v3", "pain.001 v9"],
+    "forms": ["structured", "hybrid"],
     "effective_from": "not_set",
     "effective_from_stated": "End date for unstructured addresses: \"To be decided\" for every payment type listed."
   },
@@ -450,18 +361,9 @@
     "sha256": "50ccbfafb7e699f4b27719e0827ef4e311c8910f49fc895a98cf20e8bfab805c",
     "local_file": "data/raw/evidence/seb-discontinuation-unstructured.html",
     "reproduction": "No licence to reproduce stated; cite and paraphrase only, never copy text.",
-    "supports": [
-      "pack:seb",
-      "fact:swift-deferral"
-    ],
-    "message_versions": [
-      "pain.001 V3",
-      "pain.001 V9"
-    ],
-    "forms": [
-      "structured",
-      "hybrid"
-    ],
+    "supports": ["pack:seb", "fact:swift-deferral"],
+    "message_versions": ["pain.001 V3", "pain.001 V9"],
+    "forms": ["structured", "hybrid"],
     "effective_from": "not_set",
     "effective_from_stated": "Accepts unstructured, hybrid and structured until a revised market deadline is announced (Swift: by December 2026)."
   },
@@ -475,20 +377,9 @@
     "sha256": "b64a79c15b85a4643ad804abe59e36725c5cf8ee5cdccb9514edd2e1aaf9453c",
     "local_file": "data/raw/evidence/deutsche-bank-address-requirements.html",
     "reproduction": "No licence to reproduce stated; cite and paraphrase only, never copy text.",
-    "supports": [
-      "pack:deutsche-bank",
-      "fact:hybrid-rule"
-    ],
-    "message_versions": [
-      "pain.001 v03",
-      "pain.001 v09",
-      "pain.008 v02",
-      "pain.008 v08"
-    ],
-    "forms": [
-      "structured",
-      "hybrid"
-    ],
+    "supports": ["pack:deutsche-bank", "fact:hybrid-rule"],
+    "message_versions": ["pain.001 v03", "pain.001 v09", "pain.008 v02", "pain.008 v08"],
+    "forms": ["structured", "hybrid"],
     "effective_from": "not_set",
     "effective_from_stated": "Unstructured beneficiary addresses accepted \"until further notice\"; since Nov 2025, on-behalf-of payments (ultimate parties) need structured or hybrid."
   },
@@ -502,17 +393,9 @@
     "sha256": "ccec7fb8e0cce056b44f3daddf6865be9ae81f6d792da1c38329e63be17e16b7",
     "local_file": "data/raw/evidence/bnp-paribas-structured-address.pdf",
     "reproduction": "No licence to reproduce stated; cite and paraphrase only, never copy text.",
-    "supports": [
-      "pack:bnp-paribas",
-      "fact:stale-bank-dates"
-    ],
-    "message_versions": [
-      "pain.001 V.2019 (named v9 = pain.001.001.09)"
-    ],
-    "forms": [
-      "structured",
-      "hybrid"
-    ],
+    "supports": ["pack:bnp-paribas", "fact:stale-bank-dates"],
+    "message_versions": ["pain.001 V.2019 (named v9 = pain.001.001.09)"],
+    "forms": ["structured", "hybrid"],
     "effective_from": "2026-11-15",
     "effective_from_stated": "States 15 Nov 2026 (published Jul 2026, before Swift's 27 Aug 2026 deferral; date now stale, new date not set). Calls hybrid \"semi-structured\"."
   },
@@ -526,17 +409,9 @@
     "sha256": "db2471b9be45504324cab473d1575e0f0ec77fb74c16a9ae7efb57f8007cbf5e",
     "local_file": "data/raw/evidence/ing-sct-inst-pain001-09.pdf",
     "reproduction": "Generated by Swift MyStandards: \"Copyright S.W.I.F.T. SC © 2026. All rights reserved.\" No licence to reproduce stated; cite and paraphrase only, never copy text.",
-    "supports": [
-      "pack:ing",
-      "fact:stale-bank-dates"
-    ],
-    "message_versions": [
-      "pain.001.001.09"
-    ],
-    "forms": [
-      "structured",
-      "hybrid"
-    ],
+    "supports": ["pack:ing", "fact:stale-bank-dates"],
+    "message_versions": ["pain.001.001.09"],
+    "forms": ["structured", "hybrid"],
     "effective_from": "2026-11",
     "effective_from_stated": "\"From November 2026, if used, the Postal address must be structured or hybrid\" (written before Swift's 27 Aug 2026 deferral; new date not set)."
   },
@@ -550,18 +425,9 @@
     "sha256": "b8d7e90d39f25c54b94389c52ce16eaff639db3953255860f823a49c9e2bb204",
     "local_file": "data/raw/evidence/zkb-structured-addresses-factsheet.pdf",
     "reproduction": "\"© 2025 Zürcher Kantonalbank. All rights reserved.\" No licence to reproduce stated; cite and paraphrase only, never copy text.",
-    "supports": [
-      "pack:zkb",
-      "fact:stale-bank-dates"
-    ],
-    "message_versions": [
-      "pain.001 (version not stated)",
-      "MT101"
-    ],
-    "forms": [
-      "structured",
-      "hybrid"
-    ],
+    "supports": ["pack:zkb", "fact:stale-bank-dates"],
+    "message_versions": ["pain.001 (version not stated)", "MT101"],
+    "forms": ["structured", "hybrid"],
     "effective_from": "2026-11-21",
     "effective_from_stated": "21 Nov 2026 end of unstructured; execution date after 20 Nov 2026 rejected (fact sheet 04/2025, before Swift's 27 Aug 2026 deferral; not re-confirmed). Hybrid from 24 Nov 2025."
   },
@@ -575,16 +441,9 @@
     "sha256": "a43fa34a72b7b6c59d27c8c22dbe8306e90f22e2dee0bf5122aa824c4faa44cc",
     "local_file": "data/raw/evidence/boi-pain001-09-structure.pdf",
     "reproduction": "Explicit no-reproduction note: the document \"may not be reproduced or further distributed, in whole or in part, without the express written permission of Bank of Ireland\". Encode rules only.",
-    "supports": [
-      "fact:hybrid-rule"
-    ],
-    "message_versions": [
-      "pain.001.001.09"
-    ],
-    "forms": [
-      "structured",
-      "hybrid"
-    ],
+    "supports": ["fact:hybrid-rule"],
+    "message_versions": ["pain.001.001.09"],
+    "forms": ["structured", "hybrid"],
     "effective_from": "not_set",
     "effective_from_stated": "No removal date in the document; not a launch pack (reference only)."
   }
