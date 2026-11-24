@@ -1,0 +1,12 @@
+title = "4x35 gitleaks config"
+
+# Keep every default rule and add the project's own token shape.
+[extend]
+useDefault = true
+
+# API tokens issued by 4x35 carry the `4x35_` prefix (ADR 0013).
+[[rules]]
+id = "4x35-api-token"
+description = "4x35 API token"
+regex = '''\b4x35_[A-Za-z0-9_-]{16,}'''
+keywords = ["4x35_"]

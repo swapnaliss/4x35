@@ -121,13 +121,14 @@ See [`docs/architecture.md`](docs/architecture.md) and the ADRs in [`docs/adr/`]
 | pg-boss | 12.38.2 | jobs in Postgres, no Redis |
 | React / react-dom | 19.3.1 | SPA |
 | Vite | 8.3.8 | build |
-| @tanstack/react-router | 1.170.46 | typed routes (TanStack Query version verified in M0-05) |
+| @tanstack/react-router | 1.170.46 | typed routes |
+| @tanstack/react-query | 5.108.4 (version verified on the npm registry in M0-05, 24 Nov 2026: published 23 Nov 2026, MIT, 91.97 M weekly downloads 16–22 Nov; peer `react ^18 \|\| ^19`) | server state in the SPA |
 | tailwindcss / radix-ui / shadcn | 4.3.5 / 1.8.1 / 4.23.0 | accessible components |
 | papaparse | 5.7.1 | CSV |
 | SheetJS | 0.20.3 (cdn.sheetjs.com tarball, pinned integrity) | XLSX round-trip; npm `xlsx` 0.18.5 has advisories |
 | xmllint-wasm | 5.3.0 | XSD validation (tested on Node 24) |
 | SAX parser with byte positions | chosen and verified in M2-03 | byte-splice XML editing |
-| Encoding detection + iconv-lite | verified in M0-05 | CSV encoding round-trip |
+| chardet (encoding detection) / iconv-lite | 2.2.0 / 0.7.3 (versions verified on the npm registry in M0-05, 24 Nov 2026: chardet published 20 Jun 2026, MIT, no dependencies, 91.69 M weekly downloads; iconv-lite published 3 Jul 2026, MIT, one dependency `safer-buffer`, 449.42 M weekly downloads; downloads for 16–22 Nov) | CSV encoding round-trip |
 | @node-rs/argon2 | 2.2.2 | password hashing |
 | pino | 10.4.0 | structured logs |
 | i18next | 27.1.3 | i18n keys from day one |
@@ -135,6 +136,7 @@ See [`docs/architecture.md`](docs/architecture.md) and the ADRs in [`docs/adr/`]
 | @modelcontextprotocol/sdk | 1.32.2 | MCP server |
 | vitest / fast-check / @playwright/test | 5.1.0 / 4.10.2 / 1.65.1 | unit, property, e2e |
 | @biomejs/biome | 2.6.8 | lint + format |
+| @types/node | 24.19.2 (added in M0-05: TypeScript 6 defaults `types` to `[]`, so the server and tests need Node types) | Node 24 type definitions |
 | PostgreSQL | 17 | managed on Render; `postgres:17-alpine` locally |
 
 ## 5. Services and spend
