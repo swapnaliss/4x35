@@ -55,7 +55,9 @@ jobs:
       - run: npm ci
       - run: npm run db:migrate
       - name: Second migrate applies nothing
-        run: npm run db:migrate | tee "$RUNNER_TEMP/migrate2.log" && grep -q 'migrate: nothing to apply' "$RUNNER_TEMP/migrate2.log"
+        run: |
+          npm run db:migrate | tee "$RUNNER_TEMP/migrate2.log"
+          grep -q 'migrate: nothing to apply' "$RUNNER_TEMP/migrate2.log"
       - run: npm run test:integration
 
   gitleaks:
