@@ -1,0 +1,29 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "packages/core/test"
+    },
+    {
+      "path": "packages/rulepacks/test"
+    },
+    {
+      "path": "packages/db/test"
+    },
+    {
+      "path": "packages/llm/test"
+    },
+    {
+      "path": "apps/server/test"
+    },
+    {
+      "path": "apps/web/test"
+    },
+    {
+      "path": "apps/mcp/test"
+    },
+    {
+      "path": "integrations/kiro-power/test"
+    }
+  ]
+}

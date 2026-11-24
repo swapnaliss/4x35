@@ -1,0 +1,25 @@
+{
+  "name": "@4x35/server",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Hono API and worker (MODE=web|worker|all).",
+  "license": "Apache-2.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "typecheck": "tsc -b test",
+    "test": "vitest run",
+    "start": "node dist/main.js"
+  },
+  "dependencies": {
+    "@hono/node-server": "2.1.8",
+    "hono": "4.13.19",
+    "zod": "4.6.7"
+  }
+}

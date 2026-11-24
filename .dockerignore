@@ -1,0 +1,20 @@
+# Secrets and local state never enter the build context
+.env*
+.dev-refs.md
+.sandbox-credentials.md
+.prp
+.review
+.claude
+.git
+# Private and large content
+docs/research
+docs/outreach
+docs/recon
+data/raw
+media
+# Build output and dependencies are produced inside the image
+node_modules
+**/node_modules
+**/dist
+**/*.tsbuildinfo
+coverage
