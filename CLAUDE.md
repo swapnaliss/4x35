@@ -56,8 +56,18 @@ No number in the README, app or video without a measurement in the repo (eval ou
 Accuracy is reported per country with n.
 
 ## Standing approvals
-_Filled by M0-00 after the owner confirms. Proposed: merge green PRs; deploy main to Render and reset
-judge sandboxes; real LLM spend ≤ $1 per ticket within the $10/month cap._
+Decided by the owner on 24 Nov 2026 (issue #2, comment 7122839563; M0-00 P-05). Allow rules live in
+`.claude/settings.json`; a rule's wildcard never widens the class beyond what is written here.
+1. **Merge PRs whose CI and landing checks are green: approved.** `gh pr checks` must be green first;
+   never merge red or pending. Squash-merge, delete the branch.
+2. **Deploy main to Render and reset judge sandboxes: approved.** Only the `main` commit, only
+   sandbox workspaces (`is_sandbox = true`). Rollback, plan changes and other production writes are not
+   covered. M0-07 and M3-09 align the allow rules with the real command names.
+3. **Real LLM spend: NOT approved.** No standing approval at any amount. Every ticket that would spend
+   real tokens asks the owner on its issue first, stating the amount, and waits for a yes. Without it,
+   replay recorded responses only.
+
+Budget ceiling: $108 to 29 Jan 2027 (`docs/budget.md`).
 
 ## `.env` STRICT RULE
 Never read, print, cat, grep, echo or commit `.env` or any value from it. Check presence only with

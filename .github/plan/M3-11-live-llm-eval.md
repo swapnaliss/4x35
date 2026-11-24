@@ -5,7 +5,7 @@ labels: ["eval", "agent"]
 blocked_by: ["M2-GATE"]
 estimate: "2h"
 resources: ["LLM"]
-needs: ["P-03", "P-04", "P-08", "P-11", "P-12", "P-14", "P-15", "P-16", "P-17", "P-37", "P-38"]
+needs: ["P-03", "P-04", "P-08", "P-11", "P-12", "P-14", "P-15", "P-37", "P-38"]
 ---
 
 ## Context

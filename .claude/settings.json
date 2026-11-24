@@ -1,5 +1,13 @@
 {
   "permissions": {
+    "allow": [
+      "Bash(gh pr checks *)",
+      "Bash(gh pr merge *)",
+      "Bash(render deploys create *)",
+      "Bash(render deploys list *)",
+      "Bash(npm run sandbox:reset *)",
+      "Bash(npm run sandbox:status *)"
+    ],
     "deny": [
       "Read(./.env)",
       "Read(./.env.local)",
