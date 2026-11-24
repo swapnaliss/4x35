@@ -83,6 +83,19 @@ fi
 if [ ! -d .kiro ] || git check-ignore -q .kiro; then
   echo "landing-checks: /.kiro is missing or gitignored (hackathon disqualifier)" >&2; exit 1
 fi
+# 4x35 (M0-10): steering guard. The seven steering files exist with front matter, and the PostalAddress24
+# lengths in iso20022-addresses.md match PROJECT.md §1 (the source of truth).
+for f in product tech structure iso20022-addresses never-invent engineering-standards specs; do
+  [ "$(head -1 ".kiro/steering/$f.md" 2>/dev/null)" = "---" ] || {
+    echo "landing-checks: .kiro/steering/$f.md is missing or has no front matter" >&2; exit 1; }
+done
+for el in StrtNm BldgNb BldgNm Flr PstBx Room PstCd TwnNm TwnLctnNm DstrctNm CtrySubDvsn Ctry AdrLine; do
+  want=$(grep -oE "\b$el [0-9]+" PROJECT.md | head -1 | cut -d' ' -f2 || true)
+  got=$(grep -E "^\| *\`?$el\`? *\|" .kiro/steering/iso20022-addresses.md | head -1 | grep -oE '[0-9]+' | head -1 || true)
+  if [ -z "$want" ] || [ "$want" != "$got" ]; then
+    echo "landing-checks: $el length is '${got}' in iso20022-addresses.md but '${want}' in PROJECT.md §1" >&2; exit 1
+  fi
+done
 # 4x35: licence and attribution must exist (OSI licence + CC-BY data notice).
 for f in LICENSE NOTICE; do [ -f "$f" ] || { echo "landing-checks: $f missing" >&2; exit 1; }; done
 # 4x35: rule packs validate against their schema (created by M2-06).
