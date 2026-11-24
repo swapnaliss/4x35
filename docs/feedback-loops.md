@@ -26,11 +26,11 @@ GitHub API (`run_started_at` → `updated_at`; job `started_at` → `completed_a
 | Run | npm cache | Wall time | Landing checks | gitleaks | Docker build and smoke |
 |---|---|---|---|---|---|
 | 45367308183 attempt 2 (first run that executed) | miss ("npm cache is not found"), saved after | 28 s | 17 s | 6 s | 22 s |
-<!-- run2 -->
+| 45382798370 (commit 27b7e38, second run) | **hit** ("Cache restored from key: node-cache-Linux-x64-npm-0f38848e…", ~54 MB) | 23 s | 18 s | 5 s | 21 s |
 
 | Loop | Measured | Budget | Verdict |
 |---|---|---|---|
-| PR CI wall time | 28 s (cold npm cache) | ≤ 5 min | within |
+| PR CI wall time | 28 s with a cold npm cache, 23 s with a warm one | ≤ 5 min | within |
 | Actions minutes per run | 45 s of job time; 3 billable minutes on a private repo (each job rounds up to a whole minute) | 2,000 min/month if private | public since 24 Nov: free |
 
 Projection had the repo stayed private: 3 min × ~2 runs per PR × ~70 PRs ≈ 420 min, plus `main`
