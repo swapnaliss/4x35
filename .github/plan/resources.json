@@ -7,6 +7,6 @@
     "SCHEMA": "Drizzle schema and migration sequence: two concurrent migrations get conflicting numbers and a broken chain."
   },
   "budgeted": {
-    "LLM": "Anthropic API spend under the $10/month cap. Workers iterate on recorded responses and spend real tokens only to prove an AC (≤ $1 per ticket)."
+    "LLM": "Anthropic API spend under the $10/month cap. No standing approval (CLAUDE.md standing approval 3): a ticket spends real tokens only after the owner approves an amount on its own issue, and only up to that amount. Without that approval the budget is $0 and workers replay recorded responses only."
   }
 }

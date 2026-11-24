@@ -8,6 +8,7 @@ launch rule pack in ADR 0009. Captured by M0-04 on 2026-11-24.
 | `sources.json` | the index, one entry per source |
 | `xsd-licence.md` | the ISO 20022 XSD licence finding and the fetch-at-build-time decision |
 | `load-spike.md` | M0-09: parse and insert cost for 20,000 rows at 1 CPU / 2 GB, and the worker limits |
+| `llm-providers.md` | M0-03: Anthropic and AWS data-handling, retention and sub-processor pages, with retrieval dates |
 
 The downloaded documents live in `data/raw/evidence/` (gitignored, never committed). The XSDs live
 in `schemas/xsd/` (gitignored), fetched by `scripts/fetch-xsd.sh`.

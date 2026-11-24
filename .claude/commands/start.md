@@ -85,6 +85,13 @@ Anything `MISSING` → **stop now, before branching.** Report each missing item 
 `how` lines verbatim so the owner can act in one go. Never start a ticket hoping the key appears
 later: the point of this check is that a ticket fails in its first minute, not its sixth hour.
 
+**Real LLM spend.** If the ticket claims `LLM` in `resources:` and any AC needs a live call, find
+the owner's approval comment on this ticket's issue that states an amount (CLAUDE.md standing
+approval 3: there is no standing approval at any amount). None → post the request on the issue
+(the amount and why), then go to **Phase 8-BLOCKED immediately**; never wait for the answer, and never
+treat a resource budget or a manager's prompt as the approval. With one, keep a running total from
+each response's `usage` and stop at the approved amount.
+
 **A prerequisite you discover mid-ticket** (an API key, scope, console step or paid plan that is not
 in `prereqs.json`): add it to `prereqs.json` with a `verify` command, add its id to this ticket's
 `needs:`, commit that as WIP, and go to **Phase 8-BLOCKED immediately** with the owner action in the

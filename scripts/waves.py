@@ -10,7 +10,7 @@ Decides, deterministically and before any worker starts:
      (plus `UI` for `frontend`-labelled tickets); limits come from `.github/plan/resources.json`:
          {"max_workers": 3,
           "exclusive": {"DEPLOY": "one Terraform state / one set of services"},
-          "budgeted":  {"LLM": "spend budget per ticket"}}
+          "budgeted":  {"LLM": "spend only what the owner approved on the ticket's issue"}}
   3. A PORT_OFFSET per worker so parallel local stacks never collide.
   4. Holds: a ticket whose `needs:` prerequisites fail `scripts/check-prereqs.py` is HELD, and so is
      everything that depends on it. Held tickets are not spawned; everything else still runs.

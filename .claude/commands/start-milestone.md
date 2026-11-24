@@ -29,7 +29,11 @@ come back to finished work plus **one list** of anything only they can do.
 1. **Never overlap waves.** Wave N+1 reads wave N's handoff comments.
 2. **A worktree isolates files, not shared resources.** Limits live in `.github/plan/resources.json`
    and are applied by `scripts/waves.py`: at most `max_workers` per batch, at most one ticket per
-   **exclusive** resource per batch, and a spend budget per worker for **budgeted** resources. Each
+   **exclusive** resource per batch, and a spend budget per worker for **budgeted** resources. A
+   budget is only the amount the owner approved on that ticket's own issue (CLAUDE.md standing
+   approval 3: real LLM spend has no standing approval). No approval means $0: the worker replays
+   recorded responses, or, when an AC needs a live call, asks on the issue and goes to
+   Phase 8-BLOCKED (`/start` Phase 1). Each
    worker runs its local stack with its own `PORT_OFFSET`.
 3. **The GitHub issue is the specification.** Every worker runs the full `/start` contract.
 4. **Change the evidence, never the standard.** A worker that cannot pass honestly goes to
@@ -108,7 +112,7 @@ Each worker gets exactly this prompt (fill the `<>`):
 > - Local stack: `PORT_OFFSET=<n>`. Never use another worker's ports.
 > - Exclusive resources you hold: `<list or none>`. Resources you do not hold must not be used
 >   (no deploys / applies / quota-bound calls); use recorded responses instead.
-> - Budget: `<per budgeted resource>`; report actual spend.
+> - Budget: `<per budgeted resource: the amount the owner approved on this issue, with the comment link, or $0 (replay only)>`; report actual spend.
 > - `gh` runs outside the Bash sandbox. `.env` is off limits absolutely (CLAUDE.md STRICT RULE).
 > - Read your own issue's comments before writing code.
 > - Hot files (`<list from CLAUDE.md>`): keep edits minimal and list exactly what you changed.
