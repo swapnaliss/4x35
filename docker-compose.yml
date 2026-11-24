@@ -1,0 +1,27 @@
+# Local stack (ADR 0016, engineering standards §3.12). Run it through the Makefile: `make up`.
+#
+# Parallel worktrees: compose names the project after this directory (each worktree has its own),
+# so containers and the volume never collide; the Makefile sets PG_PORT = 5432 + PORT_OFFSET.
+# The credentials below are local-only defaults, bound to 127.0.0.1; no real credential lives here.
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "127.0.0.1:${PG_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      # Over TCP: during first-run init the image's temporary server listens on the socket only,
+      # so a socket probe could report healthy before the real server accepts connections.
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U postgres -d postgres"]
+      interval: 1s
+      timeout: 3s
+      retries: 60
+      start_period: 2s
+
+volumes:
+  pgdata:

@@ -60,7 +60,8 @@ if [ -f package.json ]; then
   if [ "$scope" = ALL ]; then
     npm run typecheck
     npm run lint
-    npm run test
+    # Unit projects; the Postgres `integration` project runs in the slow block below.
+    npm run test -- --project '!integration'
   elif [ -z "$scope" ]; then
     echo "landing-checks --fast: no workspace changed; npm checks skipped"
   else
@@ -91,7 +92,13 @@ fi
 # 4x35: slow checks: integration tests on Postgres and the accuracy eval (created by M1-02 / M2-25).
 if [ "$FAST" = 0 ]; then
   if [ -f package.json ]; then
-    npm run test:integration --if-present
+    # Integration tests need a Postgres (`make up`, M0-06). Presence check only; never print it.
+    # CI runs them in its own `integration` job with a Postgres service.
+    if [ -n "${DATABASE_URL:-}" ]; then
+      npm run test:integration --if-present
+    else
+      echo "landing-checks: DATABASE_URL unset; integration tests skipped (make up, then export it; CI runs them)"
+    fi
     npm run eval --if-present
   fi
 fi
