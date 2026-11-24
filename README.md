@@ -56,7 +56,8 @@ npm test                 # unit tests in every workspace
 | `make psql` / `make logs` | psql inside the container / the last Postgres log lines |
 
 Integration tests run against the local stack. The Makefile uses a local-only connection string
-when `DATABASE_URL` is unset; export the same one for the tests:
+when `DATABASE_URL` is unset (and refuses a non-local one unless `ALLOW_REMOTE_DATABASE=1`);
+export the same one for the tests:
 
 ```bash
 export DATABASE_URL=postgres://postgres:postgres@127.0.0.1:5432/postgres

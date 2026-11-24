@@ -29,9 +29,19 @@ export DATABASE_URL
 
 COMPOSE := docker compose
 
-.PHONY: up down reset migrate seed psql logs
+.PHONY: up down reset migrate seed psql logs db-guard
 
-up:
+# migrate and seed write to DATABASE_URL: refuse a non-local one (an exported Render URL) unless
+# ALLOW_REMOTE_DATABASE=1. The value is matched in the shell and never printed (BL-01 7130276627).
+db-guard:
+	@case "$$DATABASE_URL" in \
+	  *://127.0.0.1[:/]*|*://localhost[:/]*|*@127.0.0.1[:/]*|*@localhost[:/]*) ;; \
+	  *) [ "$${ALLOW_REMOTE_DATABASE:-}" = 1 ] || { \
+	       echo "make: DATABASE_URL points at a non-local database; unset it to use the local stack, or set ALLOW_REMOTE_DATABASE=1" >&2; \
+	       exit 1; } ;; \
+	esac
+
+up: db-guard
 	$(COMPOSE) up --detach --wait postgres
 	@$(MAKE) --no-print-directory migrate
 	@$(MAKE) --no-print-directory seed
@@ -39,14 +49,14 @@ up:
 down:
 	$(COMPOSE) down
 
-reset:
+reset: db-guard
 	$(COMPOSE) down --volumes --remove-orphans
 	@$(MAKE) --no-print-directory up
 
-migrate:
+migrate: db-guard
 	npm run --silent db:migrate
 
-seed:
+seed: db-guard
 	npm run --silent db:seed
 
 psql:
