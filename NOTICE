@@ -4,8 +4,19 @@ Copyright 2026 swapnaliss
 Licensed under the Apache License, Version 2.0 (see LICENSE).
 
 This product uses the following third-party data (attribution is also shown in the app):
-- Address metadata from Google's chromium-i18n libaddressinput project, CC-BY 4.0.
-- Postal code data from GeoNames (https://www.geonames.org), CC-BY 4.0.
-- Romanised postal code data from Japan Post.
-The exact sources, versions and retrieval dates are recorded in docs/evidence/ (ticket M0-08).
+- Address metadata from Google's chromium-i18n libaddressinput project (Address Data Service,
+  https://chromium-i18n.appspot.com/ssl-address/data), licensed CC-BY 4.0
+  (https://creativecommons.org/licenses/by/4.0/; licence stated in
+  https://github.com/google/libaddressinput#license). Snapshot of 30 countries retrieved
+  2026-11-24, committed unmodified in data/chromium-i18n/.
+- Postal code data from GeoNames (https://www.geonames.org), licensed CC-BY 4.0
+  (https://download.geonames.org/export/zip/readme.txt). allCountries.zip retrieved 2026-11-24;
+  fetched at seed time, not redistributed in this repository. The data is provided by GeoNames
+  "as is".
+- Postal code data from Japan Post (日本郵便株式会社): KEN_ALL_ROME.zip (romanised) and
+  utf_ken_all.zip, retrieved 2026-11-24. Japan Post claims no copyright on postcode data and
+  permits free redistribution
+  (https://www.post.japanpost.jp/service/search/zipcode/download/readme_ro.html). Fetched at seed
+  time, not redistributed in this repository.
+Exact URLs, sha256 and retrieval dates: data/sources.json. Measurements: docs/evidence/datasets.md.
 Bank names are used as text only to identify which public usage guide a rule pack encodes.

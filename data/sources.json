@@ -1,0 +1,180 @@
+[
+  {
+    "id": "geonames-postal",
+    "name": "GeoNames postal codes, all countries",
+    "url": "https://download.geonames.org/export/zip/allCountries.zip",
+    "file": "geonames-allCountries.zip",
+    "licence": "CC-BY-4.0",
+    "licence_url": "https://download.geonames.org/export/zip/readme.txt",
+    "licence_retrieved": "2026-11-24",
+    "attribution": "Postal code data from GeoNames (https://www.geonames.org), CC-BY 4.0",
+    "commit": false,
+    "retrieved": "2026-11-24",
+    "sha256": "2192f2f6db218752fd2e31075547f62946ac1f7881b6195acd3f49487771fc61",
+    "bytes": 20004904
+  },
+  {
+    "id": "japanpost-roman",
+    "name": "Japan Post postcode data, romanised (KEN_ALL_ROME.zip, Shift_JIS)",
+    "url": "https://www.post.japanpost.jp/service/search/zipcode/download/roman/KEN_ALL_ROME.zip",
+    "file": "japanpost-KEN_ALL_ROME.zip",
+    "licence": "Japan Post: no copyright claimed on postcode data; free redistribution",
+    "licence_url": "https://www.post.japanpost.jp/service/search/zipcode/download/readme_ro.html",
+    "licence_retrieved": "2026-11-24",
+    "attribution": "Postal code data from Japan Post (日本郵便株式会社)",
+    "commit": false,
+    "retrieved": "2026-11-24",
+    "sha256": "21bcdd0557e07202f4a65a9aef22daf1f9b74a98be6121b28f9675b7c82fc9a7",
+    "bytes": 1706353
+  },
+  {
+    "id": "japanpost-kana",
+    "name": "Japan Post postcode data, one record per line, UTF-8 (utf_ken_all.zip)",
+    "url": "https://www.post.japanpost.jp/service/search/zipcode/download/utf/zip/utf_ken_all.zip",
+    "file": "japanpost-utf_ken_all.zip",
+    "licence": "Japan Post: no copyright claimed on postcode data; free redistribution",
+    "licence_url": "https://www.post.japanpost.jp/service/search/zipcode/download/utf-readme.html",
+    "licence_retrieved": "2026-11-24",
+    "attribution": "Postal code data from Japan Post (日本郵便株式会社)",
+    "commit": false,
+    "retrieved": "2026-11-24",
+    "sha256": "db92fcf624bb7280e6f51900aebe03adeafbd168796e59412dbc22a80abb85b9",
+    "bytes": 2033286
+  },
+  {
+    "id": "chromium-i18n",
+    "name": "chromium-i18n address metadata (libaddressinput Address Data Service), per country",
+    "url": "https://chromium-i18n.appspot.com/ssl-address/data/{CC}",
+    "file": "../chromium-i18n/{CC}.json",
+    "licence": "CC-BY-4.0",
+    "licence_url": "https://github.com/google/libaddressinput/blob/81eb9628382b07d371d8ea0b11badf7de3857fd5/README.md#license",
+    "licence_retrieved": "2026-11-24",
+    "attribution": "Address metadata from Google's chromium-i18n libaddressinput project, CC-BY 4.0",
+    "commit": true,
+    "retrieved": "2026-11-24",
+    "sha256": "778a3379edde4af9562e4b92233f786959935f52acf0ede6502133f045862acb",
+    "bytes": 28138,
+    "files": {
+      "JP": {
+        "sha256": "cd22a1a783feb5c9084c00ff8bd85681f22f6a382fc7321e275a57cdb442ade9",
+        "bytes": 1680
+      },
+      "IN": {
+        "sha256": "cc3d3bdd6e690c32d954845261310758aa334f457d9ef4e6f3e46b13e7fd97b1",
+        "bytes": 1561
+      },
+      "CN": {
+        "sha256": "3706f7ee038ee0f94346320c0f8a25da532fe13a65d149f0b12c9136d1a1c8d7",
+        "bytes": 1963
+      },
+      "SG": {
+        "sha256": "ee6763f7187366d766806b67e11b859df74daf43c301dd18290f056b1fe7ae7d",
+        "bytes": 202
+      },
+      "HK": {
+        "sha256": "e90b566cf83660521e4004e3b76efd86fca6ce8848e007df8389bef5039fa4d1",
+        "bytes": 348
+      },
+      "AE": {
+        "sha256": "9b912cf5af8241c36c057d77441d23fd7d7656957326acec3b8feb86fd3fd9bb",
+        "bytes": 563
+      },
+      "BR": {
+        "sha256": "e11b8855dd165035089f382933ea1025cfde4646a76a0d70f6453799a4aac72d",
+        "bytes": 1696
+      },
+      "DE": {
+        "sha256": "2b35e53a1ca7bfa83a01e8d3d29c35d6b665986a13cc7176645eb6938d47a4c1",
+        "bytes": 171
+      },
+      "GB": {
+        "sha256": "657a40fa1486a73e66a9b792cc266ceffeb76d794c10e2996e12472ba5c4d2a9",
+        "bytes": 794
+      },
+      "US": {
+        "sha256": "c0a6350b8d5ccf8fc2b2ff591ea6a52a0cf1a4abd109413a56b4e259cbc8e8a9",
+        "bytes": 2706
+      },
+      "FR": {
+        "sha256": "35b7a5dc51fb37826327fa66a8d612e5bd64cfe9fd1f478cd792de4ba0911ca2",
+        "bytes": 214
+      },
+      "NL": {
+        "sha256": "f043b132d81fc41a4d65a40d055fb32631a0d6f36a1a6d7b317187018487dd39",
+        "bytes": 221
+      },
+      "ES": {
+        "sha256": "0c414e6f057b1308d175e7fff276c853814718453d95c162a5814b1f3f7c4f87",
+        "bytes": 1075
+      },
+      "IT": {
+        "sha256": "64850046bbe6b421ed7936a9842f527f08d70d1bdebeb126e6943633b369b514",
+        "bytes": 2542
+      },
+      "SE": {
+        "sha256": "303ee75f36fba3cf6fda4e52a125cac00d7eba260a37d25ecd94374ee9be1c2b",
+        "bytes": 269
+      },
+      "DK": {
+        "sha256": "7bc4b2da3fc81784b9c370ea298208798c74d8b91e79ed03a1be309a62ff605b",
+        "bytes": 224
+      },
+      "NO": {
+        "sha256": "33122a2076ced05f5077cfc609a1b0fe806b45c5f553798f3d430fabd0ca2bc5",
+        "bytes": 221
+      },
+      "FI": {
+        "sha256": "2203664bd188d836ca083b285a9ee0267f83f33b2426c58965a6195f5af2e5be",
+        "bytes": 215
+      },
+      "CH": {
+        "sha256": "85063bc7053bc27ee6cf93dbab80a9d1285c31473ccf07ea8903093c167fcda9",
+        "bytes": 226
+      },
+      "BE": {
+        "sha256": "ba116acce1f29961a82f99d14be59ab29fde8a52615fba407ebc7b42b1c5dc6e",
+        "bytes": 180
+      },
+      "AT": {
+        "sha256": "61f69e7a7975fcc190e5ff043cd5829a06cd75748e88cc79871880bb8e09d621",
+        "bytes": 188
+      },
+      "PL": {
+        "sha256": "759e1344ebce58b401e2daa20a70b0fa3c90049d3db63725dc80814a68866cd9",
+        "bytes": 194
+      },
+      "IE": {
+        "sha256": "8804d8fa15f90e35947a055a94e1633fe01abf6c663d11d00b47fd4d04c97c32",
+        "bytes": 690
+      },
+      "KR": {
+        "sha256": "734edce3ec7fd486648b62292bfed2fde550f249b7db0791a74928fe2e91c1db",
+        "bytes": 1420
+      },
+      "PH": {
+        "sha256": "40a473d41a3d97b27133f2bd4f4fa3ca02e809f7ab2aeeecbaf909cf17562824",
+        "bytes": 3011
+      },
+      "TW": {
+        "sha256": "a6df212416236269bbd5244f6a9f5449a550d88eca15dc5b2b6f843c58bea461",
+        "bytes": 1523
+      },
+      "MY": {
+        "sha256": "980684b1a16f229584bc2f628faaff4650caed96f5cbb415a0379cc28bc2b71b",
+        "bytes": 903
+      },
+      "AU": {
+        "sha256": "7b224db7ce8e596e634e73f70c6630840cd45dc60ef872601f291bf903966cc6",
+        "bytes": 794
+      },
+      "CA": {
+        "sha256": "94d81e4713a666fb585b8e1bb855741d29850c7499f3f51fc8b3ca3c787898fc",
+        "bytes": 720
+      },
+      "MX": {
+        "sha256": "455e1dfa58f389c28fb8fb50ad9fd64cdd55a9ddd0fcbd9e31e8015b06c72006",
+        "bytes": 1624
+      }
+    }
+  }
+]

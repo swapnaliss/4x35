@@ -14,7 +14,7 @@ that spends real tokens asks the owner first, on that ticket, with the amount.
 |---|---|---|---|---|---|
 | Render web service | 1 instance, Standard (1 CPU / 2 GB), Frankfurt, Docker | $25/month | $11.51 | $46.03 | ADR 0017: 2 GB chosen over 512 MB on the M0-09 memory risk |
 | Render Postgres | Basic-256mb, PostgreSQL 17, Frankfurt | $6/month | $2.76 | $11.05 | daily backups included; storage projected by M0-08 |
-| Render Postgres storage | about 3 GB (datasets + uploads) | about $1/month | $0.46 | $1.84 | M0-08 states the real projection; update here |
+| Render Postgres storage | about 3 GB (datasets + uploads) | about $1/month | $0.46 | $1.84 | M0-08 measured the datasets at 0.19 GB steady state, 0.24 GB at the seed peak (`docs/evidence/datasets.md` §3); the rest of the 3 GB is uploads |
 | **Render subtotal** | | **$32/month (≈ $1.05/day)** | **$14.73** | **$58.92** | **$73.65 total**, inside the $78 approved at Approval 2 |
 | Anthropic API | `claude-haiku-5-5`, opt-in per workspace, prepaid credits | token-priced; hard cap $10/month | ≤ $5 expected (M0-03, M2-14, M3-11 at ≤ $1 each, plus ≤ $1 per other ticket that proves an AC live; each spend approved by the owner per ticket) | $0 expected (LLM off in judge sandboxes, M3-09) | one prepaid credit purchase of $10 (P-38) covers the expected spend |
 | AWS Bedrock | **not used** | | $0 | $0 | owner chose skip on 24 Nov (P-08); P-16 and P-17 not needed |
