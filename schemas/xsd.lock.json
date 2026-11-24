@@ -1,0 +1,20 @@
+[
+  {
+    "file": "pain.001.001.03.xsd",
+    "url": "https://raw.githubusercontent.com/phoughton/pyiso20022/22ee422418c20e09c634eee6f16cc978fde4fe88/xsd/payments_initiation/pain.001/pain.001.001.03.xsd",
+    "sha256": "6bb5c6f24250ab807f31f6164142bafd6d43bad8d162a926e258ff4c11e128af",
+    "retrieved": "2026-11-24"
+  },
+  {
+    "file": "pain.001.001.09.xsd",
+    "url": "https://raw.githubusercontent.com/phoughton/pyiso20022/22ee422418c20e09c634eee6f16cc978fde4fe88/xsd/payments_initiation/pain.001/pain.001.001.09.xsd",
+    "sha256": "de038b373e47b0077b1832ddd81f4b2f1eb25d35721f62da1e38b7f5a09fda24",
+    "retrieved": "2026-11-24"
+  },
+  {
+    "file": "pain.001.001.12.xsd",
+    "url": "https://raw.githubusercontent.com/phoughton/pyiso20022/22ee422418c20e09c634eee6f16cc978fde4fe88/xsd/payments_initiation/pain.001/pain.001.001.12.xsd",
+    "sha256": "9ac29c72844923bccacd079cc9a03ba4364a6c670d09579149fafae55aedf7d2",
+    "retrieved": "2026-11-24"
+  }
+]
