@@ -1,0 +1,72 @@
+{
+  "crewVersion": "0.15.0 (source checkout of kirodotdev/KiroCrew main, shallow clone 2026-11-24)",
+  "capturedAt": "2026-11-24",
+  "captureMethod": "curl GET http://localhost:5676/apps/hello-4x35/api/hello (gateway reverse proxy) -> Node backend fetch() POST to a local echo server on 127.0.0.1:8200; the echo server logged what it received",
+  "inbound": {
+    "requestedPath": "/apps/hello-4x35/api/hello",
+    "pathSeenByBackend": "/api/hello",
+    "proxyHeadersAdded": [
+      "x-kirocrew-proxy",
+      "x-kirocrew-proxy-nonce",
+      "x-kirocrew-proxy-v2"
+    ],
+    "httpStatus": 200
+  },
+  "outboundRequest": {
+    "url": "http://127.0.0.1:8200/echo?from=hello-4x35",
+    "method": "POST",
+    "headers": {
+      "content-type": "application/json",
+      "x-spike": "m0-02"
+    },
+    "body": "{\"greeting\":\"hello from a Crew app backend\",\"n\":1}"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "connection": "keep-alive",
+      "content-type": "application/json",
+      "date": "Tue, 24 Nov 2026 17:05:24 GMT",
+      "keep-alive": "timeout=5",
+      "transfer-encoding": "chunked",
+      "x-echo": "4x35-spike"
+    },
+    "body": {
+      "echoed": {
+        "method": "POST",
+        "url": "/echo?from=hello-4x35",
+        "headers": {
+          "host": "127.0.0.1:8200",
+          "connection": "keep-alive",
+          "content-type": "application/json",
+          "x-spike": "m0-02",
+          "accept": "*/*",
+          "accept-language": "*",
+          "sec-fetch-mode": "cors",
+          "user-agent": "node",
+          "accept-encoding": "gzip, deflate",
+          "content-length": "50"
+        },
+        "body": "{\"greeting\":\"hello from a Crew app backend\",\"n\":1}"
+      }
+    }
+  },
+  "echoServerSaw": {
+    "method": "POST",
+    "url": "/echo?from=hello-4x35",
+    "headers": {
+      "host": "127.0.0.1:8200",
+      "connection": "keep-alive",
+      "content-type": "application/json",
+      "x-spike": "m0-02",
+      "accept": "*/*",
+      "accept-language": "*",
+      "sec-fetch-mode": "cors",
+      "user-agent": "node",
+      "accept-encoding": "gzip, deflate",
+      "content-length": "50"
+    },
+    "body": "{\"greeting\":\"hello from a Crew app backend\",\"n\":1}"
+  },
+  "standaloneOutsideCrew": "the same server.mjs run with PORT=9300 outside Crew returned status 200 for /api/hello (no SDK import needed)"
+}

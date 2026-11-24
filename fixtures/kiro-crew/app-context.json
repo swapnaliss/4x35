@@ -1,0 +1,75 @@
+{
+  "crewVersion": "0.15.0 (source checkout of kirodotdev/KiroCrew main, shallow clone 2026-11-24)",
+  "capturedAt": "2026-11-24",
+  "captureMethod": "hello-4x35 backend GET /api/context through the gateway proxy (env key names and value types; values only for PORT and KIROCREW_APP_NAME; proxy headers redacted) + backend.hooks.on_startup writing the shape of the AppContext it receives",
+  "uiSdkContext": {
+    "captured": false,
+    "reason": "@kirocrew/app-sdk is not published on npm (npm view -> 404) and has no defineApp export; dashboard UI pages import hooks (useAppApi, useAppEvents, useTheme, useAppInfo, useNavigate, useNotify, useNavBadge, useChatLauncher) that the host resolves through an import map at runtime. The headless gateway serves no dashboard, so no UI context was captured."
+  },
+  "backendProcess": {
+    "httpStatus": 200,
+    "body": {
+      "receivedPath": "/api/context",
+      "method": "GET",
+      "argv": [
+        "<KIROCREW_HOME>/apps/hello-4x35/backend/server.mjs"
+      ],
+      "env": {
+        "KIROCREW_APP_NAME": "hello-4x35",
+        "KIROCREW_GATEWAY_ORIGIN": "<string, 21 chars>",
+        "KIROCREW_GATEWAY_ORIGIN_PROOF": "<string, 64 chars>",
+        "KIROCREW_HOME": "<string, 22 chars>",
+        "KIROCREW_HOST_PID": "<string, digits>",
+        "KIROCREW_PROXY_SECRET": "<string, 64 chars>",
+        "KIROCREW_SANDBOX_ACTIVE": "<string, 1 chars>",
+        "KIROCREW_SANDBOX_LEVEL": "<string, 8 chars>",
+        "KIROCREW_SPAWNED": "<string, 1 chars>",
+        "KIROCREW_SPAWN_INSTANCE": "<string, 16 chars>",
+        "PORT": "9100"
+      },
+      "headers": {
+        "host": "127.0.0.1:9100",
+        "user-agent": "curl/8.18.0",
+        "accept": "*/*",
+        "x-kirocrew-proxy": "<redacted string>",
+        "x-kirocrew-proxy-nonce": "<redacted string>",
+        "x-kirocrew-proxy-v2": "<redacted string>",
+        "accept-encoding": "gzip, deflate, zstd"
+      }
+    }
+  },
+  "inGatewayHookContext": {
+    "__type__": "AppContext",
+    "app_token": "method",
+    "audit": "AuditSDK",
+    "auto_approve": "NoneType",
+    "browser": "NoneType",
+    "browser_sdk": "NoneType",
+    "chat_slots": "NoneType",
+    "config": {
+      "__type__": "dict",
+      "keys": []
+    },
+    "crewmate": "NoneType",
+    "cron": "NoneType",
+    "data_dir": "Path",
+    "embed": "EmbedSDK",
+    "events": "NoneType",
+    "gateway_origin": "method",
+    "health": "AppHealthStatus",
+    "http_app": "NoneType",
+    "job": "NoneType",
+    "kiro_call": "method",
+    "lifecycle": "AppLifecycleSDK",
+    "logger": "Logger",
+    "name": "str",
+    "require_owner": "method",
+    "scrub": "ScrubSDK",
+    "sdk_level": "int",
+    "spawn": "NoneType",
+    "storage": "NoneType",
+    "turns": "NoneType",
+    "untrusted": "UntrustedTextSDK",
+    "webhook_source": "NoneType"
+  }
+}

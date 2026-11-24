@@ -1,0 +1,140 @@
+{
+  "crewVersion": "0.15.0 (source checkout of kirodotdev/KiroCrew main, shallow clone 2026-11-24)",
+  "capturedAt": "2026-11-24",
+  "captureMethod": "kirocrew app install <dir> + kirocrew app enable against a headless gateway (port 5676); then GET /api/apps/hello-4x35/manifest and GET /api/apps/hello-4x35 with a dashboard session cookie",
+  "valid": {
+    "submittedManifest": {
+      "name": "hello-4x35",
+      "version": "0.1.0",
+      "displayName": "Hello 4x35",
+      "description": "M0-02 spike app: a Node backend that fetch()es a local echo server; an in-gateway hook that records its context shape.",
+      "author": "4x35 spike",
+      "iconPath": "assets/icon.png",
+      "tags": [],
+      "backend": {
+        "entryPoint": "backend/server.mjs",
+        "type": "node",
+        "port": "auto",
+        "healthCheck": "/health",
+        "hooks": {
+          "on_startup": "backend.hooks:on_startup"
+        }
+      }
+    },
+    "install": {
+      "exitCode": 0,
+      "output": [
+        "\u2026 applying install for <TMPDIR>/crew-apps/hello-4x35 through the running gateway (may take up to 5 minutes)",
+        "\u2705 installed hello-4x35 v0.1.0",
+        "   Decided by the running gateway, Kiro Crew 0.15.0.",
+        "   Run: kirocrew app enable hello-4x35"
+      ]
+    },
+    "enableWithoutTrust": {
+      "exitCode": 1,
+      "output": "gateway refused: blocked by execution policy: third-party app execution is disabled; trust this app alone from the dashboard's App Store (agent.apps_trusted), or set agent.apps_allow_third_party=true"
+    },
+    "enableAfterTrust": {
+      "exitCode": 0,
+      "trustCommand": "kirocrew config set agent.apps_trusted '[\"hello-4x35\"]'",
+      "output": [
+        "\u2026 applying enable for hello-4x35 through the running gateway (may take up to 5 minutes)",
+        "\u2705 enabled hello-4x35",
+        "   Agents registered: 0",
+        "   Skills registered: 0",
+        "   Backend: port 9100 (starting)"
+      ]
+    },
+    "normalisedManifest": {
+      "httpStatus": 200,
+      "body": {
+        "name": "hello-4x35",
+        "version": "0.1.0",
+        "displayName": "Hello 4x35",
+        "description": "M0-02 spike app: a Node backend that fetch()es a local echo server; an in-gateway hook that records its context shape.",
+        "author": "4x35 spike",
+        "backend": {
+          "entryPoint": "backend/server.mjs",
+          "type": "node",
+          "hooks": {
+            "on_startup": "backend.hooks:on_startup"
+          }
+        },
+        "iconPath": "assets/icon.png"
+      }
+    },
+    "appRecord": {
+      "httpStatus": 200,
+      "body": {
+        "name": "hello-4x35",
+        "version": "0.1.0",
+        "displayName": "Hello 4x35",
+        "enabled": true,
+        "installedAt": "2026-11-24T17:03:52Z",
+        "updatedAt": "2026-11-24T17:04:23Z",
+        "source": "<TMPDIR>/crew-apps/hello-4x35",
+        "origin": "local",
+        "resources": "gateway",
+        "lifecycle": "gateway",
+        "schemaVersion": 2,
+        "dev": false,
+        "defaultOnBackfilled": false,
+        "sessionApprovalConsentPending": false,
+        "memberThreadsConsented": false,
+        "approvedGrantsStored": true,
+        "approvedGrants": {
+          "api": [],
+          "events": []
+        },
+        "manifest": {
+          "name": "hello-4x35",
+          "version": "0.1.0",
+          "displayName": "Hello 4x35",
+          "description": "M0-02 spike app: a Node backend that fetch()es a local echo server; an in-gateway hook that records its context shape.",
+          "author": "4x35 spike",
+          "backend": {
+            "entryPoint": "backend/server.mjs",
+            "type": "node",
+            "hooks": {
+              "on_startup": "backend.hooks:on_startup"
+            }
+          },
+          "iconPath": "assets/icon.png"
+        }
+      }
+    },
+    "notes": [
+      "The normalised manifest drops backend.port, backend.healthCheck and an empty tags array that were submitted.",
+      "There is no standalone validate command: validation runs inside install (the gateway decides) and kirocrew doctor."
+    ]
+  },
+  "invalid": {
+    "submittedManifest": {
+      "name": "Bad_App",
+      "version": "0.1.0",
+      "displayName": "Hello 4x35",
+      "description": "M0-02 spike app: a Node backend that fetch()es a local echo server; an in-gateway hook that records its context shape.",
+      "author": "4x35 spike",
+      "iconPath": "assets/icon.png",
+      "tags": [],
+      "backend": {
+        "entryPoint": "../outside.mjs",
+        "type": "node",
+        "port": "auto",
+        "healthCheck": "/health",
+        "hooks": {
+          "on_startup": "backend/hooks.py"
+        }
+      }
+    },
+    "install": {
+      "exitCode": 1,
+      "output": "\u274c gateway refused: app name must be kebab-case (lowercase alphanumeric + hyphens): 'Bad_App'; backend.entryPoint contains path traversal: '../outside.mjs'; backend.hooks.on_startup must be in format 'module.path:callable_name', got: 'backend/hooks.py'. Nothing was installed; the gateway reads the app directory as its own user."
+    },
+    "errors": [
+      "app name must be kebab-case (lowercase alphanumeric + hyphens): 'Bad_App'",
+      "backend.entryPoint contains path traversal: '../outside.mjs'",
+      "backend.hooks.on_startup must be in format 'module.path:callable_name', got: 'backend/hooks.py'"
+    ]
+  }
+}
