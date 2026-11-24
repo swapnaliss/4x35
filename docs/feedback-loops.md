@@ -17,12 +17,21 @@ environment reset ≤ 2 min (measured by M0-06). Measured in M0-05 on 24 Nov 202
 Cold and warm landing checks are within a second of each other: the time is tool start-up (tsc,
 biome, ten vitest workers at ~0.2–0.4 s each), not work. The image is 345 MB.
 
-## PR CI (GitHub Actions)
+## PR CI (GitHub Actions, `ci.yml`: three parallel jobs)
+
+The first runs on PR #74 started no job (account billing). On 2026-11-24 the owner made the repo
+public instead (P-39), so Actions minutes on standard runners are free. Times come from the
+GitHub API (`run_started_at` → `updated_at`; job `started_at` → `completed_at`).
+
+| Run | npm cache | Wall time | Landing checks | gitleaks | Docker build and smoke |
+|---|---|---|---|---|---|
+| 45367308183 attempt 2 (first run that executed) | miss ("npm cache is not found"), saved after | 28 s | 17 s | 6 s | 22 s |
+<!-- run2 -->
 
 | Loop | Measured | Budget | Verdict |
 |---|---|---|---|
-| PR CI wall time (`ci.yml`: landing checks, gitleaks, Docker build and smoke, parallel jobs) | **not measured**: on PR #74 (run 45366945266) no job started. GitHub: "The job was not started because recent account payments have failed or your spending limit needs to be increased." | ≤ 5 min | blocked (owner action P-39) |
-| Actions minutes per CI run (sum of the three jobs, each rounded up to a whole minute) | not measured (same reason) | 2,000 min/month on a private repo | blocked |
+| PR CI wall time | 28 s (cold npm cache) | ≤ 5 min | within |
+| Actions minutes per run | 45 s of job time; 3 billable minutes on a private repo (each job rounds up to a whole minute) | 2,000 min/month if private | public since 24 Nov: free |
 
-Projection once measured: minutes per run × runs per PR × ~70 PRs (plus gate and `main` runs)
-against 2,000 min/month; see the BL-01 entry on Actions minutes.
+Projection had the repo stayed private: 3 min × ~2 runs per PR × ~70 PRs ≈ 420 min, plus `main`
+and gate runs, well under 2,000 min/month. The block was billing state, not volume.
