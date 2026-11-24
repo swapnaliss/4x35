@@ -173,6 +173,12 @@ Re-read the issue body. Then, **mechanically**:
    "Looks right" is not evidence.
 2. **Deliverables** — confirm each listed path exists and is non-empty.
 3. **Validation Gate** — run every command from the ticket verbatim. Paste the real output.
+   Gate commands write under `$TMPDIR`, which worker shells leave unset (BL-01 7127754026). In the
+   same shell, first point it at a writable scratch directory (the session scratchpad when one is
+   listed):
+   ```bash
+   export TMPDIR="${TMPDIR:-<session scratchpad directory>}" && mkdir -p "$TMPDIR"
+   ```
 4. **Repo-wide checks** (always, regardless of ticket):
 ```bash
 ./scripts/landing-checks.sh     # the ONE chain shared with /start-milestone § 3d; edit the script, not this line

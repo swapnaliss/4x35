@@ -36,7 +36,36 @@ _Placeholder, filled by M4-02: specs, steering, hooks, custom agent, MCP, proper
 _Placeholder, filled by M4-01._
 
 ## How to run
-_Placeholder, filled by M0-06: `make up`, seed, tests._
+
+**Prerequisites:** Node.js 24 with npm 11 or later, Docker 29 or later with Compose v2, GNU make and git.
+
+```bash
+git clone https://github.com/swapnaliss/4x35.git && cd 4x35
+npm ci
+cp .env.example .env     # the owner fills it; the local stack below needs none of it
+make up                  # Postgres 17 healthy, then migrations, then the seed
+npm test                 # unit tests in every workspace
+```
+
+| Command | What it does |
+|---|---|
+| `make up` | Starts Postgres 17 (`127.0.0.1:5432`), waits until it is healthy, applies migrations, runs the seed |
+| `make down` | Stops the stack and keeps the data |
+| `make reset` | Deletes the stack and its volume, then `make up`: the clean state every gate starts from |
+| `make migrate` / `make seed` | Applies pending migrations (a no-op when none are pending) / runs the idempotent seed |
+| `make psql` / `make logs` | psql inside the container / the last Postgres log lines |
+
+Integration tests run against the local stack. The Makefile uses a local-only connection string
+when `DATABASE_URL` is unset (and refuses a non-local one unless `ALLOW_REMOTE_DATABASE=1`);
+export the same one for the tests:
+
+```bash
+export DATABASE_URL=postgres://postgres:postgres@127.0.0.1:5432/postgres
+npm run test:integration
+```
+
+Several checkouts (git worktrees) can run at once: each directory gets its own containers and
+volume, and `PORT_OFFSET=10 make up` moves Postgres to port 5442.
 
 ## Licence
 Apache-2.0. Third-party data attribution: [NOTICE](NOTICE).
