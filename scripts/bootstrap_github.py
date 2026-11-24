@@ -126,11 +126,12 @@ def ensure_milestones(repo: str, dry: bool) -> dict[str, int]:
 
 
 def existing_issues(repo: str) -> dict[str, dict]:
-    """Open issues keyed by ticket id (the title prefix), so renaming a ticket's title updates its
-    issue instead of creating a duplicate. Closed issues are ignored for matching."""
-    out = sh(["gh", "issue", "list", "-R", repo, "--state", "open", "--limit", "300",
+    """Issues keyed by ticket id (the title prefix), so renaming a ticket's title updates its
+    issue instead of creating a duplicate. Closed issues count too (a done ticket must not be
+    re-created); an open issue wins over a closed one with the same id."""
+    out = sh(["gh", "issue", "list", "-R", repo, "--state", "all", "--limit", "300",
               "--json", "number,title,state"])
-    rows = json.loads(out or "[]")
+    rows = sorted(json.loads(out or "[]"), key=lambda i: i["state"] != "OPEN")
     have: dict[str, dict] = {}
     for i in rows:
         m = re.match(r"^([A-Z0-9]+-[A-Z0-9]+)\b", i["title"])
@@ -201,6 +202,9 @@ def main() -> None:
         if tid in have:
             num = have[tid]["number"]
             mapping[tid] = num
+            if have[tid]["state"] != "OPEN":
+                print(f"  = #{num:<3} {tid}  (closed — left as is)")
+                continue
             print(f"  = #{num:<3} {tid}  (exists — syncing body)")
             if not dry:
                 cmd = ["gh", "issue", "edit", str(num), "-R", args.repo, "--title", title,
