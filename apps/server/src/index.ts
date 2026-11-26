@@ -1,4 +1,4 @@
-export { type AppDeps, type BuildInfo, createApp, type Health } from "./app.js";
+export { type AppDeps, type AppEnv, type BuildInfo, createApp, type Health } from "./app.js";
 export { type Env, LogLevel, Mode, readEnv, servesHttp } from "./env.js";
 export {
   activeBoss,
@@ -26,6 +26,7 @@ export {
   JobData,
   type JobDefinition,
   JobKey,
+  JobMeta,
   type JobSpec,
   listJobs,
   RETRY_LIMIT,
@@ -39,4 +40,49 @@ export {
   type OptOut,
   REPLAYED_HEADER,
 } from "./middleware/idempotency.js";
+export {
+  type DeadLetter,
+  formatDeadLetters,
+  ListDeadLettersOptions,
+  listDeadLetters,
+} from "./obs/dead-letters.js";
+export {
+  type CheckResult,
+  createProbePool,
+  READY_TIMEOUT_MS,
+  type Readiness,
+  type ReadinessProbe,
+  readiness,
+  registerHealth,
+  selectOne,
+} from "./obs/health.js";
+export {
+  type AttemptInfo,
+  failureOutcome,
+  type JobOutcome,
+  observeAttempt,
+} from "./obs/job-wrapper.js";
+export {
+  CENSOR,
+  createLogger,
+  errorClass,
+  JOB_FIELDS,
+  LOGGED_FIELDS,
+  type Logger,
+  type LoggerConfig,
+  REQUEST_FIELDS,
+  redact,
+  serializers,
+  silentLogger,
+} from "./obs/logger.js";
+export {
+  currentContext,
+  type ObsEnv,
+  REQUEST_ID,
+  REQUEST_ID_HEADER,
+  type RequestContext,
+  requestIdFrom,
+  requestLogging,
+  runWithContext,
+} from "./obs/request-id.js";
 export { type ProcessHandle, type StartOptions, startProcess } from "./process.js";

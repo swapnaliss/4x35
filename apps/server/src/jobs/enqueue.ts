@@ -4,6 +4,7 @@ import { chunk } from "@4x35/core";
 import type { Tx } from "@4x35/db";
 import { sql } from "drizzle-orm";
 import { type Db, fromDrizzle } from "pg-boss";
+import { currentContext } from "../obs/request-id.js";
 import { activeBoss } from "./boss.js";
 import { getJob, type JobData, JobKey } from "./registry.js";
 
@@ -27,6 +28,7 @@ export function singletonKey(key: JobKey): string {
 
 /**
  * Enqueues one `kind` job inside `tx`. The payload is validated against the kind's schema first.
+ * The current request's id (M1-05) is stored as `meta.requestId`, so the job logs under it.
  * Returns the job id, or `null` when a job with the same key is already queued, retrying or active
  * (the queue policy is `exclusive` per key, so the same (batch, pack, step, chunk) runs once).
  */
@@ -37,7 +39,12 @@ export async function enqueueInTx(
   key: JobKey,
 ): Promise<string | null> {
   const def = getJob(kind);
-  const data: JobData = { key: JobKey.parse(key), payload: def.schema.parse(payload) };
+  const requestId = currentContext()?.requestId;
+  const data: JobData = {
+    key: JobKey.parse(key),
+    payload: def.schema.parse(payload),
+    ...(requestId ? { meta: { requestId } } : {}),
+  };
   return activeBoss().send(kind, data, {
     singletonKey: singletonKey(data.key),
     db: txExecutor(tx),

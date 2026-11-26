@@ -89,6 +89,18 @@ export function listJobs(): readonly JobDefinition[] {
   return [...definitions.values()];
 }
 
-/** The data pg-boss stores for a job: its key (for progress and dedup) and its payload. */
-export const JobData = z.object({ key: JobKey, payload: z.unknown() });
+/** Correlation metadata stored beside the payload (M1-05): ids only, never content. */
+export const JobMeta = z.object({
+  requestId: z
+    .string()
+    .regex(/^[A-Za-z0-9-]{8,64}$/)
+    .optional(),
+});
+export type JobMeta = z.infer<typeof JobMeta>;
+
+/**
+ * The data pg-boss stores for a job: its key (for progress and dedup), its payload, and the
+ * correlation metadata (`meta.requestId`: the request that enqueued it).
+ */
+export const JobData = z.object({ key: JobKey, payload: z.unknown(), meta: JobMeta.optional() });
 export type JobData = z.infer<typeof JobData>;

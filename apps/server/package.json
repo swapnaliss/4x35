@@ -16,7 +16,8 @@
     "typecheck": "tsc -b test",
     "test": "vitest run",
     "start": "node dist/main.js",
-    "test:integration": "vitest run --config vitest.integration.config.ts"
+    "test:integration": "vitest run --config vitest.integration.config.ts",
+    "jobs:dead-letters": "tsc -b && node scripts/dead-letters.ts"
   },
   "dependencies": {
     "@4x35/core": "0.1.0",
@@ -26,6 +27,7 @@
     "hono": "4.13.19",
     "pg": "8.23.1",
     "pg-boss": "12.38.2",
+    "pino": "10.4.0",
     "zod": "4.6.7"
   }
 }
