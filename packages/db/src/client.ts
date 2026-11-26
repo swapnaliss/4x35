@@ -1,59 +1,31 @@
+// The typed Drizzle client over the pool (M1-02): `createDb` and `withTx`. Workspace data is read
+// and written through the workspace-scoped repositories built on this (M1-03), never directly.
 import { drizzle, type NodePgDatabase } from "drizzle-orm/node-postgres";
-import pg from "pg";
+import type pg from "pg";
+import * as schema from "./schema/index.js";
 
-/** Pool settings. Every field falls back to an environment variable, then to a default. */
-export interface PoolOptions {
-  /** Postgres connection string. Default: `DATABASE_URL`. Never logged. */
-  connectionString?: string;
-  /** Maximum pool connections. Default: `DATABASE_POOL_MAX`, else 10. */
-  max?: number;
-  /** Per-statement timeout in milliseconds. Default: `DATABASE_STATEMENT_TIMEOUT_MS`, else 30000. */
-  statementTimeoutMs?: number;
-}
+export {
+  createPool,
+  DEFAULT_POOL_MAX,
+  DEFAULT_STATEMENT_TIMEOUT_MS,
+  databaseUrl,
+  type PoolOptions,
+} from "./pool.js";
 
-export const DEFAULT_POOL_MAX = 10;
-export const DEFAULT_STATEMENT_TIMEOUT_MS = 30_000;
+export type Schema = typeof schema;
+export type Database = NodePgDatabase<Schema>;
+/** The handle a `withTx` callback receives; it has the same query API as `Database`. */
+export type Tx = Parameters<Parameters<Database["transaction"]>[0]>[0];
 
-function positiveInt(name: string, raw: string | undefined, fallback: number): number {
-  if (raw === undefined || raw === "") return fallback;
-  const n = Number(raw);
-  if (!Number.isInteger(n) || n <= 0) {
-    // The key name only: environment values are never printed.
-    throw new Error(`invalid environment: ${name} must be a positive integer`);
-  }
-  return n;
-}
-
-/** Reads `DATABASE_URL` or throws a message that names the key, never its value. */
-export function databaseUrl(env: NodeJS.ProcessEnv = process.env): string {
-  const url = env.DATABASE_URL;
-  if (url === undefined || url === "") {
-    throw new Error("invalid environment: DATABASE_URL is not set");
-  }
-  return url;
-}
-
-/** Creates a node-postgres pool. The caller owns it and must `end()` it. */
-export function createPool(
-  options: PoolOptions = {},
-  env: NodeJS.ProcessEnv = process.env,
-): pg.Pool {
-  return new pg.Pool({
-    connectionString: options.connectionString ?? databaseUrl(env),
-    max: options.max ?? positiveInt("DATABASE_POOL_MAX", env.DATABASE_POOL_MAX, DEFAULT_POOL_MAX),
-    statement_timeout:
-      options.statementTimeoutMs ??
-      positiveInt(
-        "DATABASE_STATEMENT_TIMEOUT_MS",
-        env.DATABASE_STATEMENT_TIMEOUT_MS,
-        DEFAULT_STATEMENT_TIMEOUT_MS,
-      ),
-  });
-}
-
-export type Database = NodePgDatabase<Record<string, never>>;
-
-/** Wraps a pool in a Drizzle client. Tables arrive with M1-02's schema. */
+/** Wraps a pool (from `createPool`) in a Drizzle client that knows every table. */
 export function createDb(pool: pg.Pool): Database {
-  return drizzle({ client: pool });
+  return drizzle({ client: pool, schema });
+}
+
+/**
+ * Runs `fn` in one transaction (ADR 0004): commits when it resolves, rolls back and rethrows when it
+ * throws. State changes, their events and their job enqueues share this transaction (ADR 0006).
+ */
+export function withTx<T>(db: Database, fn: (tx: Tx) => Promise<T>): Promise<T> {
+  return db.transaction(fn);
 }

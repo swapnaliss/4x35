@@ -1,6 +1,6 @@
 import { pathToFileURL } from "node:url";
 import type pg from "pg";
-import { createPool } from "./client.js";
+import { createPool } from "./pool.js";
 
 /**
  * Idempotent seed entry point. Later tickets add loaders here (M0-08 datasets, M2-24 demo set);

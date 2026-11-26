@@ -1,9 +1,10 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { drizzle } from "drizzle-orm/node-postgres";
 import { migrate } from "drizzle-orm/node-postgres/migrator";
 import type pg from "pg";
-import { createDb, createPool } from "./client.js";
+import { createPool } from "./pool.js";
 
 /** The repo-root `drizzle/` folder. Same depth from `src/` (tests) and `dist/` (built). */
 export const MIGRATIONS_FOLDER = fileURLToPath(new URL("../../../drizzle/", import.meta.url));
@@ -50,7 +51,7 @@ export async function runMigrations(
     .filter((m) => last === null || m.when > last)
     .map((m) => m.tag);
   for (const tag of pending) log(`migrate: applying ${tag}`);
-  await migrate(createDb(pool), { migrationsFolder: folder });
+  await migrate(drizzle({ client: pool }), { migrationsFolder: folder });
   log(
     pending.length === 0
       ? "migrate: nothing to apply"
