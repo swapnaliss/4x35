@@ -10,9 +10,29 @@ describe("hello server", () => {
     expect(await res.json()).toEqual({ status: "ok", version: "0.1.0", commit: "abc1234" });
   });
 
-  it("GET /readyz answers 200", async () => {
+  it("GET /readyz answers 503 when no database is configured (M1-05)", async () => {
     const res = await app.request("/readyz");
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(503);
+    expect(await res.json()).toEqual({
+      status: "unavailable",
+      checks: { database: "not configured" },
+    });
+  });
+
+  it("GET /readyz answers 200 when the database probe answers, 503 when jobs are stopped", async () => {
+    let started = true;
+    const ready = createApp(
+      { version: "0.1.0", commit: "abc1234" },
+      { readiness: { database: async () => {}, jobsStarted: () => started } },
+    );
+    expect((await ready.request("/readyz")).status).toBe(200);
+    started = false;
+    const res = await ready.request("/readyz");
+    expect(res.status).toBe(503);
+    expect(await res.json()).toEqual({
+      status: "unavailable",
+      checks: { database: "ok", jobs: "unavailable" },
+    });
   });
 
   it("reads MODE, PORT, LOG_LEVEL and NODE_ENV with defaults", () => {

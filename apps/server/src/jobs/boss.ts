@@ -5,6 +5,8 @@
 import { type Database, withTx } from "@4x35/db";
 import { PgBoss } from "pg-boss";
 import type { Mode } from "../env.js";
+import { observeAttempt } from "../obs/job-wrapper.js";
+import { type Logger, silentLogger } from "../obs/logger.js";
 import { JobData, type JobDefinition, listJobs } from "./registry.js";
 
 /** pg-boss's schema (its default). `getBatchProgress` reads `pgboss.job`. */
@@ -21,8 +23,10 @@ export interface StartBossOptions {
   readonly pollingIntervalSeconds?: number;
   /** Connections in pg-boss's own pool. Default 4. */
   readonly poolMax?: number;
-  /** pg-boss `error` events (a lost connection, a failed maintenance pass). Default: stderr. */
+  /** pg-boss `error` events (a lost connection, a failed maintenance pass). Default: logged. */
   readonly onError?: (err: Error) => void;
+  /** Job logs (M1-05). Default: a silent logger; `startProcess` passes the process logger. */
+  readonly logger?: Logger;
 }
 
 export interface JobRuntime {
@@ -31,6 +35,8 @@ export interface JobRuntime {
   readonly runsWorkers: boolean;
   /** pg-boss worker ids, one per registered kind; empty for MODE=web. */
   readonly workerIds: readonly string[];
+  /** True from a successful start until `stop()` is called (`/readyz` reads it in worker modes). */
+  isStarted(): boolean;
   /** Graceful stop: stops fetching, lets active jobs finish up to 25 s, closes the pool. */
   stop(): Promise<void>;
 }
@@ -62,11 +68,43 @@ async function ensureQueues(boss: PgBoss, def: JobDefinition): Promise<void> {
   await boss.updateQueue(def.kind, options);
 }
 
-/** Runs one job: validate its data, then the handler in its own transaction. */
-async function runJob(db: Database, def: JobDefinition, id: string, raw: unknown): Promise<void> {
-  const data = JobData.parse(raw);
-  const payload = def.schema.parse(data.payload);
-  await withTx(db, (tx) => def.handler({ tx, payload, jobId: id, key: data.key }));
+/** The fields of a fetched pg-boss job that `runJob` reads. */
+interface FetchedJob {
+  readonly id: string;
+  readonly data: unknown;
+  readonly retryCount: number;
+}
+
+/**
+ * Runs one attempt of a job under observation (M1-05: logs, correlation ids, a `job_timings` row):
+ * validate its data, then the handler in its own transaction.
+ */
+async function runJob(
+  db: Database,
+  logger: Logger,
+  def: JobDefinition,
+  job: FetchedJob,
+): Promise<void> {
+  const parsed = JobData.safeParse(job.data);
+  const key = parsed.success ? parsed.data.key : null;
+  await observeAttempt(
+    db,
+    logger,
+    {
+      kind: def.kind,
+      jobId: job.id,
+      retryCount: job.retryCount,
+      retryLimit: def.retryLimit,
+      batchId: key?.batchId ?? null,
+      chunk: key?.chunk ?? null,
+      requestId: parsed.success ? (parsed.data.meta?.requestId ?? null) : null,
+    },
+    async () => {
+      const data = JobData.parse(job.data);
+      const payload = def.schema.parse(data.payload);
+      await withTx(db, (tx) => def.handler({ tx, payload, jobId: job.id, key: data.key }));
+    },
+  );
 }
 
 /** Starts pg-boss for `mode` and registers every defined job kind. One runtime per process. */
@@ -82,7 +120,9 @@ export async function startBoss(options: StartBossOptions): Promise<JobRuntime> 
     schedule: workers,
     migrate: true,
   });
-  const onError = options.onError ?? ((err: Error) => process.stderr.write(`${err.message}\n`));
+  const logger = options.logger ?? silentLogger();
+  // A pg-boss error message can quote job data, so only its class is logged by default.
+  const onError = options.onError ?? ((err: Error) => logger.error({ err }, "jobs error"));
   boss.on("error", onError);
   await boss.start();
   const workerIds: string[] = [];
@@ -94,7 +134,7 @@ export async function startBoss(options: StartBossOptions): Promise<JobRuntime> 
         def.kind,
         { batchSize: 1, pollingIntervalSeconds: options.pollingIntervalSeconds ?? 2 },
         async (jobs) => {
-          for (const job of jobs) await runJob(options.db, def, job.id, job.data);
+          for (const job of jobs) await runJob(options.db, logger, def, job);
         },
       );
       workerIds.push(id);
@@ -109,6 +149,7 @@ export async function startBoss(options: StartBossOptions): Promise<JobRuntime> 
     boss,
     runsWorkers: workers,
     workerIds,
+    isStarted: () => stopping === null && active === boss,
     stop() {
       stopping ??= (async () => {
         try {

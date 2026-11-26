@@ -1,14 +1,12 @@
 import { readFileSync } from "node:fs";
-import { type LogLevel, readEnv } from "./env.js";
+import { readEnv } from "./env.js";
+import { createLogger } from "./obs/logger.js";
 import { startProcess } from "./process.js";
 
-// Process entry point. pino replaces this minimal logger in M1-05.
+// Process entry point. Logs are pino JSON lines on stdout (ADR 0015, M1-05): allow-listed fields
+// only, never content, and an error by its class only.
 const env = readEnv(process.env);
-const order: readonly LogLevel[] = ["debug", "info", "warn", "error"];
-const log = (level: LogLevel, msg: string, fields: Record<string, unknown> = {}): void => {
-  if (order.indexOf(level) < order.indexOf(env.LOG_LEVEL)) return;
-  process.stdout.write(`${JSON.stringify({ level, msg, ...fields })}\n`);
-};
+const logger = createLogger({ level: env.LOG_LEVEL });
 
 const pkg = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8")) as {
   version: string;
@@ -16,26 +14,28 @@ const pkg = JSON.parse(readFileSync(new URL("../package.json", import.meta.url),
 const info = { version: pkg.version, commit: env.COMMIT };
 
 const handle = await startProcess(env, info, {
-  onListening: (port) => log("info", "http listening", { port, mode: env.MODE, ...info }),
-  onError: (err) => log("error", "jobs error", { error: err.message }),
+  logger,
+  onListening: (port) => logger.info({ port, mode: env.MODE, ...info }, "http listening"),
+  onError: (err) => logger.error({ err }, "jobs error"),
 });
-log("info", "started", {
-  mode: env.MODE,
-  workers: handle.jobs.workerIds.length,
-  http: handle.http !== null,
-  ...info,
-});
+logger.info(
+  {
+    mode: env.MODE,
+    workers: handle.jobs.workerIds.length,
+    http: handle.http !== null,
+    ...info,
+  },
+  "started",
+);
 
 // Graceful stop: HTTP closes, pg-boss stops fetching and lets active jobs finish (up to 25 s).
 for (const signal of ["SIGTERM", "SIGINT"] as const) {
   process.once(signal, () => {
-    log("info", "shutting down", { signal });
+    logger.info({ signal }, "shutting down");
     handle.stop().then(
       () => process.exit(0),
       (err: unknown) => {
-        log("error", "shutdown failed", {
-          error: err instanceof Error ? err.message : String(err),
-        });
+        logger.error({ err }, "shutdown failed");
         process.exit(1);
       },
     );
