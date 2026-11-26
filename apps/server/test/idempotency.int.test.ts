@@ -113,7 +113,7 @@ describe.skipIf(!hasDatabase)("Idempotency-Key (real Postgres)", () => {
     });
     expect(result.failed, "P-idempotency-key-replay: the planted bug was not caught").toBe(true);
     console.log(
-      `P-idempotency-key-replay: planted bug caught after ${result.numRuns} runs; seed=${result.seed}; key=${result.counterexample?.[0]}`,
+      `P-idempotency-key-replay: planted bug caught after ${result.numRuns} runs; seed=${result.seed}; first request body name length=${result.counterexample?.[1]?.name.length}`,
     );
   });
 

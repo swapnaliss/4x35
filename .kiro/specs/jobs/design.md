@@ -191,8 +191,7 @@ same key with a different body returns `422` problem+json.
   the 422 branch is generated to differ from the first.
 - **Planted bug**: the route opted out of the middleware, so a replay runs the handler again and
   the stored response is never used. Built as: seed 4043, caught after 1 run
-  (`P-idempotency-key-replay: planted bug caught after 1 runs; seed=4043;
-  key=f9a418aa-a8fd-4a82-9651-a37e7320fe01`). The middleware is applied and the property passes.
+  (the counterexample is the first generated UUID key and request body). The middleware is applied and the property passes.
 
 ## Error Handling
 
