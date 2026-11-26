@@ -13,7 +13,7 @@ Decisions taken before this spec (not reopened): the `job_timings` table already
 - **Observability_Baseline**: the M1-05 deliverables as a whole: Logger, Request_Id_Middleware, Job_Wrapper, Health_Endpoints, Dead_Letter_Lister and Render_Config.
 - **Logger**: the pino 10.4.0 instance in `apps/server/src/obs/logger.ts`.
 - **Log_Serializer**: the allow-list of fields the Logger writes for a request or a job.
-- **Redactor**: the pino redaction configuration of the Logger.
+- **Redactor**: the redaction step of the Logger, applied to every logged object.
 - **Request_Id_Middleware**: the request middleware in `apps/server/src/obs/request-id.ts`.
 - **Request_Id**: the correlation ID of one HTTP request, carried by the `X-Request-Id` header.
 - **Job_Wrapper**: the wrapper around `defineJob` in `apps/server/src/obs/job-wrapper.ts`.
@@ -43,7 +43,7 @@ Decisions taken before this spec (not reopened): the `job_timings` table already
 
 #### Acceptance Criteria
 
-1. WHEN the Logger records a request, THE Log_Serializer SHALL write only the method, route pattern, status, duration, request ID, user ID and workspace ID.
+1. WHEN the Logger records a request, THE Log_Serializer SHALL write only the method, route pattern, status, duration, request ID, user ID, workspace ID and the `user-agent` header (the one header 2.4 allows).
 2. WHEN the Logger records a job, THE Log_Serializer SHALL write only the kind, job ID, batch ID, chunk, attempt, outcome and ms.
 3. THE Log_Serializer SHALL write no request body, no query string, no cookie and no file name.
 4. THE Log_Serializer SHALL write no request header other than `user-agent`.

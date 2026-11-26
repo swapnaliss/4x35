@@ -93,3 +93,18 @@ ticket — R2.5 (job data shape) removed, R1.2/R2.3/R5.2/R5.4/R6.2 reworded to w
 flight, 5xx not stored, no-workspace pass-through, 24 h-stale replace) moved to design decisions, R7.5 "every POST by
 default" added from the ticket's scope; the design's open question on P2's `numRuns` closed (the ticket names none).
 **M1-04 total: 13.58 credits** (52.12 → 65.70; the pool is shared with concurrent workers, BL-01 7183592046).
+
+### M1-05 · observability spec
+
+| Date | Ticket | Surface | What ran | Kiro | Credits | Balance |
+|---|---|---|---|---|---|---|
+| 2026-11-26 | M1-05 | Spec | `--mode spec` created `.kiro/specs/observability/` from the ticket, ADR 0015, architecture §9, the jobs spec and the `job_timings` schema, with the implementation decisions supplied in the prompt (allow-list serializers, AsyncLocalStorage request context, `meta.requestId` in job data, per-attempt outcome rule, dedicated readiness probe pool, `<kind>.dlq` listing from `source_*` columns): EARS `requirements.md` (R1–R9), `design.md` with P1 `P-logs-carry-no-content` plus P2 (request id round trip), P3 (one `job_timings` row per attempt), P4 (serializer allow-list), P5 (dead-letter listing), `tasks.md` (14 tasks, dependency graph), `.config.kiro` | CLI 3.6.2 | 8.12 | 73.82 |
+| 2026-11-26 | M1-05 | Spec (checkpoint) | Kiro ran the server integration tests `logging health job-timings` (15/15) and the unit tests (17/17), `tsc` and biome against the local Postgres; aligned `design.md`/`tasks.md` with the code as built (names, readiness checks, redaction as a `formatters.log` walker plus a top-level allow-list, P5 turned into an example check), recorded the four planted bugs (P1 seed 5051, P2 seed 5052, P3 seed 5053, P4 seed 5054), marked tasks 1–11 `[x]`, and left 13–14 open because they were not yet done | CLI 3.6.2 | 4.55 | 78.37 |
+
+Tasks 1–11 were implemented by Claude Code from the spec's task list; Kiro authored the spec and ran the checkpoint;
+task 13 (this entry) is Claude Code's. Task 12 (`render.yaml`) stays open: the blueprint is M0-07's (#9, BL-01
+7191122349). Review edits to Kiro's spec (Claude Code): R2.1 now includes the `user-agent` header, which the ticket
+allows; the glossary's Redactor is "the redaction step of the Logger", not pino's `redact` option (pino's paths cannot
+express `*.original*`); P5 (50 runs of real dead letters, each 4 pg-boss attempts with backoff) was not runnable, so
+it became an example check. **M1-05 total: 12.67 credits** (65.70 → 78.37; the pool is shared with concurrent
+workers, BL-01 7183592046).
