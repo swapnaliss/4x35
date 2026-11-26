@@ -366,7 +366,9 @@ Behaviour beyond the happy path:
   either order, so the field stays empty for review.
 - **Second pass**: a candidate with `inferred` provenance and `from.field` is accepted only if the
   referenced field is in the accepted set after pass 1 (conflicts resolved). Otherwise it is
-  rejected as `inferred.source_field_missing`. Conflicts are then resolved again over the whole
+  rejected as `inferred.source_field_missing`. If it targets an occurrence that pass 1 emptied with
+  `field.conflict`, it is rejected with `field.conflict` too: a later pass never picks a winner
+  among conflicting values. Conflicts are then resolved again over the whole
   set, and any field inferred from an occurrence that this emptied is dropped the same way, until
   nothing changes (a chain never outlives its source).
 - **Length**: a value longer than its element's limit in code points adds one `length.exceeded`

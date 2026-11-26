@@ -84,6 +84,20 @@ describe("buildProposal", () => {
       "field.conflict",
       "inferred.source_field_missing",
     ]);
+    // An occurrence emptied by a pass-1 conflict stays empty: a third value inferred from an
+    // accepted field is one more conflicting value, not the winner (BL-01 7189448965).
+    const thirdValue = buildProposal(RECORD, PACK, [
+      { element: "PstCd", value: "10115", provenance: span(13, 18) },
+      { element: "Ctry", value: "DE", provenance: { kind: "human", actorId: "u-1" } },
+      { element: "Ctry", value: "AT", provenance: { kind: "external", tokenId: "t-1" } },
+      inferred,
+    ]);
+    expect(thirdValue.fields.map((f) => f.element)).toEqual(["PstCd"]);
+    expect(thirdValue.rejected.map((r) => r.reason)).toEqual([
+      "field.conflict",
+      "field.conflict",
+      "field.conflict",
+    ]);
     const without = buildProposal(RECORD, PACK, [inferred]);
     expect(without.fields).toEqual([]);
     expect(without.rejected[0]?.reason).toBe("inferred.source_field_missing");
