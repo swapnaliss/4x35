@@ -63,6 +63,27 @@ describe("buildProposal", () => {
       { element: "PstCd", value: "10115", provenance: span(13, 18) },
     ]);
     expect(withSource.fields.map((f) => f.element)).toEqual(["PstCd", "Ctry"]);
+    // The source field is emptied by a conflict with another inferred value: the chain goes too.
+    const contested = buildProposal(RECORD, PACK, [
+      inferred,
+      { element: "PstCd", value: "10115", provenance: span(13, 18) },
+      {
+        element: "PstCd",
+        value: "10117",
+        provenance: {
+          kind: "inferred",
+          ruleId: "r",
+          from: { field: { element: "TwnNm", index: 0 } },
+        },
+      },
+      { element: "TwnNm", value: "Berlin", provenance: span(19, 25) },
+    ]);
+    expect(contested.fields.map((f) => f.element)).toEqual(["TwnNm"]);
+    expect(contested.rejected.map((r) => r.reason).sort()).toEqual([
+      "field.conflict",
+      "field.conflict",
+      "inferred.source_field_missing",
+    ]);
     const without = buildProposal(RECORD, PACK, [inferred]);
     expect(without.fields).toEqual([]);
     expect(without.rejected[0]?.reason).toBe("inferred.source_field_missing");

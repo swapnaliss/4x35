@@ -116,6 +116,18 @@ export function buildProposal(
     else rejected.push({ candidate: toJsonValue(raw), reason: "inferred.source_field_missing" });
   }
   const all = resolveConflicts([...base.values(), ...inferred], rejected);
+  // A conflict in pass 2 can empty a source field; drop what was inferred from it, until stable.
+  for (let changed = true; changed; ) {
+    changed = false;
+    for (const [k, f] of all) {
+      const p = f.provenance;
+      if (p.kind === "inferred" && "field" in p.from && !all.has(key(p.from.field))) {
+        all.delete(k);
+        rejected.push({ candidate: toJsonValue(f), reason: "inferred.source_field_missing" });
+        changed = true;
+      }
+    }
+  }
 
   const fields: ProposalField[] = [...all.values()]
     .sort(compareRefs)
