@@ -14,9 +14,11 @@
   "scripts": {
     "build": "tsc -b",
     "typecheck": "tsc -b test",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:integration": "vitest run --config vitest.integration.config.ts"
   },
   "dependencies": {
+    "@4x35/core": "0.1.0",
     "drizzle-orm": "0.45.4",
     "pg": "8.23.1"
   },
