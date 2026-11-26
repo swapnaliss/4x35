@@ -40,3 +40,17 @@ split per file):
 
 `.kiro/specs/README.md` (the capability index) was generated from the tickets by a script and checked by hand; no
 Kiro credits. **M0-10 total: 2.05 credits** (9.47 → 11.52; the pool is shared, so a concurrent worker's session could fall in a reading).
+
+### M1-01 · domain-core spec
+
+| Date | Ticket | Surface | What ran | Kiro | Credits | Balance |
+|---|---|---|---|---|---|---|
+| 2026-11-26 | M1-01 | Spec | `--mode spec` created `.kiro/specs/domain-core/` from the ticket, ADRs 0001/0008, architecture §2 and the steering: EARS `requirements.md` (R1–R9), `design.md` with P1–P8 (`P-never-invent` … `P-record-transitions`) and one planted bug per property, `tasks.md` (19 tasks, dependency graph), `.config.kiro`. Kiro's refinement pass removed criteria the ticket does not state | CLI 3.5.0 | 13.79 | 25.31 |
+| 2026-11-26 | M1-01 | Spec (checkpoint) | Task 19 checkpoint: Kiro ran the core tests (`FC_NUM_RUNS=1000`), typecheck and lint, aligned `design.md`/`tasks.md` with the implemented code, recorded the planted-bug results (seed, runs to failure), and marked tasks 1–17 and 19 `[x]` | CLI 3.5.0 | 8.55 | 33.86 |
+
+Tasks 1–17 were implemented by Claude Code from the spec's task list, in order; Kiro authored the spec and ran
+the checkpoint. Review edits to Kiro's spec (Claude Code): Invite/Session/ApiToken dropped from task 7 (not in the
+ticket); the active-state set for `→ failed` and the `purgeEligible` purge guard adopted from Kiro's design into the
+code; the inferred-from-field chain rule added to `design.md`. **M1-01 total: 22.34 credits** (11.52 → 33.86). The
+pool is shared and M1-06 ran Kiro in the same window, so both readings are pool deltas and may include its credits
+(BL-01 7183592046).
