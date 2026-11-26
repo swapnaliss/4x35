@@ -11,6 +11,7 @@ import {
   LENGTH_EXCEEDED,
   type Proposal,
   proposalToJson,
+  stableStringify,
   valueLength,
 } from "../src/index.js";
 import {
@@ -63,10 +64,17 @@ const noTruncation = (build: Build) =>
   fc.property(boundaryCase, scenario, ({ lines, ref, candidate }, extra) => {
     const candidates = [candidate, ...extra.candidates];
     const p = build({ id: RECORD_ID, originalLines: lines }, PACK, candidates);
-    // No output value is a strict prefix of a candidate value for the same element occurrence.
-    for (const c of candidates) {
-      const out = p.fields.find((f) => `${f.element}#${f.index}` === refKey(c));
-      if (out && out.value !== c.value && c.value.startsWith(out.value)) return false;
+    // Every output value is its originating candidate's value in full: some candidate for the same
+    // element occurrence with the same provenance carries exactly this value. (A different,
+    // rejected candidate for that occurrence may well extend it: that is not truncation.)
+    for (const f of p.fields) {
+      const originated = candidates.some(
+        (c) =>
+          refKey(c) === `${f.element}#${f.index}` &&
+          stableStringify(c.provenance) === stableStringify(f.provenance) &&
+          c.value === f.value,
+      );
+      if (!originated) return false;
     }
     // Every over-length accepted value is kept in full with a length.exceeded finding.
     for (const f of p.fields) {
@@ -103,6 +111,27 @@ const buildTruncating: Build = (record, pack, candidates) => {
 describe("P4 no-truncation (P-no-truncation)", () => {
   it(`P-no-truncation: over-length values are kept in full with a length.exceeded finding, never shortened (${NUM_RUNS} runs)`, () => {
     fc.assert(noTruncation(buildProposal), { numRuns: NUM_RUNS });
+  });
+
+  // Regressions (BL-01 7189448965), replayed by seed and path.
+  it.each([
+    {
+      // Core: pass 1 emptied BldgNb#0 (boundary span vs an `external` value), then pass 2 filled
+      // it with a third, field-inferred value.
+      name: "a pass-2 inferred value never wins a pass-1 conflict",
+      seed: 2084437074,
+      path: "212:1:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:159:2:4:4:4:4:4:4:4:4:4:4:6:7:7:7:7:7:7:7:7:7:7:11:11:11:11:11:11:11:11:11:11:11:11:11:12",
+    },
+    {
+      // Oracle: Ctry "7" proven by its span, next to a rejected (out-of-bounds) candidate
+      // "7-区I…" for Ctry#0. The accepted value is not a truncation of the rejected one.
+      name: "a rejected candidate that extends the accepted value is not truncation",
+      seed: -508886558,
+      path: "425:1:0:0:0:0:0:0:223:10:10:11:11:11",
+    },
+  ])("P-no-truncation regression: $name (seed $seed)", ({ seed, path }) => {
+    const result = fc.check(noTruncation(buildProposal), { seed, path, endOnFailure: true });
+    expect(result.failed, JSON.stringify(result.counterexample)).toBe(false);
   });
 
   it("P-no-truncation catches planted bug: values truncated to the element limit", () => {

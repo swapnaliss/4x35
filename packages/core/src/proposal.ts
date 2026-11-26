@@ -107,15 +107,20 @@ export function buildProposal(
   }
 
   // Pass 1: span, transform, dataset, human, external and span-inferred fields.
-  const base = resolveConflicts(direct, rejected);
-  // Pass 2: a field inferred from another field needs that field accepted in pass 1.
+  const { fields: base, contested } = resolveConflicts(direct, rejected);
+  // Pass 2: a field inferred from another field needs that field accepted in pass 1. An occurrence
+  // already contested in pass 1 stays empty: a pass-2 value for it is one more conflicting value,
+  // not the winner of the conflict.
   const inferred: Field[] = [];
   for (const { field, raw } of fromField) {
     const from = (field.provenance as { from: { field: ElementRef } }).from.field;
-    if (base.has(key(from))) inferred.push(field);
-    else rejected.push({ candidate: toJsonValue(raw), reason: "inferred.source_field_missing" });
+    if (!base.has(key(from))) {
+      rejected.push({ candidate: toJsonValue(raw), reason: "inferred.source_field_missing" });
+    } else if (contested.has(key(field))) {
+      rejected.push({ candidate: toJsonValue(field), reason: "field.conflict" });
+    } else inferred.push(field);
   }
-  const all = resolveConflicts([...base.values(), ...inferred], rejected);
+  const all = resolveConflicts([...base.values(), ...inferred], rejected).fields;
   // A conflict in pass 2 can empty a source field; drop what was inferred from it, until stable.
   for (let changed = true; changed; ) {
     changed = false;
@@ -165,12 +170,13 @@ export function proposalToJson(proposal: Proposal): string {
 /**
  * Group fields by element occurrence. Identical duplicates collapse to one; two different values
  * (or provenances) for the same occurrence are both rejected as `field.conflict`, so the field
- * stays empty for review whatever order the candidates arrived in.
+ * stays empty for review whatever order the candidates arrived in. `contested` holds the keys of
+ * the occurrences emptied this way.
  */
 function resolveConflicts(
   fields: readonly Field[],
   rejected: RejectedCandidate[],
-): Map<string, Field> {
+): { fields: Map<string, Field>; contested: Set<string> } {
   const groups = new Map<string, Map<string, Field>>();
   for (const f of fields) {
     const k = key(f);
@@ -179,15 +185,18 @@ function resolveConflicts(
     groups.set(k, byJson);
   }
   const out = new Map<string, Field>();
+  const contested = new Set<string>();
   for (const [k, byJson] of groups) {
     const distinct = [...byJson.values()];
     const only = distinct[0];
     if (distinct.length === 1 && only) out.set(k, only);
-    else
+    else {
+      contested.add(k);
       for (const f of distinct)
         rejected.push({ candidate: toJsonValue(f), reason: "field.conflict" });
+    }
   }
-  return out;
+  return { fields: out, contested };
 }
 
 function key(ref: ElementRef): string {
