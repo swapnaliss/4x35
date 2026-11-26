@@ -258,7 +258,9 @@ describe.skipIf(!hasDatabase)("job timings and dead letters (real Postgres + pg-
           ? ["failed", "failed", "failed", "dead_letter"]
           : [...Array(succeedOn - 1).fill("failed"), "completed"];
       const rows = await timings(jobId);
-      expect(rows.map((r) => r.outcome)).toEqual(expected);
+      // Compared as a multiset: attempts here run within the same millisecond, and `at` has
+      // millisecond precision, so the row order is not the attempt order (CI seed 454361517).
+      expect(rows.map((r) => r.outcome).sort()).toEqual([...expected].sort());
       for (const r of rows) expect(r).toMatchObject({ kind: "test.p3", batchId, chunk });
     });
 
