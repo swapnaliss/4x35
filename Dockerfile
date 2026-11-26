@@ -39,6 +39,11 @@ COPY --from=prod-deps /app/package.json ./
 COPY --from=prod-deps /app/node_modules ./node_modules
 COPY --from=build /app/apps/server/package.json apps/server/
 COPY --from=build /app/apps/server/dist apps/server/dist
+# Workspace packages the server imports at runtime (node_modules/@4x35/* link to these).
+COPY --from=build /app/packages/core/package.json packages/core/
+COPY --from=build /app/packages/core/dist packages/core/dist
+COPY --from=build /app/packages/db/package.json packages/db/
+COPY --from=build /app/packages/db/dist packages/db/dist
 USER node
 EXPOSE 8080
 # Worker mode has no listener, so it reports healthy without an HTTP probe.

@@ -6,6 +6,7 @@ export const WORKSPACE = "@4x35/core";
 
 export * from "./elements.js";
 export * from "./entities/index.js";
+export { CHUNK_SIZE, chunk } from "./jobs/chunk.js";
 export { type JsonValue, stableStringify } from "./json.js";
 export {
   buildProposal,

@@ -13,6 +13,8 @@ const EnvSchema = z.object({
   LOG_LEVEL: LogLevel.default("info"),
   /** Short git SHA baked into the image by the Docker build arg `COMMIT`. */
   COMMIT: z.string().min(1).default("unknown"),
+  /** Postgres for the app and pg-boss. Required to start the process (startProcess); never logged. */
+  DATABASE_URL: z.string().min(1).optional(),
 });
 
 export type Env = z.infer<typeof EnvSchema>;
@@ -21,6 +23,7 @@ export type Env = z.infer<typeof EnvSchema>;
 export function readEnv(source: Record<string, string | undefined>): Env {
   const parsed = EnvSchema.safeParse(source);
   if (!parsed.success) {
+    // Key names only: environment values are never printed.
     const keys = parsed.error.issues.map((i) => i.path.join(".")).join(", ");
     throw new Error(`invalid environment: ${keys}`);
   }
