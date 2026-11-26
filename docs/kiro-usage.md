@@ -79,3 +79,17 @@ task 11 (this entry) is Claude Code's. Review edits to Kiro's spec (Claude Code)
 "purge_after only when null" and "`fc.oneof` over eight entities" were replaced by what was built (always overwritten;
 one connected entity graph per run), through the checkpoint prompt. **M1-02 total: 17.17 credits** (34.95 → 52.12; the
 pool is shared with concurrent workers, BL-01 7183592046).
+
+### M1-04 · jobs spec
+
+| Date | Ticket | Surface | What ran | Kiro | Credits | Balance |
+|---|---|---|---|---|---|---|
+| 2026-11-26 | M1-04 | Spec | `--mode spec` created `.kiro/specs/jobs/` from the ticket, ADRs 0005/0006 and the persistence spec, with the pg-boss 12.38.2 decisions supplied in the prompt (equal-jitter backoff, `exclusive` policy, `<kind>.dlq`, `fromDrizzle`-style executor, send-only web client): EARS `requirements.md` (R1–R8), `design.md` with P1 `P-chunking-covers-once`, P2 `P-handler-idempotent`, P3 `P-idempotency-key-replay` and one planted bug each, `tasks.md` (12 tasks, dependency graph), `.config.kiro` | CLI 3.6.2 | 10.42 | 62.54 |
+| 2026-11-26 | M1-04 | Spec (checkpoint) | Task 12 checkpoint: Kiro ran the core chunk tests (4/4) and the server integration tests `jobs idempotency mode` (21/21) against the local Postgres, recorded the three planted-bug results (seeds 4041/4042/4043), aligned `design.md`/`tasks.md` with the code as built (signatures, `fromDrizzle` executor, dead count from pg-boss state `failed`, P2 at 20 runs) and marked tasks 1–10 and 12 `[x]` | CLI 3.6.2 | 3.16 | 65.70 |
+
+Tasks 1–10 were implemented by Claude Code from the spec's task list; Kiro authored the spec and ran the checkpoint;
+task 11 (this entry) is Claude Code's. Review edits to Kiro's spec (Claude Code): `requirements.md` trimmed to the
+ticket — R2.5 (job data shape) removed, R1.2/R2.3/R5.2/R5.4/R6.2 reworded to what the ticket states, R7.4–R7.7 (409 in
+flight, 5xx not stored, no-workspace pass-through, 24 h-stale replace) moved to design decisions, R7.5 "every POST by
+default" added from the ticket's scope; the design's open question on P2's `numRuns` closed (the ticket names none).
+**M1-04 total: 13.58 credits** (52.12 → 65.70; the pool is shared with concurrent workers, BL-01 7183592046).
