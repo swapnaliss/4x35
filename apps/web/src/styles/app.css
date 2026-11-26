@@ -119,3 +119,26 @@
     line-height: var(--leading-tight);
   }
 }
+
+/* Horizontal scroll cue: a shade shows at an edge only while more columns lie beyond it
+   (background-attachment local covers the shade at the scroll ends). */
+@utility scroll-cue-x {
+  background:
+    linear-gradient(to right, var(--color-surface) 40%, transparent) left / 2.5rem 100% no-repeat
+    local,
+    linear-gradient(to left, var(--color-surface) 40%, transparent) right / 2.5rem 100% no-repeat
+    local,
+    radial-gradient(
+      farthest-side at 0 50%,
+      color-mix(in srgb, var(--color-text) 30%, transparent),
+      transparent
+    )
+    left / 0.875rem 100% no-repeat scroll,
+    radial-gradient(
+      farthest-side at 100% 50%,
+      color-mix(in srgb, var(--color-text) 30%, transparent),
+      transparent
+    )
+    right / 0.875rem 100% no-repeat scroll,
+    var(--color-surface);
+}

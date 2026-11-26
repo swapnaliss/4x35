@@ -36,7 +36,7 @@ export function EmptyState({
   return (
     <section
       className={cn(
-        "flex flex-col gap-3 rounded-panel border border-dashed border-line-strong bg-panel px-5 py-8",
+        "flex flex-col gap-3 rounded-panel border border-line bg-panel px-5 py-8",
         align === "center" ? "items-center text-center" : "items-start text-left",
         className,
       )}

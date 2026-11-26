@@ -83,7 +83,9 @@ export function ErrorState({
         <IconFail className="mt-1 shrink-0 text-st-fail" />
         <div className="flex min-w-0 flex-col gap-1">
           <Heading className="text-lead font-semibold text-fg">
-            {p.title ?? t("components.errorState.title")}
+            {offline
+              ? t("components.errorState.offlineTitle")
+              : (p.title ?? t("components.errorState.title"))}
           </Heading>
           {p.status !== undefined && (
             <p className="tabular text-dense text-fg-muted">

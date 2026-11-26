@@ -20,8 +20,8 @@ export interface ProgressPanelProps {
   /** Total items; unknown while counting (indeterminate), but the step is still named. */
   total?: number;
   state?: ProgressState;
-  /** Last update, already formatted in local time (e.g. "14:02:11"). */
-  updated?: string;
+  /** Last update, already formatted in local time (e.g. "14:02:11"). Always shown. */
+  updated: string;
   /** For `stalled`: seconds since the last update. */
   stalledSeconds?: number;
   /** For `failed`: why it stopped (already translated). */
@@ -54,14 +54,8 @@ export function ProgressPanel({
   const Heading = `h${headingLevel}` as const;
   const nf = new Intl.NumberFormat(i18n.language);
   const known = total !== undefined && total > 0 && done !== undefined;
-  const badge =
-    state === "completed"
-      ? "pass"
-      : state === "failed"
-        ? "fail"
-        : state === "stalled"
-          ? "warning"
-          : "running";
+  // A stalled job is still running; the stalled note is the signal, not a pack `warning`.
+  const badge = state === "completed" ? "pass" : state === "failed" ? "fail" : "running";
   const stepText = known
     ? t("components.progressPanel.step", {
         current: step.current,
@@ -113,11 +107,7 @@ export function ProgressPanel({
           )}
         </p>
         {note && <p className={state === "failed" ? "text-st-fail" : "text-fg"}>{note}</p>}
-        {updated && (
-          <p className="text-fg-muted">
-            {t("components.progressPanel.updated", { time: updated })}
-          </p>
-        )}
+        <p className="text-fg-muted">{t("components.progressPanel.updated", { time: updated })}</p>
       </div>
     </section>
   );

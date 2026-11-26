@@ -16,7 +16,8 @@
       "sortAscending": "Sorted ascending",
       "sortDescending": "Sorted descending",
       "selectRow": "Select row",
-      "selectAll": "Select all rows that can be bulk approved"
+      "selectAll": "Select all rows that can be bulk approved",
+      "selectRowNamed": "Select {{row}}"
     },
     "dialog": {
       "close": "Close",
@@ -49,7 +50,8 @@
       "reloadLatest": "Load the latest version",
       "retryAfter": "Too many requests. Try again in {{seconds}} seconds.",
       "forbidden": "Your role ({{role}}) cannot do this. Ask a workspace owner.",
-      "offline": "You are offline. Nothing was saved. Reconnect and try again."
+      "offline": "You are offline. Nothing was saved. Reconnect and try again.",
+      "offlineTitle": "You are offline"
     },
     "progressPanel": {
       "counter": "{{done}} of {{total}}",

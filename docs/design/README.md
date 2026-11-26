@@ -329,7 +329,7 @@ on `:focus-visible`. Minimum target `--target-min-desktop` (24px) at 1440 and `-
 | **Button** | `primary` (fill `--color-primary`), `secondary` (surface fill, `--color-border-strong` outline), `ghost` (no fill, text in `--color-primary`), `danger` (fill `--color-danger`). States: default, hover, active, focus-visible, disabled, loading | Disabled uses `aria-disabled="true"` when a reason exists, so it stays focusable and its tooltip explains why (for example four-eyes). Loading keeps the label, adds a 16px running icon before it, sets `aria-busy="true"`, and blocks repeat clicks; the label may change to the action in progress ("Approving") |
 | **Input** | default, focus, invalid (border `--status-fail-border` + octagon icon + message below, `aria-invalid="true"`, `aria-describedby` to the message), disabled | Label always visible above; hint text below in `--color-text-muted`; character counter for length-limited ISO fields ("8 / 35"), which turns into a `fail` message when exceeded and never cuts the text |
 | **Select** | default, open, focus, invalid, disabled | Radix Select; typeahead; options can carry a secondary line (pack source, retrieved date) |
-| **Table** | default, sortable header (with `aria-sort`), row hover, row selected, row focused, sticky header, virtualised body | `role="grid"` when rows are keyboard-navigable (review, pre-flight), plain `table` otherwise. Tabular numerals in numeric columns, right aligned |
+| **Table** | default, sortable header (with `aria-sort`), row hover, row selected, row focused, sticky header, virtualised body | `role="grid"` when rows are keyboard-navigable (review, pre-flight), plain `table` otherwise. Tabular numerals in numeric columns, right aligned. Selection uses a leading checkbox column (TableSelectCell / TableSelectAllHead); the caption sits above the scroll area and names the scroll region. |
 | **Dialog** | default, with destructive action, loading (primary in loading state) | Radix Dialog; focus moves to the title, is trapped, returns to the trigger on close; Esc closes unless a request is in flight; scrim is `--color-overlay` at `--overlay-opacity` |
 | **Toast** | `info`, `success`, `error` | Bottom-right at 1440, bottom full-width at 375, above the keyboard safe area. Info and success: `role="status"`, auto-dismiss after 6 s, paused on hover or focus. Error: `role="alert"`, stays until dismissed. Every toast has a close button and, where useful, one action ("Undo", "View") |
 | **Tooltip** | default | Opens on hover after 300ms and on keyboard focus immediately; dismissable with Esc without moving focus (1.4.13); never the only place essential information lives on touch (tap the chip opens a popover instead) |
@@ -360,6 +360,7 @@ Keys used by the shared components. Screen-specific copy lives in each screen sp
 | `components.table.sortAscending` | Sorted ascending |
 | `components.table.sortDescending` | Sorted descending |
 | `components.table.selectRow` | Select row |
+| `components.table.selectRowNamed` | Select {{row}} |
 | `components.table.selectAll` | Select all rows that can be bulk approved |
 | `components.dialog.close` | Close |
 | `components.dialog.cancel` | Cancel |
@@ -381,6 +382,7 @@ Keys used by the shared components. Screen-specific copy lives in each screen sp
 | `components.errorState.reloadLatest` | Load the latest version |
 | `components.errorState.retryAfter` | Too many requests. Try again in {{seconds}} seconds. |
 | `components.errorState.forbidden` | Your role ({{role}}) cannot do this. Ask a workspace owner. |
+| `components.errorState.offlineTitle` | You are offline |
 | `components.errorState.offline` | You are offline. Nothing was saved. Reconnect and try again. |
 | `components.progressPanel.counter` | {{done}} of {{total}} |
 | `components.progressPanel.step` | Step {{current}} of {{steps}}: {{stepName}} |

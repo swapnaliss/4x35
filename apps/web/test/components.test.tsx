@@ -22,6 +22,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
+  TableSelectAllHead,
+  TableSelectCell,
 } from "../src/components/ui/Table";
 import { Toast, ToastProvider, type ToastVariant } from "../src/components/ui/Toast";
 import { Tooltip, TooltipProvider } from "../src/components/ui/Tooltip";
@@ -169,10 +171,13 @@ describe("Select", () => {
 describe("Table", () => {
   it("plain and sortable headers, selected rows, numeric cells", () => {
     const onSort = vi.fn();
+    const onSelect = vi.fn();
+    const onSelectAll = vi.fn();
     render(
-      <Table stickyHeader regionLabel={A}>
+      <Table stickyHeader caption={A}>
         <TableHeader>
           <TableRow>
+            <TableSelectAllHead checked={false} onCheckedChange={onSelectAll} />
             <TableHead>{t("status.pass.label")}</TableHead>
             <TableHead sort="ascending" onSort={onSort}>
               {t("status.fail.label")}
@@ -182,11 +187,13 @@ describe("Table", () => {
         </TableHeader>
         <TableBody>
           <TableRow selected>
+            <TableSelectCell checked onCheckedChange={onSelect} rowName="R-0001" />
             <TableCell>{t("status.fail.label")}</TableCell>
             <TableCell numeric>42</TableCell>
             <TableCell />
           </TableRow>
           <TableRow selected={false}>
+            <TableSelectCell checked={false} onCheckedChange={onSelect} rowName="R-0002" />
             <TableCell>{t("status.review.label")}</TableCell>
             <TableCell numeric>7</TableCell>
             <TableCell />
@@ -194,7 +201,13 @@ describe("Table", () => {
         </TableBody>
       </Table>,
     );
-    const heads = screen.getAllByRole("columnheader");
+    const all = screen.getAllByRole("columnheader");
+    expect(
+      within(all[0] as HTMLElement).getByRole("checkbox", {
+        name: t("components.table.selectAll"),
+      }),
+    ).toBeTruthy();
+    const heads = all.slice(1);
     expect(heads[0]?.getAttribute("scope")).toBe("col");
     expect(heads[0]?.hasAttribute("aria-sort")).toBe(false);
     expect(heads[1]?.getAttribute("aria-sort")).toBe("ascending");
@@ -208,6 +221,18 @@ describe("Table", () => {
     expect(rows[1]?.getAttribute("aria-selected")).toBe("true");
     expect(rows[2]?.getAttribute("aria-selected")).toBe("false");
     expect(screen.getByRole("region", { name: A })).toBeTruthy();
+    expect(screen.getByRole("table", { name: A })).toBeTruthy();
+    const box = screen.getByRole("checkbox", {
+      name: t("components.table.selectRowNamed", { row: "R-0001" }),
+    });
+    expect((box as HTMLInputElement).checked).toBe(true);
+    expectKeyboardReachable(box);
+    fireEvent.click(
+      screen.getByRole("checkbox", {
+        name: t("components.table.selectRowNamed", { row: "R-0002" }),
+      }),
+    );
+    expect(onSelect).toHaveBeenCalledWith(true);
   });
 });
 
@@ -481,7 +506,7 @@ describe("ProgressPanel", () => {
     expect(document.querySelector('[data-status="running"]')).not.toBeNull();
   });
   it("indeterminate still names the step", () => {
-    render(<ProgressPanel label={A} step={step} />);
+    render(<ProgressPanel label={A} step={step} updated="14:00:00" />);
     expect((screen.getByRole("progressbar") as HTMLProgressElement).hasAttribute("value")).toBe(
       false,
     );
@@ -491,12 +516,26 @@ describe("ProgressPanel", () => {
   });
   it("stalled, failed and completed", () => {
     const { rerender } = render(
-      <ProgressPanel label={A} step={step} state="stalled" stalledSeconds={45} />,
+      <ProgressPanel
+        label={A}
+        step={step}
+        updated="14:00:00"
+        state="stalled"
+        stalledSeconds={45}
+      />,
     );
     expect(screen.getByText(t("components.progressPanel.stalled", { seconds: 45 }))).toBeTruthy();
-    expect(document.querySelector('[data-status="warning"]')).not.toBeNull();
+    expect(document.querySelector('[data-status="running"]')).not.toBeNull();
     rerender(
-      <ProgressPanel label={A} step={step} state="failed" failureReason={B} done={4} total={10} />,
+      <ProgressPanel
+        updated="14:00:00"
+        label={A}
+        step={step}
+        state="failed"
+        failureReason={B}
+        done={4}
+        total={10}
+      />,
     );
     expect(
       screen.getByText(t("components.progressPanel.failed", { current: 3, reason: B })),
@@ -504,6 +543,7 @@ describe("ProgressPanel", () => {
     expect(document.querySelector('[data-status="fail"]')).not.toBeNull();
     rerender(
       <ProgressPanel
+        updated="14:00:00"
         label={A}
         step={step}
         state="completed"

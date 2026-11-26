@@ -1,4 +1,4 @@
-import type { HTMLAttributes, TdHTMLAttributes, ThHTMLAttributes } from "react";
+import { type HTMLAttributes, type TdHTMLAttributes, type ThHTMLAttributes, useId } from "react";
 import { useT } from "../../i18n";
 import { cn } from "../../lib/cn";
 import { IconSortAsc, IconSortDesc, IconSortNone } from "../icons";
@@ -12,29 +12,46 @@ import { IconSortAsc, IconSortDesc, IconSortNone } from "../icons";
 export interface TableProps extends HTMLAttributes<HTMLTableElement> {
   /** Keeps the header visible while the body scrolls inside the wrapper. */
   stickyHeader?: boolean;
-  /** Accessible name for the scroll region when the table scrolls (already translated). */
-  regionLabel?: string;
+  /**
+   * What the table shows (already translated). Rendered above the scroll area so it wraps and is
+   * never clipped at 375; it names both the table and its scroll region.
+   */
+  caption?: string;
 }
 
-export function Table({ className, stickyHeader, regionLabel, ...props }: TableProps) {
+/**
+ * The scroll area is a labelled, focusable region (arrow keys scroll it) with shadow cues at the
+ * edges that still have columns to show.
+ */
+export function Table({ className, stickyHeader, caption, ...props }: TableProps) {
+  const id = useId();
+  const captionId = caption ? `${id}-caption` : undefined;
   return (
-    <div
-      className={cn(
-        "w-full overflow-x-auto rounded-panel border border-line",
-        stickyHeader && "max-h-[32rem] overflow-y-auto",
-        regionLabel && "focus-ring",
+    <div className="flex w-full flex-col gap-2">
+      {caption && (
+        <p id={captionId} className="text-dense text-fg-muted">
+          {caption}
+        </p>
       )}
-      {...(regionLabel ? { role: "region", "aria-label": regionLabel, tabIndex: 0 } : {})}
-    >
-      <table
-        data-sticky={stickyHeader ? "" : undefined}
+      <div
         className={cn(
-          "w-full border-collapse text-dense text-fg",
-          "[&[data-sticky]_thead]:sticky [&[data-sticky]_thead]:top-0",
-          className,
+          "scroll-cue-x focus-ring w-full overflow-x-auto rounded-panel border border-line",
+          stickyHeader && "max-h-[20rem] overflow-y-auto",
         )}
-        {...props}
-      />
+        {...(captionId ? { role: "region", "aria-labelledby": captionId, tabIndex: 0 } : {})}
+      >
+        <table
+          data-sticky={stickyHeader ? "" : undefined}
+          {...(captionId ? { "aria-labelledby": captionId } : {})}
+          className={cn(
+            "w-full border-collapse text-dense text-fg",
+            "[&[data-sticky]_thead]:sticky [&[data-sticky]_thead]:top-0 [&[data-sticky]_thead]:z-10",
+            "[&[data-sticky]_thead]:shadow-low",
+            className,
+          )}
+          {...props}
+        />
+      </div>
     </div>
   );
 }
@@ -50,7 +67,7 @@ export function TableHeader({ className, ...props }: HTMLAttributes<HTMLTableSec
 }
 
 export function TableBody({ className, ...props }: HTMLAttributes<HTMLTableSectionElement>) {
-  return <tbody className={cn("bg-panel", className)} {...props} />;
+  return <tbody className={cn("bg-transparent", className)} {...props} />;
 }
 
 export interface TableRowProps extends HTMLAttributes<HTMLTableRowElement> {
@@ -139,5 +156,77 @@ export function TableCell({ className, numeric, ...props }: TableCellProps) {
       className={cn("px-3 py-2 align-top", numeric && "tabular text-right", className)}
       {...props}
     />
+  );
+}
+
+export interface TableSelectProps {
+  checked: boolean;
+  onCheckedChange: (checked: boolean) => void;
+  /** Already translated row name, e.g. the record id, used in the checkbox's accessible name. */
+  rowName?: string;
+  disabled?: boolean;
+}
+
+/** Leading checkbox cell: row selection is a checked box, never only a tinted row. */
+export function TableSelectCell({ checked, onCheckedChange, rowName, disabled }: TableSelectProps) {
+  const t = useT();
+  return (
+    <td className="w-0 px-1 py-0 align-middle">
+      <SelectBox
+        checked={checked}
+        onCheckedChange={onCheckedChange}
+        label={
+          rowName
+            ? t("components.table.selectRowNamed", { row: rowName })
+            : t("components.table.selectRow")
+        }
+        disabled={disabled}
+      />
+    </td>
+  );
+}
+
+/** Header checkbox that selects every row that can be bulk approved. */
+export function TableSelectAllHead({
+  checked,
+  onCheckedChange,
+  disabled,
+}: Omit<TableSelectProps, "rowName">) {
+  const t = useT();
+  return (
+    <th scope="col" className="w-0 px-1 py-0 align-middle">
+      <SelectBox
+        checked={checked}
+        onCheckedChange={onCheckedChange}
+        label={t("components.table.selectAll")}
+        disabled={disabled}
+      />
+    </th>
+  );
+}
+
+function SelectBox({
+  checked,
+  onCheckedChange,
+  label,
+  disabled,
+}: {
+  checked: boolean;
+  onCheckedChange: (checked: boolean) => void;
+  label: string;
+  disabled?: boolean | undefined;
+}) {
+  // The label is the 44px (24px at desktop) hit area around a 16px native checkbox.
+  return (
+    <label className="inline-flex min-h-target min-w-target cursor-pointer items-center justify-center lg:min-h-8 lg:min-w-8">
+      <input
+        type="checkbox"
+        aria-label={label}
+        checked={checked}
+        disabled={disabled}
+        onChange={(e) => onCheckedChange(e.target.checked)}
+        className="focus-ring h-4 w-4 cursor-pointer accent-[var(--color-primary)]"
+      />
+    </label>
   );
 }

@@ -76,8 +76,9 @@ export function StatusBadge({
   const classes = cn(
     "inline-flex items-center gap-1 rounded-chip border font-medium whitespace-nowrap",
     size === "sm" ? "px-1.5 py-0.5 text-cap" : "px-2 py-0.5 text-dense",
-    (href || description) && "focus-ring",
-    href && "underline-offset-2 hover:underline",
+    // Interactive badges get the full target size (44px at 375/768, 24px at desktop).
+    (href || description) && "focus-ring min-h-target lg:min-h-6",
+    href && "underline underline-offset-2",
     STYLE[status],
     className,
   );

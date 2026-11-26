@@ -8,6 +8,7 @@
   "scripts": {
     "build": "tsc -b && vite build",
     "typecheck": "tsc -b test",
+    "lint": "biome check .",
     "test": "vitest run",
     "dev": "vite",
     "gallery": "vite --open /dev/gallery.html",
