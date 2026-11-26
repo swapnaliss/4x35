@@ -23,6 +23,7 @@
     "enabled": true,
     "rules": { "preset": "recommended" }
   },
+  "css": { "parser": { "tailwindDirectives": true } },
   "assist": { "actions": { "source": { "organizeImports": "on" } } },
   "overrides": [
     {

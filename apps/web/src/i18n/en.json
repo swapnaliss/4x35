@@ -1,0 +1,854 @@
+{
+  "components": {
+    "button": {
+      "loading": "Working"
+    },
+    "input": {
+      "counter": "{{used}} / {{max}}",
+      "overLimit": "{{used}} characters; {{element}} allows {{max}}. Nothing is cut: shorten it or leave it for review.",
+      "required": "Required"
+    },
+    "select": {
+      "placeholder": "Choose",
+      "noOptions": "No options"
+    },
+    "table": {
+      "sortAscending": "Sorted ascending",
+      "sortDescending": "Sorted descending",
+      "selectRow": "Select row",
+      "selectAll": "Select all rows that can be bulk approved",
+      "selectRowNamed": "Select {{row}}"
+    },
+    "dialog": {
+      "close": "Close",
+      "cancel": "Cancel"
+    },
+    "toast": {
+      "dismiss": "Dismiss",
+      "region": "Notifications",
+      "undo": "Undo",
+      "view": "View"
+    },
+    "tooltip": {
+      "moreInfo": "More information"
+    },
+    "skeleton": {
+      "loading": "Loading {{what}}"
+    },
+    "emptyState": {
+      "defaultTitle": "Nothing here yet"
+    },
+    "errorState": {
+      "title": "Something went wrong",
+      "status": "Error {{status}}",
+      "traceId": "Trace id",
+      "copyTraceId": "Copy trace id",
+      "copied": "Trace id copied",
+      "fallbackDetail": "The server did not say what went wrong. Try again. If it keeps happening, send the trace id shown here, if there is one, to your workspace owner.",
+      "retry": "Try again",
+      "signInAgain": "Sign in again",
+      "reloadLatest": "Load the latest version",
+      "retryAfter": "Too many requests. Try again in {{seconds}} seconds.",
+      "forbidden": "Your role ({{role}}) cannot do this. Ask a workspace owner.",
+      "offline": "You are offline. Nothing was saved. Reconnect and try again.",
+      "offlineTitle": "You are offline"
+    },
+    "progressPanel": {
+      "counter": "{{done}} of {{total}}",
+      "step": "Step {{current}} of {{steps}}: {{stepName}}",
+      "indeterminate": "{{stepName}}. Counting rows.",
+      "updated": "Updated {{time}}",
+      "stalled": "No update for {{seconds}} seconds. The job is still queued; you can leave this page.",
+      "failed": "Stopped at step {{current}}: {{reason}}",
+      "completed": "Done in {{duration}}"
+    },
+    "statusBadge": {
+      "withCount": "{{label}} {{count}}"
+    },
+    "provenanceChip": {
+      "needsApproval": "Needs individual approval",
+      "accessibleName": "{{label}}: {{reason}}",
+      "accessibleNameNeedsApproval": "{{label}}: {{reason}}. Needs individual approval."
+    }
+  },
+  "status": {
+    "pass": {
+      "label": "Pass",
+      "description": "Meets every rule in {{pack}}."
+    },
+    "fail": {
+      "label": "Fail",
+      "description": "Fails a rule in {{pack}}. Open it to see which one."
+    },
+    "warning": {
+      "label": "Warning",
+      "description": "Meets the rules in {{pack}}, with a note to read."
+    },
+    "review": {
+      "label": "Needs review",
+      "description": "A person needs to look at this before it can be used."
+    },
+    "approved": {
+      "label": "Approved",
+      "description": "Approved by {{name}} on {{date}}."
+    },
+    "empty": {
+      "label": "Left empty",
+      "description": "No value had a source in the input, so nothing was guessed."
+    },
+    "running": {
+      "label": "Running",
+      "description": "A job is working on this now."
+    }
+  },
+  "provenance": {
+    "span": {
+      "label": "From input",
+      "description": "Copied exactly from the original lines: \"{{span}}\"."
+    },
+    "transform": {
+      "label": "Transformed",
+      "description": "\"{{span}}\" changed by the rule {{transform}} (v{{version}})."
+    },
+    "dataset": {
+      "label": "Dataset match",
+      "description": "The only match for \"{{span}}\" in {{dataset}} (record {{recordId}})."
+    },
+    "inferred": {
+      "label": "Inferred",
+      "description": "Derived from {{evidence}} by the rule {{rule}}."
+    },
+    "human": {
+      "label": "Entered by a person",
+      "description": "Entered or approved by {{name}} on {{date}}."
+    },
+    "external": {
+      "label": "External",
+      "description": "Sent by {{tokenName}} through the API on {{date}}."
+    }
+  },
+  "app": {
+    "placeholder": {
+      "title": "4x35 is being built",
+      "body": "This page will become the 4x35 workspace once the first screens are released."
+    }
+  },
+  "appShell": {
+    "skipLink": {
+      "main": "Skip to main content"
+    },
+    "topBar": {
+      "home": "4x35 home",
+      "workspace": "Workspace",
+      "switchWorkspace": "Switch workspace",
+      "shortcuts": "Keyboard shortcuts",
+      "menu": "Menu"
+    },
+    "userMenu": {
+      "label": "Account menu for {{name}}",
+      "role": "Role: {{role}}",
+      "theme": "Theme",
+      "themeSystem": "System",
+      "themeLight": "Light",
+      "themeDark": "Dark",
+      "signOut": "Sign out"
+    },
+    "sandbox": {
+      "banner": "Sandbox: synthetic data, reset nightly."
+    },
+    "stepper": {
+      "label": "Batch steps",
+      "upload": "Upload",
+      "healthReport": "Health report",
+      "review": "Review",
+      "preflight": "Pre-flight",
+      "export": "Export",
+      "compact": "Step {{current}} of {{steps}}: {{stepName}}",
+      "reviewLeft": "{{count}} left",
+      "blockedReview": "Review opens when structuring is done.",
+      "blockedPreflight": "Pre-flight needs a payment file in this batch or a linked one.",
+      "blockedExport": "Export opens when review has started."
+    },
+    "home": {
+      "title": "Batches",
+      "statement": "4x35 turns free-text payment addresses into ISO 20022 structured addresses, with a reason for every field and a person's approval for every change.",
+      "stepOneTitle": "Upload and check",
+      "stepOneBody": "Upload a list or a payment file and pick a bank pack. The health report shows what fails and why.",
+      "stepTwoTitle": "Review with reasons",
+      "stepTwoBody": "Each proposed field shows where it came from. Anything without a source is left empty, never guessed.",
+      "stepThreeTitle": "Pre-flight and export",
+      "stepThreeBody": "Check the payment file against the pack, then download it with an audit report.",
+      "upload": "Upload a file"
+    },
+    "table": {
+      "caption": "Batches in {{workspace}}",
+      "file": "File",
+      "kind": "Kind",
+      "packAndForm": "Pack and form",
+      "status": "Status",
+      "records": "Records",
+      "nextStep": "Next step",
+      "uploaded": "Uploaded",
+      "uploadedBy": "Uploaded by",
+      "kindMasterList": "Supplier or employee list",
+      "kindPaymentFile": "Payment file",
+      "exportedOn": "Exported on {{date}}",
+      "runningStep": "Running: {{stepName}} {{done}} of {{total}}",
+      "nextReview": "Review {{count}} records",
+      "nextHealth": "Open the health report",
+      "nextPreflight": "Pre-flight the payment file",
+      "nextExport": "Export",
+      "loadMore": "Load more"
+    },
+    "empty": {
+      "title": "No batches yet",
+      "body": "Upload a supplier or employee list, or a pain.001 or MT101 payment file. 4x35 checks every address against the bank pack you choose and proposes structured fields with a reason for each.",
+      "sandboxResetting": "The sandbox is being reset. Sample batches return in a few minutes."
+    },
+    "loading": {
+      "batches": "Loading batches",
+      "slow": "Still loading batches. The server is slow to answer."
+    },
+    "session": {
+      "ended": "Your session ended. Sign in again."
+    },
+    "offline": {
+      "banner": "You are offline. Changes cannot be saved until you reconnect.",
+      "back": "You are back online."
+    },
+    "footer": {
+      "retention": "Uploads are deleted after 30 days.",
+      "attributions": "Attributions",
+      "privacy": "Privacy",
+      "version": "Version {{version}} ({{commit}})"
+    },
+    "shortcuts": {
+      "title": "Keyboard shortcuts",
+      "global": "Everywhere",
+      "thisScreen": "On this screen",
+      "goHome": "Go to batches",
+      "goUpload": "Go to upload",
+      "openHelp": "Show this list"
+    }
+  },
+  "export": {
+    "header": {
+      "title": "Export",
+      "scope": "Checked against {{pack}} · last pre-flight {{time}}"
+    },
+    "summary": {
+      "title": "What is included",
+      "approved": "{{count}} approved",
+      "edited": "{{count}} edited",
+      "unknown": "{{count}} left as the original",
+      "pending": "{{count}} not reviewed yet (kept as the original)"
+    },
+    "artefact": {
+      "paymentFile": "Corrected payment file",
+      "paymentFormat": "{{version}} XML",
+      "paymentChanged": "Address blocks changed: {{changed}} of {{total}}. Everything else kept byte for byte.",
+      "list": "Corrected list",
+      "listFormat": "{{format}}, {{encoding}}, {{delimiter}}, {{lineEnding}}, same columns as uploaded",
+      "listChanged": "Rows changed: {{changed}} of {{total}}. Other cells unchanged.",
+      "audit": "Audit report",
+      "auditFormat": "CSV and JSON",
+      "auditContents": "For each record: before, after, provenance, approver, time and pack version.",
+      "ready": "Ready",
+      "readyWithNotes": "Ready with notes: {{count}} transactions still fail in {{pack}}",
+      "building": "Building",
+      "notAvailable": "Not available",
+      "keptOriginal": "{{count}} records kept as the original",
+      "download": "Download {{name}}",
+      "size": "{{size}}",
+      "sha256": "SHA-256",
+      "copyHash": "Copy full SHA-256",
+      "hashCopied": "SHA-256 copied"
+    },
+    "history": {
+      "title": "Previous exports",
+      "caption": "Earlier exports of this batch, newest first",
+      "time": "Time",
+      "person": "Person",
+      "artefact": "Artefact",
+      "pack": "Pack version"
+    },
+    "note": {
+      "retention": "Downloads are deleted with the batch after 30 days. The audit hashes are kept."
+    },
+    "panel": {
+      "title": "Before you download",
+      "fourEyes": "Approved by {{approver}}; uploaded by {{uploader}}.",
+      "fourEyesPending": "{{count}} approvals are waiting for a second person."
+    },
+    "progress": {
+      "building": "Building {{name}}",
+      "loading": "Loading export options"
+    },
+    "empty": {
+      "title": "Nothing to export yet",
+      "body": "Approve or edit at least one record. Records you do not review are exported as they were uploaded.",
+      "review": "Go to review"
+    },
+    "error": {
+      "schema": "The corrected file did not pass the pain.001.001.{{version}} schema check, so it was not offered. {{detail}}",
+      "purged": "This batch was deleted after 30 days. Its audit hashes are kept.",
+      "backToBatches": "Back to batches"
+    },
+    "actions": {
+      "backToPreflight": "Back to pre-flight"
+    },
+    "success": {
+      "saved": "Saved {{file}}. SHA-256 {{hash}}."
+    }
+  },
+  "healthReport": {
+    "header": {
+      "title": "Health report",
+      "scope": "Checked against {{pack}} · {{form}} form · {{date}}",
+      "formStructured": "structured",
+      "formHybrid": "hybrid"
+    },
+    "headline": {
+      "failing": "{{failCount}} of {{total}} records fail at least one rule in {{pack}}.",
+      "allPass": "All {{total}} records meet the rules in {{pack}}.",
+      "soFar": "So far: {{done}} of {{total}} records checked",
+      "excluded": "{{count}} rows could not be read and are not counted."
+    },
+    "strip": {
+      "label": "Records by status"
+    },
+    "bar": {
+      "label": "Share of records by status",
+      "summary": "Pass {{pass}}, Warning {{warning}}, Fail {{fail}}, Needs review {{review}}, Left empty {{empty}}"
+    },
+    "country": {
+      "title": "By country",
+      "caption": "Records by country, sorted by most failures",
+      "country": "Country",
+      "records": "Records",
+      "pass": "Pass",
+      "warning": "Warning",
+      "fail": "Fail",
+      "review": "Needs review",
+      "topFinding": "Top finding",
+      "more": "Show pass and warning counts"
+    },
+    "rule": {
+      "title": "By rule",
+      "caption": "Findings by rule in {{pack}}",
+      "rule": "Rule",
+      "severity": "Severity",
+      "records": "Records",
+      "example": "Example",
+      "viewRecords": "View records"
+    },
+    "next": {
+      "body": "Proposals are ready for {{count}} records. Nothing changes until a person approves it.",
+      "startReview": "Start review",
+      "preflight": "Pre-flight the payment file",
+      "export": "Export"
+    },
+    "pack": {
+      "source": "Source",
+      "retrieved": "Retrieved {{date}}",
+      "effectiveFrom": "Effective from: {{date}}",
+      "effectiveNotSet": "Effective from: not set",
+      "versions": "Message versions: {{versions}}",
+      "ruleCount": "Rules: {{count}}"
+    },
+    "progress": {
+      "title": "Structuring addresses",
+      "tablesPending": "The report fills in when structuring finishes."
+    },
+    "empty": {
+      "title": "No addresses to check",
+      "body": "This file has no party with an address. Nothing was changed.",
+      "action": "Upload another file"
+    },
+    "error": {
+      "batchFailed": "Structuring stopped at step {{step}}: {{reason}}",
+      "uploadAnother": "Upload another file"
+    },
+    "partial": {
+      "unreadable": "{{count}} rows could not be read",
+      "viewUnreadable": "View unreadable rows"
+    },
+    "success": {
+      "done": "Done in {{duration}}"
+    }
+  },
+  "preflight": {
+    "header": {
+      "title": "Pre-flight",
+      "scope": "Checked against {{pack}} (source retrieved {{date}})",
+      "version": "Message version: {{version}}"
+    },
+    "summary": {
+      "before": "Before: as uploaded",
+      "after": "After: with approved addresses",
+      "change": "{{fixed}} transactions moved from fail to pass.",
+      "remaining": "{{remaining}} transactions still fail. Each one lists the rule.",
+      "allPass": "All {{total}} transactions meet the rules in {{pack}}.",
+      "lastRun": "Last run {{time}}"
+    },
+    "link": {
+      "title": "Links to the list",
+      "summary": "Linked by IBAN or account and name: {{matched}} · Ambiguous: {{ambiguous}} · No match: {{none}}",
+      "matched": "Matched",
+      "ambiguous": "Ambiguous",
+      "none": "No match",
+      "onlyApproved": "Only approved or edited addresses are applied.",
+      "resolve": "Resolve in review"
+    },
+    "grid": {
+      "label": "Transactions, {{total}} rows",
+      "before": "Before",
+      "after": "After",
+      "endToEndId": "End-to-end id",
+      "party": "Party",
+      "country": "Country",
+      "amount": "Amount",
+      "link": "Link",
+      "findings": "Findings",
+      "rowLabel": "Transaction {{index}} of {{total}}, {{endToEndId}}. Before: {{before}}. After: {{after}}. {{party}}, {{amount}}. Link: {{link}}.",
+      "notApprovedYet": "Address not approved yet"
+    },
+    "filter": {
+      "label": "Show",
+      "stillFailing": "Still failing",
+      "fixed": "Fixed",
+      "review": "Needs review",
+      "all": "All"
+    },
+    "drawer": {
+      "title": "Transaction {{endToEndId}}",
+      "before": "Address before",
+      "after": "Address after",
+      "onlyRange": "Only this address block changes. The rest of the file is kept byte for byte.",
+      "findings": "Findings in {{pack}}",
+      "linkedRecord": "Linked list record",
+      "openRecord": "Open the record",
+      "close": "Close"
+    },
+    "actions": {
+      "runAgain": "Run pre-flight again",
+      "export": "Go to export"
+    },
+    "progress": {
+      "title": "Pre-flighting {{file}} against {{pack}}",
+      "checking": "Checking transactions"
+    },
+    "empty": {
+      "noFileTitle": "No payment file to pre-flight",
+      "noFileBody": "Upload a pain.001 or MT101 file. Its parties are linked to this list by IBAN or account and name.",
+      "uploadPayment": "Upload a payment file",
+      "noAddressesTitle": "No addresses in this payment file",
+      "noAddressesBody": "There is nothing to check. Nothing was changed."
+    },
+    "error": {
+      "schema": "This file does not match the pain.001.001.{{version}} schema at line {{line}}: {{detail}}.",
+      "packGone": "{{pack}} is not available. Choose another pack version."
+    },
+    "success": {
+      "announce": "{{fixed}} transactions moved from fail to pass. {{remaining}} still fail."
+    }
+  },
+  "recordDetail": {
+    "header": {
+      "back": "Back to review",
+      "scope": "Checked against {{pack}} · {{form}} form",
+      "partyRole": "Party role: {{role}}",
+      "previous": "Previous record",
+      "next": "Next record"
+    },
+    "ruler": {
+      "title": "Original lines",
+      "label": "Original lines, 4 lines of up to 35 characters",
+      "scrollable": "Original lines, scrollable",
+      "line": "Line {{n}}",
+      "length": "{{used}} / 35",
+      "spanButton": "\"{{span}}\", used for {{field}}",
+      "notUsed": "Not used: {{text}}",
+      "allUsed": "Every part of the input is used."
+    },
+    "fields": {
+      "title": "Proposed fields",
+      "caption": "Fields for {{form}} form in {{version}}, with provenance and reason",
+      "field": "Field",
+      "value": "Value",
+      "provenance": "Provenance",
+      "reason": "Reason",
+      "length": "Length",
+      "action": "Action",
+      "leftEmpty": "Left empty",
+      "lengthValue": "{{used}} / {{max}}"
+    },
+    "reason": {
+      "span": "Copied from line {{line}}, characters {{start}} to {{end}}.",
+      "transform": "Rule {{transform}} applied to \"{{span}}\".",
+      "dataset": "Only match for \"{{span}}\" in {{dataset}}, record {{recordId}}.",
+      "inferred": "Inferred from {{evidence}} by {{rule}}. Needs your approval.",
+      "human": "Entered by {{name}} at {{time}}; was \"{{before}}\".",
+      "humanNew": "Entered by {{name}} at {{time}}.",
+      "external": "Sent by {{tokenName}} at {{time}}. Needs a reviewer's approval.",
+      "approvedBy": "Approved by {{name}}.",
+      "emptyNoSpan": "No part of the input is a {{fieldLabel}}, so nothing was guessed.",
+      "emptyAmbiguous": "\"{{span}}\" could be a {{first}} or a {{second}}, so it was not placed.",
+      "emptyDatasetNotUnique": "{{dataset}} has {{count}} matches for \"{{span}}\", so none was used.",
+      "emptyNoTransform": "No listed transform turns \"{{span}}\" into the pack's character set, so it was left for you.",
+      "emptyNoElement": "{{version}} has no element for this. Where the pack allows, it goes to an address line.",
+      "emptyByPerson": "Left empty by {{name}}.",
+      "emptyNothing": "Nothing in the input could be placed in this field."
+    },
+    "provenance": {
+      "evidence": "Evidence",
+      "offsets": "Line {{line}}, characters {{start}} to {{end}}",
+      "transformId": "Transform {{transform}} version {{version}}",
+      "datasetSource": "{{dataset}}, {{licence}}"
+    },
+    "findings": {
+      "title": "Findings in {{pack}}",
+      "none": "No findings. This record meets every rule in {{pack}}.",
+      "element": "Concerns {{element}}",
+      "toPass": "To pass: {{fix}}",
+      "overLength": "{{used}} characters; {{element}} allows {{max}}. Nothing was cut.",
+      "charset": "\"{{char}}\" is not in the pack's character set; the transform {{transform}} would write \"{{replacement}}\".",
+      "mandatoryEmpty": "{{element}} is required in {{form}} form."
+    },
+    "xml": {
+      "title": "XML preview",
+      "show": "Show XML preview",
+      "hide": "Hide XML preview",
+      "before": "Before",
+      "after": "After"
+    },
+    "history": {
+      "title": "History",
+      "approved": "Approved by {{name}} at {{time}}, {{pack}}",
+      "edited": "{{element}} edited by {{name}} at {{time}}",
+      "unknown": "Marked unknown by {{name}} at {{time}}",
+      "reopened": "Reopened by {{name}} at {{time}}",
+      "linked": "Linked to payment-file party {{party}} by {{method}}",
+      "proposed": "Proposal {{version}} built at {{time}} with {{pack}}"
+    },
+    "actions": {
+      "approve": "Approve",
+      "approveBlocked": "Approve record ({{count}} values need your approval first)",
+      "approveValue": "Approve this value",
+      "edit": "Edit",
+      "save": "Save",
+      "cancel": "Cancel",
+      "leaveEmpty": "Leave empty",
+      "markUnknown": "Mark unknown",
+      "reopen": "Reopen",
+      "more": "More actions"
+    },
+    "unknownDialog": {
+      "title": "Mark this record unknown?",
+      "body": "Its original address is kept in exports and listed in the audit report.",
+      "confirm": "Mark unknown"
+    },
+    "reopenDialog": {
+      "title": "Reopen this record?",
+      "body": "It goes back to review. The earlier decision stays in the history.",
+      "confirm": "Reopen"
+    },
+    "link": {
+      "title": "This party matches {{count}} records in the list",
+      "candidate": "{{name}} · account ending {{suffix}} · {{country}}",
+      "choose": "Link this record",
+      "none": "None of these"
+    },
+    "empty": {
+      "title": "No proposal for this record",
+      "body": "4x35 found nothing it could place without guessing. Edit the fields from the original lines, or mark the record unknown."
+    },
+    "loading": {
+      "proposal": "Loading proposal and evidence",
+      "structuring": "Structuring this record"
+    },
+    "error": {
+      "gone": "This record is no longer available. Uploads are deleted after 30 days.",
+      "backToBatches": "Back to batches",
+      "conflict": "{{otherName}} changed this record at {{time}}.",
+      "loadLatest": "Load the latest version",
+      "keepEdit": "Keep my edit"
+    },
+    "success": {
+      "approved": "Approved. Next record?",
+      "nextRecord": "Next record"
+    }
+  },
+  "reviewQueue": {
+    "page": {
+      "title": "Review"
+    },
+    "toolbar": {
+      "progress": "Reviewed {{reviewed}} of {{total}}",
+      "readyForBulk": "{{count}} ready for bulk approve",
+      "search": "Search names, original text or IBAN",
+      "sort": "Sort",
+      "sortRisk": "Risk",
+      "sortCountry": "Country",
+      "sortName": "Name",
+      "sortFileOrder": "File order",
+      "sortedByRisk": "Sorted by risk: failures first",
+      "riskRules": "Failing rules first, then values that need individual approval, then empty mandatory fields, then warnings, then lower confidence. Records that already pass come last.",
+      "filters": "Filters",
+      "filtersActive": "Filters ({{count}})",
+      "density": "Row density",
+      "comfortable": "Comfortable",
+      "compact": "Compact",
+      "selected": "Selected: {{count}}",
+      "bulkApprove": "Bulk approve",
+      "newRows": "New rows: {{count}}"
+    },
+    "grid": {
+      "label": "Records to review, {{total}} rows",
+      "select": "Select",
+      "status": "Status",
+      "name": "Name",
+      "country": "Country",
+      "original": "Original line 1",
+      "proposal": "Proposal",
+      "findings": "Findings",
+      "attention": "Needs attention",
+      "confidence": "Confidence",
+      "confidenceHigh": "High",
+      "confidenceMedium": "Medium",
+      "confidenceLow": "Low",
+      "findingsCount": "{{count}} · {{top}}",
+      "noFindings": "None",
+      "rowLabel": "Row {{index}} of {{total}}. {{status}}. {{name}}, {{country}}. Findings: {{findings}}. {{attention}} {{selected}}",
+      "rowSelected": "Selected.",
+      "rowNotSelected": "Not selected.",
+      "rowAttention": "Holds a value that needs individual approval.",
+      "mandatoryEmpty": "{{element}} left empty",
+      "rowsFailed": "These {{count}} rows did not load"
+    },
+    "filters": {
+      "title": "Filters",
+      "status": "Status",
+      "country": "Country",
+      "rule": "Rule",
+      "provenance": "Provenance",
+      "confidence": "Confidence",
+      "optionCount": "{{label}} ({{count}})",
+      "clear": "Clear filters"
+    },
+    "evidence": {
+      "title": "Evidence for {{name}}",
+      "none": "Select a record to see its evidence.",
+      "original": "Original lines",
+      "ruler": "Original lines, 4 lines of up to 35 characters",
+      "lineLength": "{{used}} / 35",
+      "fields": "Proposed fields",
+      "findings": "Findings in {{pack}}",
+      "resize": "Resize evidence pane"
+    },
+    "actions": {
+      "approve": "Approve",
+      "approving": "Approving",
+      "edit": "Edit",
+      "save": "Save and approve",
+      "cancel": "Cancel",
+      "leaveEmpty": "Leave empty",
+      "markUnknown": "Mark unknown",
+      "openRecord": "Open full record",
+      "confirmIndividual": "Press a again to approve, including the {{kind}} value for {{element}}.",
+      "fourEyes": "This workspace needs a second person: you uploaded this batch, so someone else approves it.",
+      "unknownReason": "Marked unknown by {{name}}"
+    },
+    "bulk": {
+      "title": "Approve {{count}} records?",
+      "eligible": "{{count}} can be approved together: every value comes from the input or a listed transform, and no rule fails.",
+      "excludedFailing": "{{count}} excluded: a rule fails.",
+      "excludedIndividual": "{{count}} excluded: they hold a dataset, inferred or external value that needs individual approval.",
+      "excludedChanged": "{{count}} excluded: changed since you selected them.",
+      "scope": "Checked against {{pack}}. Each decision is recorded with your name.",
+      "confirm": "Approve {{count}}",
+      "nothingEligible": "None of the selected records can be approved together. Review them one by one."
+    },
+    "empty": {
+      "nothingTitle": "Nothing to review",
+      "nothingBody": "All {{total}} records meet the rules in {{pack}} as they are. Nothing was changed.",
+      "noMatchTitle": "No records match these filters",
+      "doneTitle": "Review complete",
+      "doneBody": "{{approved}} approved, {{edited}} edited, {{unknown}} left empty. Each decision is in the audit report.",
+      "preflight": "Pre-flight the payment file",
+      "export": "Export"
+    },
+    "loading": {
+      "records": "Loading records, risk first",
+      "structuring": "Structuring addresses"
+    },
+    "error": {
+      "decision": "Could not approve {{name}}: {{detail}}",
+      "conflict": "{{otherName}} changed this record at {{time}}.",
+      "loadLatest": "Load the latest version"
+    },
+    "partial": {
+      "bulk": "Approved {{approved}} records. {{skipped}} changed since you selected them and were not approved.",
+      "showSkipped": "Show them",
+      "linkAmbiguous": "Matches {{count}} records in the list by account and name"
+    },
+    "success": {
+      "approvedOne": "Approved {{name}}. {{left}} left to review.",
+      "approvedBulk": "Approved {{count}} records. Each decision is recorded with your name and {{pack}}.",
+      "markedUnknown": "Marked {{name}} unknown. Its original address is kept.",
+      "undone": "Undone. {{count}} records are back in review."
+    }
+  },
+  "signIn": {
+    "page": {
+      "title": "Sign in to 4x35",
+      "statement": "Turn free-text payment addresses into ISO 20022 structured addresses, with a reason for every field.",
+      "inviteOnly": "Accounts are by invite only.",
+      "retention": "Uploads are deleted after 30 days."
+    },
+    "form": {
+      "email": "Email",
+      "password": "Password",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password",
+      "submit": "Sign in",
+      "submitting": "Signing in",
+      "forgot": "Forgot your password? Ask a workspace owner for a reset link.",
+      "errorSummary": "Check these fields:"
+    },
+    "error": {
+      "mismatch": "That email and password do not match an account.",
+      "rateLimited": "Too many attempts. Try again in {{seconds}} seconds.",
+      "emailInvalid": "Enter an email address like name@example.com.",
+      "emailRequired": "Enter your email.",
+      "passwordRequired": "Enter your password.",
+      "sessionEnded": "Your session ended. Sign in again.",
+      "passwordShort": "Use at least {{min}} characters.",
+      "passwordMismatch": "The passwords do not match.",
+      "nameRequired": "Enter your name."
+    },
+    "invite": {
+      "title": "Join {{workspace}}",
+      "summary": "{{inviter}} invited you to {{workspace}} as {{role}}.",
+      "checking": "Checking your invite",
+      "name": "Your name",
+      "password": "Password",
+      "confirmPassword": "Confirm password",
+      "passwordRule": "At least {{min}} characters. A passphrase of several words works well.",
+      "submit": "Create account and sign in",
+      "submitting": "Creating account",
+      "existingAccount": "You already have an account. Sign in to join {{workspace}}.",
+      "expired": "This invite has expired or was already used. Ask {{inviter}} for a new one.",
+      "incomplete": "This invite link is incomplete. Open the full link from your invite, or ask the workspace owner for a new one.",
+      "roleOwner": "owner",
+      "roleReviewer": "reviewer"
+    },
+    "reset": {
+      "title": "Set a new password",
+      "newPassword": "New password",
+      "confirmPassword": "Confirm password",
+      "submit": "Set password",
+      "expired": "This reset link has expired or was already used. Ask a workspace owner for a new one."
+    },
+    "success": {
+      "passwordSet": "Password set. You are signed in."
+    }
+  },
+  "upload": {
+    "page": {
+      "title": "Upload a file"
+    },
+    "dropZone": {
+      "heading": "Upload a file",
+      "choose": "Choose a file",
+      "dragHint": "or drop it here",
+      "formats": "CSV, XLSX, pain.001 (.001.03, .001.09, .001.12) or MT101",
+      "limit": "Up to {{limit}}",
+      "keptUnchanged": "The original file is kept unchanged. Uploads are deleted after 30 days.",
+      "sample": "Or use a sample file",
+      "sampleList": "Synthetic supplier list (CSV)",
+      "samplePayment": "Synthetic payment file (pain.001.001.09)"
+    },
+    "detect": {
+      "title": "What we found",
+      "file": "File",
+      "size": "Size",
+      "sha256": "SHA-256",
+      "copyHash": "Copy full SHA-256",
+      "format": "Format",
+      "encoding": "Encoding",
+      "delimiter": "Delimiter",
+      "lineEnding": "Line ending",
+      "rows": "Rows",
+      "transactions": "Transactions"
+    },
+    "progress": {
+      "uploading": "Uploading {{file}}",
+      "reading": "Reading the file: detecting format and encoding",
+      "matchingColumns": "Matching columns"
+    },
+    "mapping": {
+      "title": "Columns",
+      "input": "4x35 input",
+      "source": "Column in your file",
+      "confidence": "Match",
+      "samples": "Sample values",
+      "notMapped": "Not mapped",
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low",
+      "checkThis": "Check this mapping",
+      "swapped": "{{first}} and {{second}} swapped",
+      "fixedByFormat": "The format fixes these fields. They are shown for reference.",
+      "name": "Name",
+      "addressLine": "Address line {{n}}",
+      "postcode": "Postcode",
+      "town": "Town",
+      "country": "Country",
+      "account": "IBAN or account",
+      "partyRole": "Party role"
+    },
+    "pack": {
+      "label": "Bank pack",
+      "option": "{{pack}} · {{source}} · retrieved {{date}}",
+      "effectiveFrom": "Effective from: {{date}}",
+      "effectiveNotSet": "Effective from: not set",
+      "sourceLink": "Open the source (opens in a new tab)"
+    },
+    "form": {
+      "label": "Target form",
+      "structured": "Structured",
+      "structuredHint": "Each part of the address in its own ISO 20022 element.",
+      "hybrid": "Hybrid",
+      "hybridHint": "Town and country are required; at most 2 address lines; nothing repeated."
+    },
+    "version": {
+      "label": "Message version",
+      "pain03Note": "pain.001.001.03 has no elements for building name, floor, post box, room, town location or district. Where the pack allows, those go to address lines; otherwise they become findings."
+    },
+    "llm": {
+      "off": "Span labeller: off for this workspace",
+      "on": "Span labeller: on (labels and substrings only; values always come from your file)"
+    },
+    "actions": {
+      "check": "Check {{count}} records against {{pack}}",
+      "chooseAnother": "Choose another file",
+      "mapRequired": "Map at least the address lines or the country to continue."
+    },
+    "error": {
+      "unsupported": "This file type is not supported. Upload CSV, XLSX, pain.001 (.001.03, .001.09, .001.12) or MT101.",
+      "tooLarge": "This file is {{size}}. The limit is {{limit}}.",
+      "doctype": "This XML file declares a DOCTYPE, which 4x35 does not read for safety. Export the file again without it.",
+      "encoding": "4x35 could not tell how this file's text is encoded. Save it as UTF-8 and upload again."
+    },
+    "partial": {
+      "unreadableRows": "{{count}} rows could not be read and are listed in the health report. The other rows can be checked.",
+      "viewRows": "View unreadable rows",
+      "duplicate": "You uploaded this file with the same pack and form on {{date}}.",
+      "openExisting": "Open that batch"
+    },
+    "success": {
+      "toast": "Upload saved. Checking against {{pack}}."
+    }
+  }
+}

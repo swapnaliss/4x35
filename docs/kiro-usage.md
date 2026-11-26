@@ -54,3 +54,15 @@ ticket); the active-state set for `→ failed` and the `purgeEligible` purge gua
 code; the inferred-from-field chain rule added to `design.md`. **M1-01 total: 22.34 credits** (11.52 → 33.86). The
 pool is shared and M1-06 ran Kiro in the same window, so both readings are pool deltas and may include its credits
 (BL-01 7183592046).
+
+### M1-06 · design steering
+
+| Date | Ticket | Surface | What ran | Kiro | Credits | Balance |
+|---|---|---|---|---|---|---|
+| 2026-11-26 | M1-06 | Steering | One headless session (`kiro-cli chat --no-interactive --trust-all-tools --trust-workspace`) authored `.kiro/steering/design.md` (`inclusion: fileMatch` on `apps/web/**`, `docs/design/**`) from `docs/design/README.md` (written by the `ux-designer` agent), `apps/web/src/styles/tokens.css` and `app.css`: screens built to spec, token-to-utility map, status and provenance vocabularies, copy and i18n rules, accessibility, components to reuse | CLI 3.6.2 | 1.09 | 34.95 |
+
+Review edits (Claude Code, against the sources): none. Kiro flagged two choices of its own, both checked against
+`app.css`: the `ring-ring` and `h-row` / `h-row-compact` utility names exist (theme names `--color-ring`, `--spacing-row`),
+and the added rule that a new colour becomes a token in both themes first matches the design README. This ticket is
+design work, not a capability, so it has no `.kiro/specs/` entry. **M1-06 total: 1.09 credits** (33.86 → 34.95; the pool
+is shared with concurrent workers).

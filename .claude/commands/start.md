@@ -181,10 +181,11 @@ Re-read the issue body. Then, **mechanically**:
 2. **Deliverables** — confirm each listed path exists and is non-empty.
 3. **Validation Gate** — run every command from the ticket verbatim. Paste the real output.
    Gate commands write under `$TMPDIR`, which worker shells leave unset (BL-01 7127754026). In the
-   same shell, first point it at a writable scratch directory (the session scratchpad when one is
-   listed):
+   same shell, first point it at a writable scratch directory with a **short** path. Chrome (Playwright
+   e2e) aborts with "Socket path too long" when `$TMPDIR` is as long as a session scratchpad path
+   (BL-01 7184280225), so use a short directory under the sandbox's writable temp root:
    ```bash
-   export TMPDIR="${TMPDIR:-<session scratchpad directory>}" && mkdir -p "$TMPDIR"
+   export TMPDIR="/tmp/claude-$(id -u)/<ticket-id-lowercase>" && mkdir -p "$TMPDIR"
    ```
 4. **Repo-wide checks** (always, regardless of ticket):
 ```bash

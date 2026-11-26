@@ -1,0 +1,277 @@
+/*
+ * 4x35 design tokens (M1-06). Source of truth: docs/design/README.md "Design tokens".
+ * Plain CSS custom properties. Light on :root, dark on [data-theme="dark"], and the same dark
+ * values under prefers-color-scheme when the user has not forced light.
+ * Colours are hex #rrggbb only: the token contrast test parses them.
+ * Status and provenance colours are never the only signal: every badge and chip also has an
+ * icon and a text label (docs/design/README.md "Status vocabulary").
+ */
+
+:root {
+  color-scheme: light;
+
+  /* Surfaces and text */
+  --color-bg: #f5f4f0;
+  --color-surface: #ffffff;
+  --color-surface-raised: #fbfaf7;
+  --color-border: #dcd9d1;
+  --color-border-strong: #7d7a72;
+  --color-text: #1a1d21;
+  --color-text-muted: #545961;
+  --color-primary: #1f4b84;
+  --color-primary-fg: #ffffff;
+  --color-primary-hover: #173a68;
+  --color-danger: #b3261e;
+  --color-danger-fg: #ffffff;
+  --color-focus: #1f5fd1;
+  --color-overlay: #11151a;
+  --overlay-opacity: 0.55;
+  --color-row-hover: #f0eee8;
+  --color-row-selected: #e6edf7;
+  --color-highlight-span: #fff1b8;
+
+  /* Status: pass, fail, warning, review, approved, empty, running */
+  --status-pass-fg: #0b5f55;
+  --status-pass-bg: #e2f2ee;
+  --status-pass-border: #3f8f84;
+  --status-fail-fg: #86230b;
+  --status-fail-bg: #fbdccf;
+  --status-fail-border: #c4532f;
+  --status-warning-fg: #6b4a00;
+  --status-warning-bg: #fbefc8;
+  --status-warning-border: #a07a12;
+  --status-review-fg: #5b2a86;
+  --status-review-bg: #efe6f8;
+  --status-review-border: #8a5cb8;
+  --status-approved-fg: #23408f;
+  --status-approved-bg: #e3e9f8;
+  --status-approved-border: #5672bf;
+  --status-empty-fg: #4a4f57;
+  --status-empty-bg: #eeede9;
+  --status-empty-border: #85827a;
+  --status-running-fg: #0a5577;
+  --status-running-bg: #dff0f8;
+  --status-running-border: #3e8ab0;
+
+  /* Provenance: span, transform, dataset, inferred, human, external */
+  --prov-span-fg: #1d4a78;
+  --prov-span-bg: #e4edf7;
+  --prov-span-border: #5b82ad;
+  --prov-transform-fg: #0c5866;
+  --prov-transform-bg: #ddf0f3;
+  --prov-transform-border: #3e8c99;
+  --prov-dataset-fg: #6e4300;
+  --prov-dataset-bg: #f9ebd2;
+  --prov-dataset-border: #a8752a;
+  --prov-inferred-fg: #84195f;
+  --prov-inferred-bg: #f7e2ef;
+  --prov-inferred-border: #b5508f;
+  --prov-human-fg: #2e5b17;
+  --prov-human-bg: #e5f1dc;
+  --prov-human-border: #5f8f45;
+  --prov-external-fg: #5a4434;
+  --prov-external-bg: #efe8e1;
+  --prov-external-border: #8f7562;
+
+  /* Type: system stacks only, no web font downloads. Fallbacks cover Latin, Cyrillic, Greek,
+     CJK (JP, SC, TC, KR), Devanagari and other Indic scripts, Arabic and Hebrew. */
+  --font-sans:
+    system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", "Helvetica Neue", Arial,
+    "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Meiryo", "Noto Sans CJK JP",
+    "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", "PingFang TC", "Microsoft JhengHei",
+    "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans CJK KR", "Kohinoor Devanagari",
+    "Nirmala UI", "Noto Sans Devanagari", "Geeza Pro", "Noto Sans Arabic", "Noto Naskh Arabic",
+    "Segoe UI Historic", sans-serif;
+  --font-mono:
+    ui-monospace, "SFMono-Regular", "SF Mono", "Cascadia Mono", "Segoe UI Mono",
+    Menlo, Consolas, "Liberation Mono", "Noto Sans Mono", "DejaVu Sans Mono", "Noto Sans Mono CJK JP",
+    "MS Gothic", monospace;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --leading-tight: 1.25;
+  --leading-normal: 1.5;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+
+  /* Spacing (4px base) */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+
+  /* Shape, focus, targets, elevation */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.625rem;
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+  --target-min: 44px;
+  --target-min-desktop: 24px;
+  --row-height: 2.75rem;
+  --row-height-compact: 2.25rem;
+  --shadow-sm: 0 1px 2px 0 color-mix(in srgb, #1a1d21 8%, transparent);
+  --shadow-md:
+    0 4px 12px -2px color-mix(in srgb, #1a1d21 12%, transparent),
+    0 2px 4px -2px color-mix(in srgb, #1a1d21 8%, transparent);
+
+  /* Motion: honoured only when the user has not asked for reduced motion */
+  --duration-fast: 120ms;
+  --duration-normal: 200ms;
+  --easing-standard: cubic-bezier(0.2, 0, 0, 1);
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --color-bg: #111418;
+  --color-surface: #171b20;
+  --color-surface-raised: #1f242a;
+  --color-border: #2f353d;
+  --color-border-strong: #7b838e;
+  --color-text: #e7e9ec;
+  --color-text-muted: #a5adb8;
+  --color-primary: #8fb4ec;
+  --color-primary-fg: #0d1a2e;
+  --color-primary-hover: #a9c6f2;
+  --color-danger: #f29b8f;
+  --color-danger-fg: #2a0a06;
+  --color-focus: #8ab8ff;
+  --color-overlay: #000000;
+  --overlay-opacity: 0.65;
+  --color-row-hover: #1d2228;
+  --color-row-selected: #1c2a3d;
+  --color-highlight-span: #4a3d0c;
+
+  --status-pass-fg: #7fd6c7;
+  --status-pass-bg: #0b2420;
+  --status-pass-border: #3f9486;
+  --status-fail-fg: #ffc2ad;
+  --status-fail-bg: #5c1f0f;
+  --status-fail-border: #c9603c;
+  --status-warning-fg: #f2d27a;
+  --status-warning-bg: #352a08;
+  --status-warning-border: #a8862a;
+  --status-review-fg: #d4b8f0;
+  --status-review-bg: #2c1c40;
+  --status-review-border: #8f6bbd;
+  --status-approved-fg: #b3c6f5;
+  --status-approved-bg: #1a2648;
+  --status-approved-border: #6a84c8;
+  --status-empty-fg: #c2c7ce;
+  --status-empty-bg: #262a30;
+  --status-empty-border: #7d848d;
+  --status-running-fg: #92d0ee;
+  --status-running-bg: #0d2a3a;
+  --status-running-border: #4a93b8;
+
+  --prov-span-fg: #a9c8ef;
+  --prov-span-bg: #172a40;
+  --prov-span-border: #5b83b3;
+  --prov-transform-fg: #8fd4e0;
+  --prov-transform-bg: #0d2c33;
+  --prov-transform-border: #3f909e;
+  --prov-dataset-fg: #f0c784;
+  --prov-dataset-bg: #33240a;
+  --prov-dataset-border: #a87d34;
+  --prov-inferred-fg: #f0a9d6;
+  --prov-inferred-bg: #3a1330;
+  --prov-inferred-border: #b65a93;
+  --prov-human-fg: #a9d98e;
+  --prov-human-bg: #1b2e12;
+  --prov-human-border: #66984b;
+  --prov-external-fg: #d9c3b1;
+  --prov-external-bg: #2e241c;
+  --prov-external-border: #927a67;
+
+  --shadow-sm: 0 1px 2px 0 color-mix(in srgb, #000000 40%, transparent);
+  --shadow-md:
+    0 4px 12px -2px color-mix(in srgb, #000000 50%, transparent),
+    0 2px 4px -2px color-mix(in srgb, #000000 40%, transparent);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --color-bg: #111418;
+    --color-surface: #171b20;
+    --color-surface-raised: #1f242a;
+    --color-border: #2f353d;
+    --color-border-strong: #7b838e;
+    --color-text: #e7e9ec;
+    --color-text-muted: #a5adb8;
+    --color-primary: #8fb4ec;
+    --color-primary-fg: #0d1a2e;
+    --color-primary-hover: #a9c6f2;
+    --color-danger: #f29b8f;
+    --color-danger-fg: #2a0a06;
+    --color-focus: #8ab8ff;
+    --color-overlay: #000000;
+    --overlay-opacity: 0.65;
+    --color-row-hover: #1d2228;
+    --color-row-selected: #1c2a3d;
+    --color-highlight-span: #4a3d0c;
+
+    --status-pass-fg: #7fd6c7;
+    --status-pass-bg: #0b2420;
+    --status-pass-border: #3f9486;
+    --status-fail-fg: #ffc2ad;
+    --status-fail-bg: #5c1f0f;
+    --status-fail-border: #c9603c;
+    --status-warning-fg: #f2d27a;
+    --status-warning-bg: #352a08;
+    --status-warning-border: #a8862a;
+    --status-review-fg: #d4b8f0;
+    --status-review-bg: #2c1c40;
+    --status-review-border: #8f6bbd;
+    --status-approved-fg: #b3c6f5;
+    --status-approved-bg: #1a2648;
+    --status-approved-border: #6a84c8;
+    --status-empty-fg: #c2c7ce;
+    --status-empty-bg: #262a30;
+    --status-empty-border: #7d848d;
+    --status-running-fg: #92d0ee;
+    --status-running-bg: #0d2a3a;
+    --status-running-border: #4a93b8;
+
+    --prov-span-fg: #a9c8ef;
+    --prov-span-bg: #172a40;
+    --prov-span-border: #5b83b3;
+    --prov-transform-fg: #8fd4e0;
+    --prov-transform-bg: #0d2c33;
+    --prov-transform-border: #3f909e;
+    --prov-dataset-fg: #f0c784;
+    --prov-dataset-bg: #33240a;
+    --prov-dataset-border: #a87d34;
+    --prov-inferred-fg: #f0a9d6;
+    --prov-inferred-bg: #3a1330;
+    --prov-inferred-border: #b65a93;
+    --prov-human-fg: #a9d98e;
+    --prov-human-bg: #1b2e12;
+    --prov-human-border: #66984b;
+    --prov-external-fg: #d9c3b1;
+    --prov-external-bg: #2e241c;
+    --prov-external-border: #927a67;
+
+    --shadow-sm: 0 1px 2px 0 color-mix(in srgb, #000000 40%, transparent);
+    --shadow-md:
+      0 4px 12px -2px color-mix(in srgb, #000000 50%, transparent),
+      0 2px 4px -2px color-mix(in srgb, #000000 40%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration-normal: 0ms;
+  }
+}
