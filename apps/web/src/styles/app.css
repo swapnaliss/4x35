@@ -1,0 +1,121 @@
+/* Tailwind 4.3.5 theme wired to tokens.css (M1-06). Utilities name a design token, never a raw
+   colour: the default palette is cleared, so `bg-red-500` does not exist. Theme values and dark mode
+   live in tokens.css; Tailwind's names differ from the token names so nothing refers to itself. */
+@import "tailwindcss";
+@import "./tokens.css";
+
+@theme {
+  --color-*: initial;
+  --font-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+}
+
+@theme inline {
+  --color-canvas: var(--color-bg);
+  --color-panel: var(--color-surface);
+  --color-panel-raised: var(--color-surface-raised);
+  --color-line: var(--color-border);
+  --color-line-strong: var(--color-border-strong);
+  --color-fg: var(--color-text);
+  --color-fg-muted: var(--color-text-muted);
+  --color-accent: var(--color-primary);
+  --color-accent-hover: var(--color-primary-hover);
+  --color-on-accent: var(--color-primary-fg);
+  --color-destructive: var(--color-danger);
+  --color-on-destructive: var(--color-danger-fg);
+  --color-ring: var(--color-focus);
+  --color-scrim: var(--color-overlay);
+  --color-row-hover: var(--color-row-hover);
+  --color-row-selected: var(--color-row-selected);
+  --color-span-highlight: var(--color-highlight-span);
+  --color-transparent: transparent;
+  --color-current: currentColor;
+  --color-st-pass: var(--status-pass-fg);
+  --color-st-pass-bg: var(--status-pass-bg);
+  --color-st-pass-line: var(--status-pass-border);
+  --color-st-fail: var(--status-fail-fg);
+  --color-st-fail-bg: var(--status-fail-bg);
+  --color-st-fail-line: var(--status-fail-border);
+  --color-st-warning: var(--status-warning-fg);
+  --color-st-warning-bg: var(--status-warning-bg);
+  --color-st-warning-line: var(--status-warning-border);
+  --color-st-review: var(--status-review-fg);
+  --color-st-review-bg: var(--status-review-bg);
+  --color-st-review-line: var(--status-review-border);
+  --color-st-approved: var(--status-approved-fg);
+  --color-st-approved-bg: var(--status-approved-bg);
+  --color-st-approved-line: var(--status-approved-border);
+  --color-st-empty: var(--status-empty-fg);
+  --color-st-empty-bg: var(--status-empty-bg);
+  --color-st-empty-line: var(--status-empty-border);
+  --color-st-running: var(--status-running-fg);
+  --color-st-running-bg: var(--status-running-bg);
+  --color-st-running-line: var(--status-running-border);
+  --color-pv-span: var(--prov-span-fg);
+  --color-pv-span-bg: var(--prov-span-bg);
+  --color-pv-span-line: var(--prov-span-border);
+  --color-pv-transform: var(--prov-transform-fg);
+  --color-pv-transform-bg: var(--prov-transform-bg);
+  --color-pv-transform-line: var(--prov-transform-border);
+  --color-pv-dataset: var(--prov-dataset-fg);
+  --color-pv-dataset-bg: var(--prov-dataset-bg);
+  --color-pv-dataset-line: var(--prov-dataset-border);
+  --color-pv-inferred: var(--prov-inferred-fg);
+  --color-pv-inferred-bg: var(--prov-inferred-bg);
+  --color-pv-inferred-line: var(--prov-inferred-border);
+  --color-pv-human: var(--prov-human-fg);
+  --color-pv-human-bg: var(--prov-human-bg);
+  --color-pv-human-line: var(--prov-human-border);
+  --color-pv-external: var(--prov-external-fg);
+  --color-pv-external-bg: var(--prov-external-bg);
+  --color-pv-external-line: var(--prov-external-border);
+
+  --font-ui: var(--font-sans);
+  --font-code: var(--font-mono);
+  --text-cap: var(--text-xs);
+  --text-dense: var(--text-sm);
+  --text-body: var(--text-base);
+  --text-lead: var(--text-lg);
+  --text-title: var(--text-xl);
+  --text-headline: var(--text-2xl);
+  --radius-chip: var(--radius-sm);
+  --radius-control: var(--radius-md);
+  --radius-panel: var(--radius-lg);
+  --shadow-low: var(--shadow-sm);
+  --shadow-float: var(--shadow-md);
+  --spacing-target: var(--target-min);
+  --spacing-target-desktop: var(--target-min-desktop);
+  --spacing-row: var(--row-height);
+  --spacing-row-compact: var(--row-height-compact);
+}
+
+/* Visible focus for every interactive element (README "Components"). */
+@utility focus-ring {
+  &:focus-visible {
+    outline: var(--focus-ring-width) solid var(--color-focus);
+    outline-offset: var(--focus-ring-offset);
+  }
+}
+
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+@layer base {
+  body {
+    margin: 0;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: var(--leading-normal);
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    line-height: var(--leading-tight);
+  }
+}
