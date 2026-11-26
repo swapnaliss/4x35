@@ -1,7 +1,6 @@
 import { readFileSync } from "node:fs";
-import { serve } from "@hono/node-server";
-import { createApp } from "./app.js";
-import { type LogLevel, readEnv, servesHttp } from "./env.js";
+import { type LogLevel, readEnv } from "./env.js";
+import { startProcess } from "./process.js";
 
 // Process entry point. pino replaces this minimal logger in M1-05.
 const env = readEnv(process.env);
@@ -16,25 +15,29 @@ const pkg = JSON.parse(readFileSync(new URL("../package.json", import.meta.url),
 };
 const info = { version: pkg.version, commit: env.COMMIT };
 
-const stops: Array<() => void> = [];
+const handle = await startProcess(env, info, {
+  onListening: (port) => log("info", "http listening", { port, mode: env.MODE, ...info }),
+  onError: (err) => log("error", "jobs error", { error: err.message }),
+});
+log("info", "started", {
+  mode: env.MODE,
+  workers: handle.jobs.workerIds.length,
+  http: handle.http !== null,
+  ...info,
+});
 
-if (servesHttp(env.MODE)) {
-  const server = serve({ fetch: createApp(info).fetch, port: env.PORT }, (addr) =>
-    log("info", "http listening", { port: addr.port, mode: env.MODE, ...info }),
-  );
-  stops.push(() => server.close());
-}
-
-if (env.MODE !== "web") {
-  // Worker: no jobs until pg-boss lands (M0-06 / M1). Keep the process alive without a listener.
-  const tick = setInterval(() => undefined, 60_000);
-  stops.push(() => clearInterval(tick));
-  log("info", "worker started", { mode: env.MODE, ...info });
-}
-
+// Graceful stop: HTTP closes, pg-boss stops fetching and lets active jobs finish (up to 25 s).
 for (const signal of ["SIGTERM", "SIGINT"] as const) {
   process.once(signal, () => {
     log("info", "shutting down", { signal });
-    for (const stop of stops) stop();
+    handle.stop().then(
+      () => process.exit(0),
+      (err: unknown) => {
+        log("error", "shutdown failed", {
+          error: err instanceof Error ? err.message : String(err),
+        });
+        process.exit(1);
+      },
+    );
   });
 }
