@@ -66,3 +66,16 @@ Review edits (Claude Code, against the sources): none. Kiro flagged two choices 
 and the added rule that a new colour becomes a token in both themes first matches the design README. This ticket is
 design work, not a capability, so it has no `.kiro/specs/` entry. **M1-06 total: 1.09 credits** (33.86 → 34.95; the pool
 is shared with concurrent workers).
+
+### M1-02 · persistence spec
+
+| Date | Ticket | Surface | What ran | Kiro | Credits | Balance |
+|---|---|---|---|---|---|---|
+| 2026-11-26 | M1-02 | Spec | `--mode spec` created `.kiro/specs/persistence/` from the ticket, architecture §2/§5/§7, ADRs 0003–0006/0023, the core entities and the steering: EARS `requirements.md` (R1–R11), then (resumed session) `design.md` with P1 (`P-entity-roundtrip`) and the trigger, purge and enum-CHECK decisions, `tasks.md` (12 tasks, dependency graph), `.config.kiro`. Kiro's own review tightened the decisions DELETE rule (depth > 1 **and** parent record gone) | CLI 3.6.2 | 11.32 | 46.27 |
+| 2026-11-26 | M1-02 | Spec (checkpoint) | Task 12 checkpoint: Kiro ran `db:migrate` ×2, the db integration tests (20, P1 at 200 runs) and unit tests, `drizzle-kit check`, `db:generate` (no changes), typecheck and biome; aligned `design.md`/`tasks.md` with the implemented code (helper names, `0002_immutability.sql`, harness API, `entityGraph`, the planted bug and its seed) and marked tasks 1–10 and 12 `[x]` | CLI 3.6.2 | 5.85 | 52.12 |
+
+Tasks 1–10 were implemented by Claude Code from the spec's task list; Kiro authored the spec and ran the checkpoint;
+task 11 (this entry) is Claude Code's. Review edits to Kiro's spec (Claude Code): none to `requirements.md`; the design's
+"purge_after only when null" and "`fc.oneof` over eight entities" were replaced by what was built (always overwritten;
+one connected entity graph per run), through the checkpoint prompt. **M1-02 total: 17.17 credits** (34.95 → 52.12; the
+pool is shared with concurrent workers, BL-01 7183592046).
