@@ -63,6 +63,8 @@ export async function validateSession(
   const row = await identity.findLiveSession(idHash);
   if (!row) return null;
   if (row.expiresAt.getTime() <= now.getTime()) return null;
+  // The 7-day cap holds even if a stored deadline were ever past it.
+  if (row.createdAt.getTime() + ABSOLUTE_MS <= now.getTime()) return null;
   const next = idleDeadline(row.createdAt, now);
   if (next.getTime() - row.expiresAt.getTime() >= TOUCH_EVERY_MS) {
     await identity.touchSession(idHash, next);

@@ -37,7 +37,11 @@ export function readEnv(source: Record<string, string | undefined>): Env {
 }
 
 /** Session and CSRF keys for an HTTP process; throws (key names only) when either is missing. */
-export function authConfig(env: Env): { sessionSecret: string; csrfSecret: string; secureCookie: boolean } {
+export function authConfig(env: Env): {
+  sessionSecret: string;
+  csrfSecret: string;
+  secureCookie: boolean;
+} {
   const missing = (["SESSION_SECRET", "CSRF_SECRET"] as const).filter((k) => env[k] === undefined);
   if (env.SESSION_SECRET === undefined || env.CSRF_SECRET === undefined) {
     throw new Error(`invalid environment: ${missing.join(", ")} not set`);

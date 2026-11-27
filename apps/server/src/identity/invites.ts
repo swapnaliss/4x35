@@ -72,7 +72,8 @@ export async function acceptInvite(
     const existing = await identity.findUserByEmail(invite.email);
     let userId: string;
     if (existing?.passwordHash) {
-      if (!(await verifyPassword(existing.passwordHash, password))) return { kind: "wrong_password" };
+      if (!(await verifyPassword(existing.passwordHash, password)))
+        return { kind: "wrong_password" };
       userId = existing.id;
     } else {
       const check = checkPassword(password, invite.email);

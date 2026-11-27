@@ -23,11 +23,15 @@ function envFile(): string | undefined {
   const root = resolve(dirname(fileURLToPath(import.meta.url)), "../../..");
   if (existsSync(join(root, ".env"))) return join(root, ".env");
   try {
-    const common = execFileSync("git", ["rev-parse", "--path-format=absolute", "--git-common-dir"], {
-      cwd: root,
-      encoding: "utf8",
-      stdio: ["ignore", "pipe", "ignore"],
-    }).trim();
+    const common = execFileSync(
+      "git",
+      ["rev-parse", "--path-format=absolute", "--git-common-dir"],
+      {
+        cwd: root,
+        encoding: "utf8",
+        stdio: ["ignore", "pipe", "ignore"],
+      },
+    ).trim();
     const main = join(dirname(common), ".env");
     return existsSync(main) ? main : undefined;
   } catch {
@@ -73,7 +77,9 @@ try {
       }
       break;
     case "pending":
-      process.stdout.write("pending owner invite exists for the bootstrap admin; nothing created\n");
+      process.stdout.write(
+        "pending owner invite exists for the bootstrap admin; nothing created\n",
+      );
       break;
     case "owner_exists":
       process.stdout.write("bootstrap admin is already an owner; nothing created\n");

@@ -14,20 +14,23 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../../..");
 const SCHEMA_DIR = "packages/db/src/schema/";
 
 /** Paths (repo-relative, `/`-separated) allowed to import the tables, with the reason. */
-const ALLOWED: readonly { readonly path: string; readonly typeOnly: boolean; readonly why: string }[] =
-  [
-    { path: "packages/db/src/repo/", typeOnly: false, why: "the repository layer itself" },
-    { path: SCHEMA_DIR, typeOnly: false, why: "the table definitions" },
-    { path: "packages/db/src/client.ts", typeOnly: false, why: "registers the tables with Drizzle" },
-    { path: "packages/db/src/mappers/", typeOnly: true, why: "row types only, no queries" },
-    { path: "packages/db/test/schema.test.ts", typeOnly: false, why: "DDL test of the schema" },
-    { path: "packages/db/test/schema.int.test.ts", typeOnly: false, why: "DDL test of the schema" },
-    {
-      path: "packages/db/test/roundtrip.int.test.ts",
-      typeOnly: false,
-      why: "row round-trip test of the schema (M1-02)",
-    },
-  ];
+const ALLOWED: readonly {
+  readonly path: string;
+  readonly typeOnly: boolean;
+  readonly why: string;
+}[] = [
+  { path: "packages/db/src/repo/", typeOnly: false, why: "the repository layer itself" },
+  { path: SCHEMA_DIR, typeOnly: false, why: "the table definitions" },
+  { path: "packages/db/src/client.ts", typeOnly: false, why: "registers the tables with Drizzle" },
+  { path: "packages/db/src/mappers/", typeOnly: true, why: "row types only, no queries" },
+  { path: "packages/db/test/schema.test.ts", typeOnly: false, why: "DDL test of the schema" },
+  { path: "packages/db/test/schema.int.test.ts", typeOnly: false, why: "DDL test of the schema" },
+  {
+    path: "packages/db/test/roundtrip.int.test.ts",
+    typeOnly: false,
+    why: "row round-trip test of the schema (M1-02)",
+  },
+];
 
 const SCANNED_ROOTS = ["apps", "packages", "integrations"];
 const SKIP_DIRS = new Set(["node_modules", "dist", "build", "coverage", ".turbo"]);
@@ -78,7 +81,10 @@ export function tableImports(file: string, source: string): TableImport[] {
     if (reachesSchema(spec)) found.push({ specifier: spec, typeOnly });
     else if (spec === "@4x35/db" && /(^|[\s{,*])(as\s+)?schema\b/.test(clause)) {
       // `import { schema } from "@4x35/db"` or `{ type X, schema }`: a value import of the tables.
-      const names = clause.replace(/[{}]/g, "").split(",").map((n) => n.trim());
+      const names = clause
+        .replace(/[{}]/g, "")
+        .split(",")
+        .map((n) => n.trim());
       const valueSchema = names.some((n) => /^schema(\s+as\s+\w+)?$/.test(n));
       if (valueSchema || /\*\s+as\s+schema/.test(clause)) found.push({ specifier: spec, typeOnly });
     }
@@ -96,7 +102,8 @@ export function tableImports(file: string, source: string): TableImport[] {
 
 function allowed(file: string, imp: TableImport): boolean {
   return ALLOWED.some(
-    (a) => (file === a.path || (a.path.endsWith("/") && file.startsWith(a.path))) &&
+    (a) =>
+      (file === a.path || (a.path.endsWith("/") && file.startsWith(a.path))) &&
       (!a.typeOnly || imp.typeOnly),
   );
 }
@@ -104,12 +111,16 @@ function allowed(file: string, imp: TableImport): boolean {
 describe("no raw Drizzle tables outside packages/db/src/repo/ (M1-03 AC 8)", () => {
   it("the scanner finds table imports in each form (planted violations)", () => {
     const f = "apps/server/src/x.ts";
+    // Built at run time, so this file's own text holds no table import for the scan to find.
+    const S = ["..", "..", "..", "packages", "db", "src", "schema"].join("/");
     expect(tableImports(f, 'import { schema } from "@4x35/db";')).toHaveLength(1);
-    expect(tableImports(f, 'import { type Database, schema, withTx } from "@4x35/db";')).toHaveLength(1);
+    expect(
+      tableImports(f, 'import { type Database, schema, withTx } from "@4x35/db";'),
+    ).toHaveLength(1);
     expect(tableImports(f, 'import { type Database, withTx } from "@4x35/db";')).toHaveLength(0);
-    expect(tableImports(f, 'import * as s from "../../../packages/db/src/schema/index.js";')).toHaveLength(1);
-    expect(tableImports(f, 'const s = await import("../../../packages/db/src/schema/batches.js");')).toHaveLength(1);
-    expect(tableImports(f, 'export { users } from "../../../packages/db/src/schema/identity.js";')).toHaveLength(1);
+    expect(tableImports(f, `import * as s from "${S}/index.js";`)).toHaveLength(1);
+    expect(tableImports(f, `const s = await import("${S}/batches.js");`)).toHaveLength(1);
+    expect(tableImports(f, `export { users } from "${S}/identity.js";`)).toHaveLength(1);
     const repoFile = "packages/db/src/repo/x.ts";
     const imp = tableImports(repoFile, 'import { users } from "../schema/index.js";');
     expect(imp).toHaveLength(1);

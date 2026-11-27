@@ -7,7 +7,7 @@ import { type Database, forWorkspace, identityRepository, withTx } from "@4x35/d
 import { createRoute, type OpenAPIHono, z } from "@hono/zod-openapi";
 import type { AppEnv } from "../app.js";
 import { type ProblemStatus, problem, problemBody } from "../middleware/problem.js";
-import type { AuthConfig, AuthEnv } from "../middleware/session.js";
+import type { AuthConfig } from "../middleware/session.js";
 import { csrfToken } from "./csrf.js";
 import { acceptInvite, issueInvite, issueReset, redeemReset } from "./invites.js";
 import { burnVerify, MIN_PASSWORD_LENGTH, verifyPassword } from "./passwords.js";
@@ -214,10 +214,13 @@ export function registerIdentityRoutes(app: App, deps: IdentityDeps): void {
   app.openapi(login, async (c) => {
     const { email, password } = c.req.valid("json");
     const user = await identityRepository(db).findUserByEmail(email);
-    const ok =
-      user?.passwordHash != null
-        ? await verifyPassword(user.passwordHash, password)
-        : (await burnVerify(password), false);
+    let ok = false;
+    if (user?.passwordHash != null) {
+      ok = await verifyPassword(user.passwordHash, password);
+    } else {
+      // Unknown email (or no password yet): the same argon2id work, then the same answer.
+      await burnVerify(password);
+    }
     if (!ok || !user) return problem(c, 401, LOGIN_FAILED);
 
     // Rotation: a session presented with the sign-in is ended, and a new id is issued.
@@ -283,7 +286,8 @@ export function registerIdentityRoutes(app: App, deps: IdentityDeps): void {
   app.openapi(passwordReset, async (c) => {
     const { token, password } = c.req.valid("json");
     const r = await redeemReset(db, token, password);
-    if (r.kind === "gone") return problem(c, 410, "This reset link was already used or has expired.");
+    if (r.kind === "gone")
+      return problem(c, 410, "This reset link was already used or has expired.");
     if (r.kind === "weak_password") return problem(c, 422, WEAK_PASSWORD);
     clearSessionCookie(c, auth);
     return c.body(null, 204);

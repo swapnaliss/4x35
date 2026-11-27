@@ -23,9 +23,7 @@ import {
 } from "../schema/index.js";
 import type {
   ApiTokenRow,
-  ScopedAuditEventInsert,
   AuditEventRow,
-  ScopedBatchInsert,
   BatchRow,
   DecisionInsert,
   DecisionRow,
@@ -45,6 +43,8 @@ import type {
   ProposalRow,
   RecordInsert,
   RecordRow,
+  ScopedAuditEventInsert,
+  ScopedBatchInsert,
   WorkspaceContext,
   WorkspaceRow,
 } from "./types.js";
@@ -271,7 +271,13 @@ export function forWorkspace(ctx: WorkspaceContext, db: Executor): WorkspaceRepo
     },
 
     invites: {
-      create: async (v) => one(await db.insert(invites).values({ ...v, workspaceId: ws }).returning()),
+      create: async (v) =>
+        one(
+          await db
+            .insert(invites)
+            .values({ ...v, workspaceId: ws })
+            .returning(),
+        ),
       get: async (id) =>
         isUuid(id)
           ? first(
@@ -282,7 +288,11 @@ export function forWorkspace(ctx: WorkspaceContext, db: Executor): WorkspaceRepo
             )
           : undefined,
       list: async () =>
-        db.select().from(invites).where(eq(invites.workspaceId, ws)).orderBy(desc(invites.createdAt)),
+        db
+          .select()
+          .from(invites)
+          .where(eq(invites.workspaceId, ws))
+          .orderBy(desc(invites.createdAt)),
       pendingFor: async (email) =>
         db
           .select()
@@ -300,7 +310,12 @@ export function forWorkspace(ctx: WorkspaceContext, db: Executor): WorkspaceRepo
     passwordResets: {
       create: async (v) => {
         if (!(await userIsMember(v.userId))) throw new OutOfScopeError("user");
-        return one(await db.insert(passwordResets).values({ ...v, workspaceId: ws }).returning());
+        return one(
+          await db
+            .insert(passwordResets)
+            .values({ ...v, workspaceId: ws })
+            .returning(),
+        );
       },
       get: async (id) =>
         isUuid(id)
@@ -315,7 +330,12 @@ export function forWorkspace(ctx: WorkspaceContext, db: Executor): WorkspaceRepo
 
     apiTokens: {
       create: async (v) =>
-        one(await db.insert(apiTokens).values({ ...v, workspaceId: ws }).returning()),
+        one(
+          await db
+            .insert(apiTokens)
+            .values({ ...v, workspaceId: ws })
+            .returning(),
+        ),
       get: async (id) =>
         isUuid(id)
           ? first(
@@ -335,7 +355,12 @@ export function forWorkspace(ctx: WorkspaceContext, db: Executor): WorkspaceRepo
 
     batches: {
       insert: async (v) =>
-        one(await db.insert(batches).values({ ...v, workspaceId: ws }).returning()),
+        one(
+          await db
+            .insert(batches)
+            .values({ ...v, workspaceId: ws })
+            .returning(),
+        ),
       get: async (id) =>
         isUuid(id)
           ? first(
@@ -346,7 +371,11 @@ export function forWorkspace(ctx: WorkspaceContext, db: Executor): WorkspaceRepo
             )
           : undefined,
       list: async () =>
-        db.select().from(batches).where(eq(batches.workspaceId, ws)).orderBy(desc(batches.createdAt)),
+        db
+          .select()
+          .from(batches)
+          .where(eq(batches.workspaceId, ws))
+          .orderBy(desc(batches.createdAt)),
     },
 
     records: {
@@ -442,7 +471,12 @@ export function forWorkspace(ctx: WorkspaceContext, db: Executor): WorkspaceRepo
 
     auditEvents: {
       insert: async (v) =>
-        one(await db.insert(auditEvents).values({ ...v, workspaceId: ws }).returning()),
+        one(
+          await db
+            .insert(auditEvents)
+            .values({ ...v, workspaceId: ws })
+            .returning(),
+        ),
       get: async (id) =>
         isUuid(id)
           ? first(
@@ -559,10 +593,7 @@ export function forWorkspace(ctx: WorkspaceContext, db: Executor): WorkspaceRepo
         ).length === 1,
       get: async (key) => first(await db.select().from(idempotencyKeys).where(idemWhere(key))),
       store: async (key, response) => {
-        await db
-          .update(idempotencyKeys)
-          .set({ response, at: sql`now()` })
-          .where(idemWhere(key));
+        await db.update(idempotencyKeys).set({ response, at: sql`now()` }).where(idemWhere(key));
       },
       release: async (key) => {
         await db.delete(idempotencyKeys).where(idemWhere(key));

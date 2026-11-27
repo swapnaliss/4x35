@@ -9,7 +9,7 @@ import { problem } from "../middleware/problem.js";
 import { requireRole } from "../middleware/role.js";
 import { type AuthConfig, type AuthEnv, requireSession } from "../middleware/session.js";
 import { workspaceContext } from "../middleware/workspace.js";
-import { classify } from "./matrix.js";
+import { AUTHZ_MATRIX, type RouteClass, routeKey } from "./matrix.js";
 
 export interface AuthorizeDeps {
   readonly db: Database;
@@ -23,7 +23,14 @@ function handlerRoute(c: Context): { method: string; path: string } | undefined 
     .at(-1);
 }
 
-export function authorize(deps: AuthorizeDeps): MiddlewareHandler<AuthEnv> {
+/**
+ * Enforces `matrix` (default: AUTHZ_MATRIX). Tests pass an extended matrix to mount a test-only route;
+ * the app always uses the default.
+ */
+export function authorize(
+  deps: AuthorizeDeps,
+  matrix: Readonly<Record<string, RouteClass>> = AUTHZ_MATRIX,
+): MiddlewareHandler<AuthEnv> {
   const session = requireSession(deps.auth);
   const workspace = workspaceContext(deps.db);
   const owner = requireRole("owner");
@@ -32,7 +39,7 @@ export function authorize(deps: AuthorizeDeps): MiddlewareHandler<AuthEnv> {
   return async (c, next) => {
     const route = handlerRoute(c);
     if (route === undefined) return next(); // no such route: Hono's 404
-    const cls = classify(c.req.method === "HEAD" ? "GET" : c.req.method, route.path);
+    const cls = matrix[routeKey(c.req.method === "HEAD" ? "GET" : c.req.method, route.path)];
     if (cls === undefined) return problem(c, 404);
     if (cls.access === "public") return next();
 

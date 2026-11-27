@@ -37,7 +37,9 @@ export async function seedBatch(
 ): Promise<{ workspaceId: string; batchId: string; recordIds: string[] }> {
   const identity = identityRepository(db);
   const ws = await identity.createWorkspace("Synthetic workspace");
-  const user = await identity.ensureUser(`synthetic-${randomBytes(4).toString("hex")}@example.test`);
+  const user = await identity.ensureUser(
+    `synthetic-${randomBytes(4).toString("hex")}@example.test`,
+  );
   const repos = forWorkspace({ workspaceId: ws.id }, db);
   const bytes = randomBytes(16);
   const batch = await repos.batches.insert({

@@ -32,7 +32,8 @@ export async function bootstrapAdmin(
     const workspace =
       (await identity.firstWorkspace()) ?? (await identity.createWorkspace(FIRST_WORKSPACE_NAME));
     const workspaceId = workspace.id;
-    if (await identity.isOwner(workspaceId, opts.email)) return { kind: "owner_exists", workspaceId };
+    if (await identity.isOwner(workspaceId, opts.email))
+      return { kind: "owner_exists", workspaceId };
     const repos = forWorkspace({ workspaceId }, tx);
     const pending = (await repos.invites.pendingFor(opts.email)).filter((i) => i.role === "owner");
     if (pending.length > 0) return { kind: "pending", workspaceId };
