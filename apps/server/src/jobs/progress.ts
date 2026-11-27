@@ -2,8 +2,8 @@
 // come from `records`; job counts from pg-boss's `job` table, selected by the `<batchId>/` prefix of
 // the singletonKey that `enqueueInTx` sets.
 import { RECORD_STATES, type RecordStatus } from "@4x35/core";
-import { schema, type Tx } from "@4x35/db";
-import { count, eq, sql } from "drizzle-orm";
+import { forWorkspace, type Tx } from "@4x35/db";
+import { sql } from "drizzle-orm";
 import { z } from "zod";
 import { BOSS_SCHEMA } from "./boss.js";
 import { DLQ_SUFFIX } from "./registry.js";
@@ -27,16 +27,19 @@ export interface BatchProgress {
 }
 
 /**
- * Counts for one batch. The caller has already checked that the batch belongs to the requesting
- * workspace (the status route, through the workspace-scoped repository).
+ * Counts for one batch of `workspaceId`, or undefined when the batch is not in that workspace
+ * (M1-03: the batch is looked up through the workspace-scoped repository first, so another
+ * workspace's batch id reveals nothing, not even job counts).
  */
-export async function getBatchProgress(tx: Tx, batchId: string): Promise<BatchProgress> {
+export async function getBatchProgress(
+  tx: Tx,
+  workspaceId: string,
+  batchId: string,
+): Promise<BatchProgress | undefined> {
   z.uuid().parse(batchId);
-  const rows = await tx
-    .select({ status: schema.records.status, n: count() })
-    .from(schema.records)
-    .where(eq(schema.records.batchId, batchId))
-    .groupBy(schema.records.status);
+  const repos = forWorkspace({ workspaceId }, tx);
+  if ((await repos.batches.get(batchId)) === undefined) return undefined;
+  const rows = await repos.records.countByStatus(batchId);
   const records = Object.fromEntries(RECORD_STATES.map((s) => [s, 0])) as Record<
     RecordStatus,
     number

@@ -17,7 +17,8 @@
     "test": "vitest run",
     "start": "node dist/main.js",
     "test:integration": "vitest run --config vitest.integration.config.ts",
-    "jobs:dead-letters": "tsc -b && node scripts/dead-letters.ts"
+    "jobs:dead-letters": "tsc -b && node scripts/dead-letters.ts",
+    "bootstrap:admin": "tsc -b && node scripts/bootstrap-admin.ts"
   },
   "dependencies": {
     "@4x35/core": "0.1.0",

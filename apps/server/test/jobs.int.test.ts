@@ -351,7 +351,7 @@ describe.skipIf(!hasDatabase)("jobs (real Postgres + pg-boss)", () => {
   it(
     "AC 3: getBatchProgress counts records in three statuses and queued, active, failed and dead jobs",
     async () => {
-      const { batchId } = await seedBatch(t.db, [
+      const { batchId, workspaceId } = await seedBatch(t.db, [
         "pending",
         "pending",
         "proposed",
@@ -386,17 +386,22 @@ describe.skipIf(!hasDatabase)("jobs (real Postgres + pg-boss)", () => {
         40_000,
       );
 
-      const progress = await tx((q) => getBatchProgress(q, batchId));
+      const progress = await tx((q) => getBatchProgress(q, workspaceId, batchId));
+      if (progress === undefined) throw new Error("expected the batch's progress");
       expect(progress.batchId).toBe(batchId);
       expect(progress.records).toMatchObject({ pending: 2, proposed: 1, approved: 3 });
       expect(Object.values(progress.records).reduce((s, n) => s + n, 0)).toBe(6);
       expect(progress.jobs).toEqual({ queued: 1, active: 1, failed: 1, dead: 1 });
       expect(await jobState(t.db, queued)).toBe("created");
 
+      // Another workspace learns nothing about this batch, not even job counts (M1-03).
+      const other = await seedBatch(t.db, []);
+      expect(await tx((q) => getBatchProgress(q, other.workspaceId, batchId))).toBeUndefined();
       // Another batch's progress is untouched by these jobs.
-      const empty = await tx((q) => getBatchProgress(q, randomUUID()));
-      expect(empty.jobs).toEqual({ queued: 0, active: 0, failed: 0, dead: 0 });
-      expect(Object.values(empty.records).every((n) => n === 0)).toBe(true);
+      const empty = await tx((q) => getBatchProgress(q, other.workspaceId, other.batchId));
+      expect(empty?.jobs).toEqual({ queued: 0, active: 0, failed: 0, dead: 0 });
+      expect(Object.values(empty?.records ?? { x: 1 }).every((n) => n === 0)).toBe(true);
+      expect(await tx((q) => getBatchProgress(q, workspaceId, randomUUID()))).toBeUndefined();
 
       openGate();
       await completed(active);

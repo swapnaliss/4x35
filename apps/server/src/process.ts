@@ -6,7 +6,7 @@ import type { Server } from "node:http";
 import { createDb, createPool } from "@4x35/db";
 import { serve } from "@hono/node-server";
 import { type BuildInfo, createApp } from "./app.js";
-import { type Env, servesHttp } from "./env.js";
+import { authConfig, type Env, servesHttp } from "./env.js";
 import { type JobRuntime, runsWorkers, startBoss } from "./jobs/boss.js";
 import { createProbePool, selectOne } from "./obs/health.js";
 import { createLogger, type Logger } from "./obs/logger.js";
@@ -39,6 +39,8 @@ export async function startProcess(
     // The key name only, never a value.
     throw new Error("invalid environment: DATABASE_URL is not set");
   }
+  // An HTTP process cannot authenticate anyone without its keys: fail before opening anything.
+  const auth = servesHttp(env.MODE) ? authConfig(env) : undefined;
   const logger = options.logger ?? createLogger({ level: env.LOG_LEVEL });
   const pool = createPool({ connectionString: env.DATABASE_URL });
   // An idle client's error (Postgres restarted or stopped) must not crash the process: /readyz
@@ -67,6 +69,7 @@ export async function startProcess(
   if (servesHttp(env.MODE)) {
     const app = createApp(info, {
       db,
+      ...(auth === undefined ? {} : { auth }),
       logger,
       readiness: {
         database: selectOne(probe),

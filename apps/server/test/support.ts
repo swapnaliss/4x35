@@ -2,9 +2,11 @@
 // imported by product code.
 import { createHash, randomBytes } from "node:crypto";
 import type { RecordStatus } from "@4x35/core";
-import type { Database } from "@4x35/db";
-import { schema } from "@4x35/db";
+import { type Database, forWorkspace, identityRepository } from "@4x35/db";
 import { sql } from "drizzle-orm";
+
+/** Synthetic session and CSRF keys for tests (low-entropy on purpose: not credentials). */
+export const TEST_KEYS = { SESSION_SECRET: "s".repeat(40), CSRF_SECRET: "c".repeat(40) } as const;
 
 /** The connection string of the harness database `name` (same server and credentials). */
 export function urlFor(name: string): string {
@@ -28,62 +30,36 @@ export async function waitFor<T>(
   }
 }
 
-/** The single row an INSERT … RETURNING gave back. */
-function one<T>(rows: readonly T[]): T {
-  const [row] = rows;
-  if (row === undefined) throw new Error("expected one row");
-  return row;
-}
-
 /** A workspace, a user and one batch with `statuses.length` records (synthetic data). */
 export async function seedBatch(
   db: Database,
   statuses: readonly RecordStatus[],
 ): Promise<{ workspaceId: string; batchId: string; recordIds: string[] }> {
-  const ws = one(
-    await db
-      .insert(schema.workspaces)
-      .values({ name: "Synthetic workspace" })
-      .returning({ id: schema.workspaces.id }),
-  );
-  const user = one(
-    await db
-      .insert(schema.users)
-      .values({ email: `synthetic-${randomBytes(4).toString("hex")}@example.test` })
-      .returning({ id: schema.users.id }),
-  );
+  const identity = identityRepository(db);
+  const ws = await identity.createWorkspace("Synthetic workspace");
+  const user = await identity.ensureUser(`synthetic-${randomBytes(4).toString("hex")}@example.test`);
+  const repos = forWorkspace({ workspaceId: ws.id }, db);
   const bytes = randomBytes(16);
-  const batch = one(
-    await db
-      .insert(schema.batches)
-      .values({
-        workspaceId: ws.id,
-        kind: "master_list",
-        format: "csv",
-        original: bytes,
-        sha256: createHash("sha256").update(bytes).digest("hex"),
-        encoding: "utf-8",
-        packId: "synthetic-pack",
-        packVersion: "1.0.0",
-        form: "structured",
-        createdBy: user.id,
-      })
-      .returning({ id: schema.batches.id }),
-  );
+  const batch = await repos.batches.insert({
+    kind: "master_list",
+    format: "csv",
+    original: bytes,
+    sha256: createHash("sha256").update(bytes).digest("hex"),
+    encoding: "utf-8",
+    packId: "synthetic-pack",
+    packVersion: "1.0.0",
+    form: "structured",
+    createdBy: user.id,
+  });
   const recordIds: string[] = [];
   for (const [i, status] of statuses.entries()) {
-    const r = one(
-      await db
-        .insert(schema.records)
-        .values({
-          batchId: batch.id,
-          location: { kind: "cell", sheet: null, row: i + 1, columns: ["A"] },
-          partyRole: "creditor",
-          originalLines: [`${i + 1} Synthetic Street`, "Exampletown"],
-          status,
-        })
-        .returning({ id: schema.records.id }),
-    );
+    const r = await repos.records.insert({
+      batchId: batch.id,
+      location: { kind: "cell", sheet: null, row: i + 1, columns: ["A"] },
+      partyRole: "creditor",
+      originalLines: [`${i + 1} Synthetic Street`, "Exampletown"],
+      status,
+    });
     recordIds.push(r.id);
   }
   return { workspaceId: ws.id, batchId: batch.id, recordIds };

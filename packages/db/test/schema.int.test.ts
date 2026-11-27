@@ -458,6 +458,7 @@ describe.skipIf(!hasDatabase)("M1-02 schema on Postgres 17", () => {
       "invites",
       "job_timings",
       "memberships",
+      "password_resets",
       "payment_file_links",
       "preflight_runs",
       "proposals",

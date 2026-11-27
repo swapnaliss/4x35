@@ -5,8 +5,8 @@
  * Planted bug first: the route opted out of the middleware, so a replay runs the handler again.
  */
 import { randomUUID } from "node:crypto";
-import { schema } from "@4x35/db";
-import { and, eq, sql } from "drizzle-orm";
+import { forWorkspace } from "@4x35/db";
+import { sql } from "drizzle-orm";
 import fc from "fast-check";
 import { Hono } from "hono";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
@@ -129,15 +129,7 @@ describe.skipIf(!hasDatabase)("Idempotency-Key (real Postgres)", () => {
     expect(first.headers.get(REPLAYED_HEADER)).toBeNull();
     expect(replay.headers.get(REPLAYED_HEADER)).toBe("true");
     expect(replay.headers.get("content-type")).toBe(first.headers.get("content-type"));
-    const [row] = await t.db
-      .select()
-      .from(schema.idempotencyKeys)
-      .where(
-        and(
-          eq(schema.idempotencyKeys.workspaceId, workspaceId),
-          eq(schema.idempotencyKeys.key, key),
-        ),
-      );
+    const row = await forWorkspace({ workspaceId }, t.db).idempotencyKeys.get(key);
     expect(row?.requestHash).toMatch(/^[0-9a-f]{64}$/);
     expect(row?.response).toMatchObject({ status: 201 });
   });

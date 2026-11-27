@@ -6,8 +6,7 @@
 // A request without the header, or without a resolved workspace (an unauthenticated POST such as
 // sign-in), passes through. 5xx responses and thrown errors are not stored, so a retry runs again.
 import { createHash } from "node:crypto";
-import { type Database, schema } from "@4x35/db";
-import { and, eq, lt, sql } from "drizzle-orm";
+import { type Database, forWorkspace } from "@4x35/db";
 import type { Context, MiddlewareHandler } from "hono";
 
 export const IDEMPOTENCY_HEADER = "Idempotency-Key";
@@ -21,7 +20,10 @@ export interface IdempotencyEnv {
 }
 
 export interface OptOut {
-  /** Exact request path, e.g. `/api/v1/auth/login`. */
+  /**
+   * Request path, e.g. `/api/v1/auth/login`; a `{param}` segment matches any one segment
+   * (`/api/v1/workspaces/{id}/invites`).
+   */
   readonly path: string;
   /** Why this route must not be replayed (ticket handoff: every opt-out says why). */
   readonly reason: string;
@@ -60,15 +62,26 @@ async function requestHash(c: Context): Promise<string> {
   return createHash("sha256").update(`${c.req.method}\n${c.req.path}\n`).update(body).digest("hex");
 }
 
+/** A matcher for `path`, where each `{param}` segment matches one non-empty segment. */
+export function pathMatcher(path: string): (actual: string) => boolean {
+  const want = path.split("/");
+  return (actual) => {
+    const got = actual.split("/");
+    return (
+      got.length === want.length &&
+      want.every((w, i) => (/^\{[^/]+\}$/.test(w) ? (got[i] ?? "") !== "" : w === got[i]))
+    );
+  };
+}
+
 export function idempotency(options: IdempotencyOptions): MiddlewareHandler<IdempotencyEnv> {
   const { db } = options;
   const workspaceOf = options.workspaceOf ?? ((c) => c.get("workspaceId"));
-  const optedOut = new Set((options.optOut ?? []).map((o) => o.path));
-  const t = schema.idempotencyKeys;
+  const optedOut = (options.optOut ?? []).map((o) => pathMatcher(o.path));
 
   return async (c, next) => {
     const key = c.req.header(IDEMPOTENCY_HEADER);
-    if (c.req.method !== "POST" || key === undefined || optedOut.has(c.req.path)) {
+    if (c.req.method !== "POST" || key === undefined || optedOut.some((m) => m(c.req.path))) {
       return next();
     }
     const workspaceId = workspaceOf(c);
@@ -77,20 +90,14 @@ export function idempotency(options: IdempotencyOptions): MiddlewareHandler<Idem
       return problem(c, 400, "Invalid Idempotency-Key", "Use 1 to 255 printable ASCII characters.");
     }
     const hash = await requestHash(c);
-    const where = and(eq(t.workspaceId, workspaceId), eq(t.key, key));
+    const keys = forWorkspace({ workspaceId }, db).idempotencyKeys;
 
     // An entry older than 24 h no longer counts: drop it, then claim the key.
-    await db
-      .delete(t)
-      .where(and(where, lt(t.at, sql`now() - make_interval(hours => ${IDEMPOTENCY_TTL_HOURS})`)));
-    const claimed = await db
-      .insert(t)
-      .values({ workspaceId, key, requestHash: hash, response: PENDING })
-      .onConflictDoNothing()
-      .returning({ key: t.key });
+    await keys.dropExpired(key, IDEMPOTENCY_TTL_HOURS);
+    const claimed = await keys.claim(key, hash, PENDING);
 
-    if (claimed.length === 0) {
-      const [row] = await db.select().from(t).where(where);
+    if (!claimed) {
+      const row = await keys.get(key);
       if (row && row.requestHash !== hash) {
         return problem(
           c,
@@ -117,11 +124,11 @@ export function idempotency(options: IdempotencyOptions): MiddlewareHandler<Idem
     try {
       await next();
     } catch (err) {
-      await db.delete(t).where(where);
+      await keys.release(key);
       throw err;
     }
     if (c.error !== undefined || c.res.status >= 500) {
-      await db.delete(t).where(where);
+      await keys.release(key);
       return;
     }
     const stored: StoredResponse = {
@@ -129,6 +136,6 @@ export function idempotency(options: IdempotencyOptions): MiddlewareHandler<Idem
       contentType: c.res.headers.get("content-type"),
       body: await c.res.clone().text(),
     };
-    await db.update(t).set({ response: stored, at: sql`now()` }).where(where);
+    await keys.store(key, stored);
   };
 }

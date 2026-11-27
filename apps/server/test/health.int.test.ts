@@ -13,7 +13,7 @@ import { createServer, connect as netConnect, type Server, type Socket } from "n
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { createTestDatabase, hasDatabase, type TestDb } from "../../../packages/db/test/harness.js";
 import { createLogger, type ProcessHandle, readEnv, startProcess } from "../src/index.js";
-import { urlFor, waitFor } from "./support.js";
+import { TEST_KEYS, urlFor, waitFor } from "./support.js";
 
 type ProxyMode = "forward" | "blackhole";
 
@@ -97,7 +97,7 @@ describe.skipIf(!hasDatabase)("health and readiness (real process, Postgres via 
     viaProxy.port = String(proxy.port);
     const port = await freePort();
     handle = await startProcess(
-      readEnv({ MODE: "all", PORT: String(port), DATABASE_URL: viaProxy.toString() }),
+      readEnv({ MODE: "all", PORT: String(port), DATABASE_URL: viaProxy.toString(), ...TEST_KEYS }),
       { version: "0.1.0", commit: "test" },
       {
         pollingIntervalSeconds: 0.5,
