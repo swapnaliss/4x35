@@ -102,7 +102,9 @@ jobs:
         run: docker build -t 4x35:ci --build-arg COMMIT="${GITHUB_SHA::7}" .
       - name: Smoke (MODE=all answers /healthz)
         run: |
+          # Synthetic per-run keys: an HTTP process refuses to start without them (M1-03).
           docker run -d --name ci --network host -e MODE=all -e PORT=18080 \
+            -e SESSION_SECRET="$(openssl rand -hex 32)" -e CSRF_SECRET="$(openssl rand -hex 32)" \
             -e DATABASE_URL=postgres://postgres:postgres@127.0.0.1:5432/postgres 4x35:ci
           for i in $(seq 1 20); do curl -fsS localhost:18080/healthz && break; sleep 0.5; done
           curl -fsS localhost:18080/healthz | jq -e '.status=="ok"'

@@ -15,5 +15,5 @@ export {
 } from "./client.js";
 export * from "./mappers/index.js";
 export { journal, MIGRATIONS_FOLDER, runMigrations } from "./migrate.js";
-export * as schema from "./schema/index.js";
+export * from "./repo/index.js";
 export { seed } from "./seed.js";

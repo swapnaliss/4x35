@@ -103,3 +103,27 @@ export const apiTokens = pgTable(
   },
   (t) => [index("api_tokens_workspace_idx").on(t.workspaceId)],
 );
+
+/** Admin-issued one-time password reset links (ADR 0013, M1-03): 1 h, single use, token hashed. */
+export const passwordResets = pgTable(
+  "password_resets",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    /** The workspace whose owner issued the link. */
+    workspaceId: uuid("workspace_id")
+      .notNull()
+      .references(() => workspaces.id, { onDelete: "cascade" }),
+    /** SHA-256 of the one-time token; the token itself is never stored. */
+    tokenHash: text("token_hash").notNull().unique("password_resets_token_hash_unique"),
+    expiresAt: timestamptz("expires_at").notNull(),
+    usedAt: timestamptz("used_at"),
+    createdAt: timestamptz("created_at").notNull().defaultNow(),
+  },
+  (t) => [
+    index("password_resets_user_idx").on(t.userId),
+    index("password_resets_workspace_idx").on(t.workspaceId),
+  ],
+);

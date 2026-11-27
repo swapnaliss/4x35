@@ -11,7 +11,7 @@ const src = (f: string) =>
   readFileSync(fileURLToPath(new URL(`../src/${f}`, import.meta.url)), "utf8");
 
 describe("schema modules", () => {
-  it("define exactly the 16 tables of the ticket", () => {
+  it("define exactly the 16 tables of M1-02 plus password_resets (M1-03)", () => {
     const names = Object.values(schema)
       .filter((v) => is(v, PgTable))
       .map((t) => getTableName(t as PgTable))
@@ -26,6 +26,7 @@ describe("schema modules", () => {
       "invites",
       "job_timings",
       "memberships",
+      "password_resets",
       "payment_file_links",
       "preflight_runs",
       "proposals",

@@ -10,7 +10,7 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { z } from "zod";
 import { createTestDatabase, hasDatabase, type TestDb } from "../../../packages/db/test/harness.js";
 import { defineJob, enqueueInTx, type ProcessHandle, readEnv, startProcess } from "../src/index.js";
-import { jobState, urlFor, waitFor } from "./support.js";
+import { jobState, TEST_KEYS, urlFor, waitFor } from "./support.js";
 
 const ran: string[] = [];
 defineJob({
@@ -52,7 +52,13 @@ describe.skipIf(!hasDatabase)("startup by MODE (real Postgres + pg-boss)", () =>
   let probeJob: string;
   const info = { version: "0.1.0", commit: "test" };
   const env = (mode: string) =>
-    readEnv({ MODE: mode, PORT: String(port), DATABASE_URL: urlFor(t.name), LOG_LEVEL: "error" });
+    readEnv({
+      MODE: mode,
+      PORT: String(port),
+      DATABASE_URL: urlFor(t.name),
+      LOG_LEVEL: "error",
+      ...TEST_KEYS,
+    });
 
   beforeAll(async () => {
     t = await createTestDatabase("mode");

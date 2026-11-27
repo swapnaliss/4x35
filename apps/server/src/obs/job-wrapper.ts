@@ -6,7 +6,7 @@
 //   - one `job attempt` log line with the allow-listed job fields; a failure logs its class only
 // The timing row is written after the handler's transaction, on its own, so a failed attempt
 // (whose transaction rolled back) still leaves its row.
-import { type Database, schema } from "@4x35/db";
+import { type Database, systemRepository } from "@4x35/db";
 import type { Logger } from "./logger.js";
 import { runWithContext } from "./request-id.js";
 
@@ -66,7 +66,7 @@ export async function observeAttempt(
   }
   const ms = Math.max(0, Math.round(performance.now() - started));
   try {
-    await db.insert(schema.jobTimings).values({
+    await systemRepository(db).jobTimings.insert({
       jobId: info.jobId,
       kind: info.kind,
       batchId: info.batchId,

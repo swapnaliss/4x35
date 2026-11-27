@@ -12,8 +12,8 @@ import { execFile } from "node:child_process";
 import { randomUUID } from "node:crypto";
 import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
-import { type Database, schema, withTx } from "@4x35/db";
-import { asc, eq, sql } from "drizzle-orm";
+import { type Database, systemRepository, withTx } from "@4x35/db";
+import { sql } from "drizzle-orm";
 import fc from "fast-check";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { z } from "zod";
@@ -82,17 +82,13 @@ describe.skipIf(!hasDatabase)("job timings and dead letters (real Postgres + pg-
   });
 
   const timings = async (jobId: string) =>
-    t.db
-      .select({
-        outcome: schema.jobTimings.outcome,
-        ms: schema.jobTimings.ms,
-        kind: schema.jobTimings.kind,
-        batchId: schema.jobTimings.batchId,
-        chunk: schema.jobTimings.chunk,
-      })
-      .from(schema.jobTimings)
-      .where(eq(schema.jobTimings.jobId, jobId))
-      .orderBy(asc(schema.jobTimings.at), asc(schema.jobTimings.id));
+    (await systemRepository(t.db).jobTimings.listByJob(jobId)).map((r) => ({
+      outcome: r.outcome,
+      ms: r.ms,
+      kind: r.kind,
+      batchId: r.batchId,
+      chunk: r.chunk,
+    }));
 
   it("AC 4: 1 row for a job that succeeds; 4 rows for one that fails and dead-letters; the CLI lists it without payload", async () => {
     const okBatch = randomUUID();
@@ -215,7 +211,7 @@ describe.skipIf(!hasDatabase)("job timings and dead letters (real Postgres + pg-
       } catch {
         outcome = info.retryCount >= info.retryLimit ? "dead_letter" : "failed";
       }
-      await tx.insert(schema.jobTimings).values({
+      await systemRepository(tx).jobTimings.insert({
         jobId: info.jobId,
         kind: info.kind,
         batchId: info.batchId,
