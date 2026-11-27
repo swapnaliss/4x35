@@ -108,3 +108,17 @@ allows; the glossary's Redactor is "the redaction step of the Logger", not pino'
 express `*.original*`); P5 (50 runs of real dead letters, each 4 pg-boss attempts with backoff) was not runnable, so
 it became an example check. **M1-05 total: 12.67 credits** (65.70 → 78.37; the pool is shared with concurrent
 workers, BL-01 7183592046).
+
+### M1-03 · identity spec
+
+| Date | Ticket | Surface | What ran | Kiro | Credits | Balance |
+|---|---|---|---|---|---|---|
+| 2026-11-27 | M1-03 | Spec | `--mode spec` created `.kiro/specs/identity/` from the ticket, ADR 0013, the persistence/jobs/observability specs and the identity schema, with the implementation decisions supplied in the prompt (repository layer shape, `password_resets` migration, OWASP argon2id parameters, keyed session hash, sliding 12 h / 7 d expiry, HMAC CSRF token, hashed one-time tokens, middleware order, matrix shape, bootstrap behaviour): EARS `requirements.md` (R1–R11), `design.md` with P1 `P-cross-workspace-denied` and P2 `P-csrf-required`, `tasks.md` (11 tasks, dependency graph), `.config.kiro` | CLI 3.6.2 | 8.29 | 86.66 |
+| 2026-11-27 | M1-03 | Spec (checkpoint) | Kiro ran `tsc` on the db and server tests, `no-raw-tables`, `repo-scope` (P1, 200 runs) and the server `identity`/`authz-matrix` integration tests against the local Postgres (all green); aligned `design.md` with the code as built (`FOR UPDATE` single use, one matrix-driven `authorize`, CSRF inside `requireSession`, idempotency opt-out of the token routes, `systemRepository`, absolute-cap check, bootstrap `.env` rules), recorded the planted bugs (P1 seed 3032, P2 seed 4242), marked the passing tasks `[x]` and added open sub-tasks 3.8, 3.9, 4.3, 5.5, 6.3, 9.3 for extra checks no test covers yet | CLI 3.6.2 | 14.54 | 101.20 |
+
+Tasks were implemented by Claude Code from the spec's task list; Kiro authored the spec and ran the checkpoint; the
+`docs/kiro-usage.md` task (this entry) is Claude Code's. Review edits to Kiro's spec (Claude Code): none to
+`requirements.md` (R1–R11 diffed against the ticket's scope and AC: nothing invented). Three design choices Kiro
+added beyond the prompt were kept as design decisions, not requirements: 409 when demoting a workspace's last owner,
+an advisory lock in `bootstrap:admin`, and owners passing reviewer routes. Kiro's new sub-tasks (extra edge-case tests beyond the ticket's AC) stay open for a later pass. **M1-03 total: 22.83 credits**
+(78.37 → 101.20; the pool is shared with concurrent workers, BL-01 7183592046).
