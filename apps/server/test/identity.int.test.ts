@@ -403,6 +403,31 @@ describe.skipIf(!hasDatabase)("identity (M1-03, real Postgres)", () => {
     expect(last.status).toBe(409);
   });
 
+  it("role change: two owners demoting each other at once leave exactly one owner (BL-01 7213444161)", async () => {
+    for (let round = 0; round < 5; round++) {
+      const w = await seedWorkspace(t.db, `race-${round}`);
+      await forWorkspace({ workspaceId: w.id }, t.db).memberships.setRole(w.reviewer.id, "owner");
+      const [s1, s2] = await Promise.all([
+        sessionFor(t.db, w.owner.id),
+        sessionFor(t.db, w.reviewer.id),
+      ]);
+      const demote = (s: TestSession, target: string) =>
+        call(app, `/api/v1/workspaces/${w.id}/members/${target}`, {
+          method: "PATCH",
+          session: s,
+          body: { role: "reviewer" },
+        });
+      const statuses = (await Promise.all([demote(s1, w.reviewer.id), demote(s2, w.owner.id)])).map(
+        (r) => r.status,
+      );
+      expect(statuses.sort()).toEqual([200, 409]);
+      const owners = (await forWorkspace({ workspaceId: w.id }, t.db).memberships.list()).filter(
+        (m) => m.role === "owner",
+      );
+      expect(owners).toHaveLength(1);
+    }
+  });
+
   it("AC 5: the sessions, invites and password_resets tables hold only hashes: no raw cookie or token anywhere in the database", async () => {
     const owner = await sessionFor(t.db, ws.owner.id);
     const login = await call(app, "/api/v1/auth/login", {

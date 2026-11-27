@@ -90,6 +90,8 @@ export interface WorkspaceRepositories {
     /** Adds the user; an existing membership is left as it is. Returns the membership. */
     add(userId: string, role: MembershipRole): Promise<MembershipRow>;
     setRole(userId: string, role: MembershipRole): Promise<MembershipRow | undefined>;
+    /** The workspace's owners, row-locked (`FOR UPDATE`) until the transaction ends. */
+    lockOwners(): Promise<MembershipRow[]>;
   };
   readonly invites: {
     create(v: {
@@ -268,6 +270,13 @@ export function forWorkspace(ctx: WorkspaceContext, db: Executor): WorkspaceRepo
                 .returning(),
             )
           : undefined,
+      lockOwners: async () =>
+        db
+          .select()
+          .from(memberships)
+          .where(and(eq(memberships.workspaceId, ws), eq(memberships.role, "owner")))
+          .orderBy(asc(memberships.userId))
+          .for("update"),
     },
 
     invites: {

@@ -299,11 +299,13 @@ export function registerIdentityRoutes(app: App, deps: IdentityDeps): void {
     const { role } = c.req.valid("json");
     const r = await withTx(db, async (tx) => {
       const members = forWorkspace({ workspaceId }, tx).memberships;
+      // Lock the owner rows first, so two concurrent demotions cannot both see "another owner
+      // remains" (BL-01 7213444161).
+      const owners = await members.lockOwners();
       const current = await members.get(userId);
       if (!current) return "not_member" as const;
-      if (current.role === "owner" && role !== "owner") {
-        const owners = (await members.list()).filter((m) => m.role === "owner");
-        if (owners.length <= 1) return "last_owner" as const;
+      if (current.role === "owner" && role !== "owner" && owners.length <= 1) {
+        return "last_owner" as const;
       }
       await members.setRole(userId, role);
       return "ok" as const;
