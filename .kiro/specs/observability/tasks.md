@@ -79,8 +79,8 @@ Builds the observability baseline in dependency order: logger and serializers, r
   - No planted-bug record, because it is not a property
   - _Requirements: R7.1, R7.2_
 
-- [ ] 12. Set `healthCheckPath: /readyz` in `render.yaml` (M1-05)
-  - Blocked: `render.yaml` does not exist on main; it is M0-07's blueprint (issue #9, open), so the one-line health check path waits for M0-07
+- [x] 12. Set `healthCheckPath: /readyz` in `render.yaml` (M1-05)
+  - Done in M0-07 (issue #9), which created `render.yaml` with `healthCheckPath: /readyz`; `render blueprints validate` accepts it
   - One-line change to the web service health check; `render.yaml` is a hot file, touch nothing else
   - _Requirements: R8.1_
 

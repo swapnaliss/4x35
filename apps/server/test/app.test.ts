@@ -48,6 +48,20 @@ describe("hello server", () => {
     expect(env.PORT).toBe(9000);
   });
 
+  it("treats an empty value as unset (a Render sync:false key not filled in yet)", () => {
+    const env = readEnv({ APP_BASE_URL: "", SESSION_SECRET: "", LOG_LEVEL: "" });
+    expect(env.APP_BASE_URL).toBeUndefined();
+    expect(env.SESSION_SECRET).toBeUndefined();
+    expect(env.LOG_LEVEL).toBe("info");
+  });
+
+  it("falls back to RENDER_GIT_COMMIT when no commit was baked in", () => {
+    const sha = "0123456789abcdef0123456789abcdef01234567";
+    expect(readEnv({ RENDER_GIT_COMMIT: sha }).COMMIT).toBe(sha);
+    expect(readEnv({ COMMIT: "unknown", RENDER_GIT_COMMIT: sha }).COMMIT).toBe(sha);
+    expect(readEnv({ COMMIT: "abc1234", RENDER_GIT_COMMIT: sha }).COMMIT).toBe("abc1234");
+  });
+
   it("rejects an unknown MODE and names the key", () => {
     expect(() => readEnv({ MODE: "batch" })).toThrow(/MODE/);
   });
