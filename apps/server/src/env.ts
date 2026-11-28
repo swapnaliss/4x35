@@ -25,9 +25,18 @@ const EnvSchema = z.object({
 
 export type Env = z.infer<typeof EnvSchema>;
 
-/** Parses the process environment; throws with every invalid key named. */
+/**
+ * Parses the process environment; throws with every invalid key named.
+ * An empty value counts as unset: a Render `sync: false` key the owner has not filled in yet
+ * arrives as "" (M0-07). Without a baked `COMMIT`, Render's runtime `RENDER_GIT_COMMIT` names the
+ * deployed commit, so `/healthz` reports it.
+ */
 export function readEnv(source: Record<string, string | undefined>): Env {
-  const parsed = EnvSchema.safeParse(source);
+  const set = Object.fromEntries(Object.entries(source).filter(([, v]) => v !== undefined && v !== ""));
+  if ((set.COMMIT === undefined || set.COMMIT === "unknown") && set.RENDER_GIT_COMMIT !== undefined) {
+    set.COMMIT = set.RENDER_GIT_COMMIT;
+  }
+  const parsed = EnvSchema.safeParse(set);
   if (!parsed.success) {
     // Key names only: environment values are never printed.
     const keys = parsed.error.issues.map((i) => i.path.join(".")).join(", ");
