@@ -32,8 +32,13 @@ export type Env = z.infer<typeof EnvSchema>;
  * deployed commit, so `/healthz` reports it.
  */
 export function readEnv(source: Record<string, string | undefined>): Env {
-  const set = Object.fromEntries(Object.entries(source).filter(([, v]) => v !== undefined && v !== ""));
-  if ((set.COMMIT === undefined || set.COMMIT === "unknown") && set.RENDER_GIT_COMMIT !== undefined) {
+  const set = Object.fromEntries(
+    Object.entries(source).filter(([, v]) => v !== undefined && v !== ""),
+  );
+  if (
+    (set.COMMIT === undefined || set.COMMIT === "unknown") &&
+    set.RENDER_GIT_COMMIT !== undefined
+  ) {
     set.COMMIT = set.RENDER_GIT_COMMIT;
   }
   const parsed = EnvSchema.safeParse(set);
