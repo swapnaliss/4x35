@@ -25,8 +25,10 @@ that spends real tokens asks the owner first, on that ticket, with the amount.
 
 ### Assumptions
 
-- Render bills per second, prorated per month. The service is provisioned by M0-07 on 21 Nov 2026
-  and stays up without a break until 29 Jan 2027 (70 days × $32 × 12 / 365 = $73.65).
+- Render bills per second, prorated per month. The plan assumed provisioning on 21 Nov 2026
+  (70 days × $32 × 12 / 365 = $73.65, the approved line). M0-07 provisions on or after 28 Nov 2026,
+  so the real usage is lower: about 62 days, ≈ $65 (see Render credit below). It stays up without a
+  break until 29 Jan 2027.
 - No second instance, no autoscaling, no separate worker service (ADR 0017). `render.yaml` pins
   the plans, so the hosting cost cannot drift unless someone changes the blueprint.
 - Bandwidth stays inside the workspace's included allowance (judges plus a nightly synthetic check).
@@ -43,6 +45,30 @@ that spends real tokens asks the owner first, on that ticket, with the amount.
 | Development (21 Nov to 4 Dec 2026) | $14.73 Render + ≤ $5 LLM (+ $10 prepaid outlay) + $0 Kiro = **≈ $20 spent, ≈ $25 cash out** | $14.73 + $10 (Nov cap) + $10 (Dec cap) = **$34.73** |
 | Judging (5 Dec 2026 to 29 Jan 2027) | $58.92 Render + $0 LLM = **≈ $59** | $58.92 + $10 (Jan cap) = **$68.92** |
 | **Whole project** | **≈ $79 spent (≈ $84 cash out with the $10 prepaid credits)** | **$103.65** (inside the $108 ceiling) |
+
+Cash out is lower than the table: the Render workspace pays from a $50 credit first (below), so
+Render cash out is about $15, not $74.
+
+## Render credit (P-20, owner decision 28 Nov 2026)
+
+P-20 is satisfied by credits, not a card ([owner decisions, 28 Nov 2026](https://github.com/swapnaliss/4x35/issues/9#issuecomment-7235225875)).
+The Render workspace holds a **$50 "Hackathon Participant" credit, valid until 2027-10-01**, with no
+payment method on file.
+
+| Item | Amount |
+|---|---|
+| Provisioned plans (`render.yaml`): web Standard $25 + Postgres Basic-256mb $6 + storage ≈ $1 | **$32/month (≈ $1.05/day)**, inside the approved $78 hosting line |
+| Render usage, 28 Nov 2026 to 29 Jan 2027 (≈ 62 days) | ≈ $65 |
+| Paid from the credit | $50 (runs out around **13 Jan 2027**) |
+| **Render cash out** (card needed from about 13 Jan 2027) | **≈ $15** |
+
+**Reminder, 5 Jan 2027 (owner):** add a card or upgrade in the Render dashboard → Billing before
+the credit runs out around 13 Jan 2027, 16 days before judging ends (29 Jan 2027). If no payment
+method is on file when the credit is gone, the service may stop and judges meet a dead link. Never
+downgrade to stretch the credit (P-07). Weekly check: every Monday, the owner reads the credit
+balance in the Render dashboard → Billing and logs it under Actuals. A drop larger than about
+$7.35 a week means something other than the pinned plans is billing. Render offers no spend alert
+(BL-01 7038919253; `docs/runbook.md` → Billing watch).
 
 ## Purchases
 
@@ -85,7 +111,7 @@ Approved by owner: **24 Nov 2026**, [owner decisions, 24 Nov 2026](https://githu
 | `LLM_DAILY_SPEND_CAP_USD` | `.env` locally (P-37) and the Render service env (P-22) | owner sets value; M2-14 enforces from `llm_usage` | the labeller stops for the day and records go to review |
 | `LLM_BATCH_TOKEN_CAP` | same | same | one batch cannot exceed its token budget |
 | Per-ticket owner approval, $1 guard | the owner approves each ticket's live spend on its issue (P-05 class 3 declined); `resources.json` `LLM` budget; worker scripts compute tokens × price at call time | owner / workers / manager | no real tokens without that ticket's approval; a live run stops before $1 (M3-11 P-LLM-2) |
-| Render cost | plans pinned in `render.yaml`; Workspace Settings → Billing checked weekly (P-21). A Render billing alert has not been confirmed to exist; M0-07 records what the workspace offers | owner / M0-07 | fixed monthly cost, so a change in the invoice shows up within a week |
+| Render cost | plans pinned in `render.yaml`; dashboard → Billing checked weekly (P-21) and a dated reminder on 5 Jan 2027 to add a card before the $50 credit runs out. Render offers no spend alert (M0-07 found none in the docs or pricing pages) | owner / M0-07 | fixed monthly cost, so a change in the credit balance shows up within a week |
 | GitHub Actions | github.com/settings/billing: Actions spending limit stays $0 | owner (default) | Actions stop at 2,000 min instead of charging |
 
 ## Actuals
@@ -94,3 +120,4 @@ Approved by owner: **24 Nov 2026**, [owner decisions, 24 Nov 2026](https://githu
 |---|---|---|---|---|
 | 2026-11-20 | M0-00 | none | none | $0.00 |
 | 2026-11-24 | M0-00 (approvals) | none | none | $0.00 |
+| 2026-11-28 | M0-07 (Stage A) | none: blueprint written and validated, nothing provisioned | none | $0.00 |
