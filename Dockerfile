@@ -39,6 +39,9 @@ COPY --from=prod-deps /app/package.json ./
 COPY --from=prod-deps /app/node_modules ./node_modules
 COPY --from=build /app/apps/server/package.json apps/server/
 COPY --from=build /app/apps/server/dist apps/server/dist
+# Operator scripts run with Node's type stripping against dist, e.g. the one-time owner invite on
+# Render (Shell or `render ssh`): `node apps/server/scripts/bootstrap-admin.ts` (M0-07).
+COPY --from=build /app/apps/server/scripts apps/server/scripts
 # Workspace packages the server imports at runtime (node_modules/@4x35/* link to these).
 COPY --from=build /app/packages/core/package.json packages/core/
 COPY --from=build /app/packages/core/dist packages/core/dist
