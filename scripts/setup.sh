@@ -32,9 +32,22 @@ trap 'rm -rf "$SCRATCH"' EXIT
 die() { echo "setup: $*" >&2; exit 1; }
 
 # The 4x35 web service and database records (JSON), or "null". Other services never leave jq.
+# A Blueprint created with `render ea blueprints create` names its resources `<name>-<4 chars>`
+# (first sync, 28 Nov 2026: `4x35-7k5q`, `4x35-db-7k5q`), so the recorded ID wins and the name
+# match accepts that suffix.
 render_services() { render services -o json --confirm 2>"$SCRATCH/services.err"; }
-service_json() { jq -c --arg n "$SERVICE_NAME" '[.[] | .service? | select(. != null and .name == $n and .type == "web_service")] | .[0]' "$SCRATCH/services.json"; }
-db_json() { jq -c --arg n "$DB_NAME" '[.[] | .postgres? | select(. != null and .name == $n)] | .[0]' "$SCRATCH/services.json"; }
+ref_id() {
+  [ -f "$DEV_REFS" ] || return 0
+  sed -nE "s/^- Render $1: (($2)-[a-z0-9-]+).*/\\1/p" "$DEV_REFS" | head -n1
+}
+pick() { # kind name recorded-id
+  jq -c --arg k "$1" --arg n "$2" --arg id "$3" '
+    [.[] | .[$k]? | select(. != null)
+      | select(if $id != "" then .id == $id else (.name | test("^" + $n + "(-[a-z0-9]{4})?$")) end)
+      | select($k != "service" or .type == "web_service")] | .[0]' "$SCRATCH/services.json"
+}
+service_json() { pick service "$SERVICE_NAME" "$(ref_id "service $SERVICE_NAME" srv)"; }
+db_json() { pick postgres "$DB_NAME" "$(ref_id "Postgres $DB_NAME" dpg)"; }
 refresh() { render_services >"$SCRATCH/services.json" || die "render services failed: $(cat "$SCRATCH/services.err")"; }
 
 blueprint_id() {

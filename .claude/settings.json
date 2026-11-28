@@ -3,7 +3,7 @@
     "allow": [
       "Bash(gh pr checks *)",
       "Bash(gh pr merge *)",
-      "Bash(render deploys create *)",
+      "Bash(render deploys create srv-dc59d1s9v7es739n2qfg --wait --confirm)",
       "Bash(render deploys list *)",
       "Bash(npm run sandbox:reset *)",
       "Bash(npm run sandbox:status *)"
