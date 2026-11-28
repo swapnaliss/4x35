@@ -44,6 +44,9 @@ COPY --from=build /app/packages/core/package.json packages/core/
 COPY --from=build /app/packages/core/dist packages/core/dist
 COPY --from=build /app/packages/db/package.json packages/db/
 COPY --from=build /app/packages/db/dist packages/db/dist
+# SQL migrations for the Render pre-deploy step `node packages/db/dist/migrate.js` (M0-07): it
+# resolves the repo-root `drizzle/` from `packages/db/dist/`.
+COPY drizzle/ drizzle/
 USER node
 EXPOSE 8080
 # Worker mode has no listener, so it reports healthy without an HTTP probe.
