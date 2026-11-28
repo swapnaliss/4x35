@@ -121,3 +121,4 @@ Approved by owner: **24 Nov 2026**, [owner decisions, 24 Nov 2026](https://githu
 | 2026-11-20 | M0-00 | none | none | $0.00 |
 | 2026-11-24 | M0-00 (approvals) | none | none | $0.00 |
 | 2026-11-28 | M0-07 (Stage A) | none: blueprint written and validated, nothing provisioned | none | $0.00 |
+| 2026-11-28 | M0-07 (Stage B) | Render: web Standard (`4x35-7k5q`) + Postgres Basic-256mb, PG 17 (`4x35-db-7k5q`), Frankfurt, provisioned 08:53 UTC | $32/month from now on | ≈ $1.05/day, paid from the $50 credit (no card) |
